@@ -1,0 +1,80 @@
+@import url("/public/css/sp.css");
+body {
+    font-family: overpassRegular;
+}
+
+.box-colors span {
+    cursor: pointer;
+    width: 100%;
+    height: 80px;
+    display: block;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.modal-dialog {
+    width: 100%;
+}
+
+.name{
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+    color: #263238;
+}
+
+.box-colors {
+    display: inline-block;
+    width: 60%;
+    border-bottom: 1px solid #A2B6BD;
+}
+
+#logout {
+    cursor: pointer;
+}
+
+.colors{
+    position:relative;
+}
+
+.clipboard_show {
+    display: block !important;
+}
+
+.info {
+    font-size: 15.5px;
+    padding: 15px 15px 0 0;
+    color: #607d8b;
+    letter-spacing : -.02em;
+    padding-top: 5%;
+}
+
+.info > div {
+    margin-bottom: 15px;
+}
+
+.info div span > i {
+    margin-right: 10px;
+}
+
+.box-colors {
+    padding-top: 5%;
+}
+
+.myclipboard {
+    position: absolute;
+    bottom: 10%;
+    left:42%;
+    text-align: left;
+    padding-left: 35px;
+    padding-top: 10px;
+    color: white;
+    background-image: url("../../img/bigclipboard.png");
+    background-repeat: no-repeat;
+    display:block;
+    width: 50px;
+    height:50px;
+    display:none;
+    font-weight: bold;
+    text-transform: lowercase;
+}

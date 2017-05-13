@@ -1,0 +1,14 @@
+@font-face {
+    font-family: overpassBold;
+    src: url('../fonts/overpass-mono/overpass-mono-bold.woff');
+}
+
+@font-face {
+    font-family: overpassRegular;
+    src: url('../fonts/overpass-mono/overpass-mono-regular.woff');
+}
+
+@font-face {
+    font-family: overpassSemiBold;
+    src: url('../fonts/overpass-mono/overpass-mono-semibold.woff');
+}
