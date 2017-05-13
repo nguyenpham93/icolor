@@ -1,0 +1,30 @@
+{
+  "name": "color_collection",
+  "version": "1.0.0",
+  "description": "Demo find color relative",
+  "main": "index.js",
+  "author": "nguyenpham93",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.3.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "color-convert": "^1.9.0",
+    "elasticsearch": "^13.0.0",
+    "elasticsearch-deletebyquery": "^1.6.0",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "express-vue": "^3.9.11",
+    "jsonwebtoken": "^7.4.0",
+    "moment": "^2.18.1",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0",
+    "shortid": "^2.2.8"
+  },
+  "devDependencies": {
+    "elasticdump": "^3.3.0"
+  }
+}
