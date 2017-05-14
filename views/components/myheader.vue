@@ -75,21 +75,21 @@
 						<div class="panel-heading">
 							<h3 class="panel-title">Sign Un</h3>
 						</div>
-						<div class="panel-body">
-							<form role="form" method="post" v-on:submit.prevent="register">
-							<span id="register_status"></span>
-								<div class="form-group">
-									<input type="email" name="register_email" id="register_email" required class="form-control" placeholder="Email Address">
-								</div>
-								<div class="form-group">
-									<input type="password" name="register_password" id="register_password" required class="form-control" placeholder="Password">
-								</div>
-								<div class="form-group">
-									<input type="password" name="password_confirmation" required id="password_confirmation" class="form-control" placeholder="Confirm Password">
-								</div>
-								<button class="btn btn-lg btn-primary btn-block">Register</button>
-							</form>
-						</div>
+							<div class="panel-body">
+								<form role="form" method="post" v-on:submit.prevent="register">
+								<span id="register_status"></span>
+									<div class="form-group">
+										<input type="email" name="register_email" id="register_email" required class="form-control" placeholder="Email Address">
+									</div>
+									<div class="form-group">
+										<input type="password" name="register_password" id="register_password" required class="form-control" placeholder="Password">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password_confirmation" required id="password_confirmation" class="form-control" placeholder="Confirm Password">
+									</div>
+									<button class="btn btn-lg btn-primary btn-block">Register</button>
+								</form>
+							</div>
 					</div>
 				</div>
 			</div>

@@ -7,6 +7,17 @@
 					<div class="footer"><span><h3>{{collection.name}}</h3></span></div>
 					<div class="box-author"><span><i class="fa fa-user" aria-hidden="true"></i>Author : {{collection.author}}</span></div>
 					<!--<div class="box-email"><span><i class="fa fa-envelope-o" aria-hidden="true"></i> Email : {{collection.author_email}}</span></div>-->
+					<div class="box-like-dislike-share">
+						<span class="box-like">
+							<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ collection.like }}
+						</span>
+						<span class="box-dislike">
+							<i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{ collection.dislike }}
+						</span>
+						<span class="share">
+							<i class="fa fa-share-alt" aria-hidden="true"></i>{{ collection.share }}
+						</span>
+					</div>
 					<div class="box-date"><span><i class="fa fa-calendar" aria-hidden="true"></i>Updated {{collection.date}}</span></div>
 					<!--</div>-->
 				</div>
