@@ -18,7 +18,7 @@
                         <div class="input-group" id="search">
                             <input type="text" v-on:keyup="onup()" v-on:keydown="ondown()" class="form-control" id="searchterm" placeholder="Search" name="q">
                             <div class="input-group-btn">
-                                <button class="btn btn-default" v-on:click="search()"><i class="glyphicon glyphicon-search"></i></button>
+                                <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
                             </div>
                         </div>
                     </form>
@@ -58,7 +58,7 @@
 									<div class="form-group">
 										<input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password" required=""/>     		  
 									</div>
-									<button class="btn btn-lg btn-primary btn-block" v-on:click="login" name="Submit" value="Login" >Login</button>  			
+									<button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" >Login</button>  			
 								</form>
 							</div>
 						</div>
@@ -66,7 +66,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- Sign in -->
+		<!-- Sign up -->
 		<div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog">
 			<div class="row centered-form">
@@ -76,7 +76,7 @@
 							<h3 class="panel-title">Sign Un</h3>
 						</div>
 						<div class="panel-body">
-							<form role="form" method="post" v-on:submit.prevent="register" action="/register">
+							<form role="form" method="post" v-on:submit.prevent="register">
 							<span id="register_status"></span>
 								<div class="form-group">
 									<input type="email" name="register_email" id="register_email" required class="form-control" placeholder="Email Address">
@@ -87,7 +87,7 @@
 								<div class="form-group">
 									<input type="password" name="password_confirmation" required id="password_confirmation" class="form-control" placeholder="Confirm Password">
 								</div>
-								<button v-on:click="register" class="btn btn-lg btn-primary btn-block">Register</button>
+								<button class="btn btn-lg btn-primary btn-block">Register</button>
 							</form>
 						</div>
 					</div>
@@ -113,12 +113,12 @@
 					let result = response.data;
 					if ( result.status ) {
 						$("#register_status").empty ();
-                        $("#register_status").text ( "Email is already existed" );
-	                    $("#register_status").css ('color','red');
-					} else {
-						$("#register_status").empty ();
                         $("#register_status").text ( "Register Successfull" );
 	                    $("#register_status").css ('color','green');
+					} else {
+						$("#register_status").empty ();
+                        $("#register_status").text ( "Email is already existed" );
+	                    $("#register_status").css ('color','red');
 					}
 					this.user = result.user;
 					this.islogin = result.islogin;
