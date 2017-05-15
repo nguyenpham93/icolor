@@ -10,37 +10,44 @@ const likedislike = require('./like_dislike');
 class Collection {
     constructor(){}
 
-    getAllCollection () {
-        let that = this;
+    getAllCollection (user_id) {
         return new Promise ( (resolve, reject) => {
             elas.searchAll ( "icolor", "collection" )
             .then ( (data) => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
                     async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
-                        resolve (result);
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            resolve (result);
+                        });
                     });
                 });
             });
         });
     }
 
-    getCollection (id) {
-        let that = this;
+    getCollection (id, user_id) {
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", id)
             .then ( (data) => {
                 // ES search will return an array, so we just get by index 0
                 user.getAuthor ( data[0] , (err, result) => {
-                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
-                        resolve (result);
-                    })
+                    likedislike.getLikeAndDislike(data[0], (err, result) => {
+                            resolve(result);
+                    });
+
+                    // async.mapSeries(data, likedislike.getLikeAndDislike, (err, result) => {
+                    //
+                    // })
+
                 });
             });
         });
     }
 
     searchCollection ( term ) {
-        let that = this;
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", term)
             .then ( data => {

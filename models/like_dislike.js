@@ -4,6 +4,8 @@ const convert = require("color-convert");
 const core = require("./core");
 const Promise = require("bluebird");
 const quickSort = require('./quicksort');
+const shortid = require('shortid');
+const moment = require("moment");
 
 class Likedislike {
     constructor(){}
@@ -21,6 +23,9 @@ class Likedislike {
                     // 0 = dislike
                     return obj['status'] === 1;
                 }).length;
+
+                //console.log(like);
+
                 let dislike = data.length - like; 
                 item['like'] = like;
                 item['dislike'] = dislike;
@@ -32,37 +37,67 @@ class Likedislike {
         });
     }
 
-    checkLikeDislike(collection_id, user_id, status){
-
-        let fields = [ "id_collection", "id_user" ];
-
-        elas.search2 ("icolor", "like_dislike", '"' + collection_id + ' ' + user_id + '"', fields, "AND")
-            .then ( (data) => {
-                console.log(data)
-                if(data.length > 0){
-                    if(data[0].status === status){
-                        //delete
-                        elas.deleteDocument2("icolor", "like_dislike", "SJLSY3B-l- r1QCo_xkb1")
-                            .then ( (data) => {
-                                console.log('Delete ok')
-                                return 1
-                            },
-                            error => {
-                                console.log('Delete not ok')
-                                return 0
-                            });
+    checkLikeDislike(item, cb){
+        let fields = ["id_collection", "id_user"];
+        elas.search2("icolor", "like_dislike", item.id + ' ' + item.userlogin, fields, "AND")
+            .then((data) => {
+                    if(data.length > 0) {
+                        item.currentAction = data[0].status
                     }else{
-                        //Change status -> !status
-
+                        item.currentAction = '';
                     }
-                }
-                //cb (null, 'ok');
-                return 1
-            },
-            error => {
-                //cb (null, null);
-                return 0
-            });
+                    cb (null, item);
+                },
+                error => {
+                    cb (null, item);
+                });
+    }
+
+    clickLikeDislike(collection_id, user_id, status, cb ){
+        return new Promise( ( resolve, reject ) => {
+            let fields = ["id_collection", "id_user"];
+            elas.search2("icolor", "like_dislike", collection_id + ' ' + user_id, fields, "AND")
+                .then((data) => {
+                        if (data.length === 1) {
+                            //Change or Delete
+                            if (data[0].status !== status) {
+                                //Change
+                                if (data[0].status === 1) {
+                                    data[0].status = 0;
+                                } else {
+                                    data[0].status = 1;
+                                }
+                                elas.updateDocument('icolor', 'like_dislike', data[0])
+                                    .then((data1) => {
+                                        resolve(collection_id);
+                                    })
+                            } else {
+                                elas.deleteDocument('icolor', 'like_dislike', data[0])
+                                    .then((data1) => {
+                                        resolve(collection_id)
+                                    })
+
+                            }
+                        } else {
+                            //Insert
+                            let doc = {
+                                "id": shortid.generate(),
+                                "id_collection": collection_id,
+                                "id_user": user_id,
+                                "status": status,
+                                "date": moment().format("DD-MM-YYYY")
+                            };
+                            elas.insertDocument('icolor', 'like_dislike', doc)
+                                .then((data1) => {
+                                    resolve(collection_id)
+                                })
+                        }
+
+                    },
+                    error => {
+                        return '';
+                    });
+        });
     }
 
     addLike (data) {

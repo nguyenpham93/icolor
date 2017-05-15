@@ -8,10 +8,10 @@
 					<div class="box-author"><span><i class="fa fa-user" aria-hidden="true"></i>Author : {{collection.author}}</span></div>
 					<!--<div class="box-email"><span><i class="fa fa-envelope-o" aria-hidden="true"></i> Email : {{collection.author_email}}</span></div>-->
 					<div class="box-like-dislike-share">
-						<span class="box-like">
+						<span class="box-like" v-on:click.stop.prevent="likedislike(collection.id, 1)">
 							<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ collection.like }}
 						</span>
-						<span class="box-dislike">
+						<span class="box-dislike" v-on:click.stop.prevent="likedislike(collection.id, 0)">
 							<i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{ collection.dislike }}
 						</span>
 						<span class="share">
@@ -61,6 +61,18 @@
                         .catch(error => {
                             this.related_collection = [];
                         }); 
+            },
+			likedislike(collection_id, action ){
+                axios.post('/likedislike', {
+                    collection_id: collection_id,
+                    action: action
+                })
+                    .then (response => {
+                        //this.dt = response.data;
+                    })
+                    .catch ( error => {
+                        //this.dt = [];
+                    });
             }
         },
         ready() {

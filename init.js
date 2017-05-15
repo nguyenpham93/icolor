@@ -29,7 +29,7 @@ function deleteIndex () {
         else console.log(stt);
     });
 }
-// deleteIndex();
+//deleteIndex();
 
 // Merge Data into ElasticSearch
 function initData() {
@@ -59,7 +59,7 @@ function initData() {
     });
 }
 
-// initData();
+ //initData();
 
 function merge(item, cb){
     coll.addCollection(item)
@@ -94,7 +94,8 @@ function addAuthor (author){
             });
                     });
 }
-// addAuthor(author);
+
+//addAuthor(author);
 
 let collection = {
     id: shortid.generate(),
@@ -121,9 +122,54 @@ function addCollection2 (collection){
 }
 // addCollection2(collection);
 
+let doc1 = [ { id: 'B1xTygvlW',
+    id_collection: 'H1z6V5t8g-',
+    id_user: 'rJDog98lb',
+    status: 0,
+    date: '15-05-2017' },
+  { id: 'HkR31xDxZ',
+    id_collection: 'H1z6V5t8g-',
+    id_user: 'rJDog98lb',
+    status: 0,
+    date: '15-05-2017' },
+  { id: 'SkfsrnIgW',
+    id_collection: 'rJ0g645F8gZ',
+    id_user: 'rJDog98lb',
+    status: 1,
+    date: '15-05-2017' },
+  { id: 'ryG8rh8gb',
+    id_collection: 'S1tg6E5K8eZ',
+    id_user: 'rJDog98lb',
+    status: 1,
+    date: '15-05-2017' },
+  { id: 'rJzpkgwxb',
+    id_collection: 'H1z6V5t8g-',
+    id_user: 'rJDog98lb',
+    status: 0,
+    date: '15-05-2017' },
+  { id: 'rynUS3Ll-',
+    id_collection: 'SyjeTNcKLlW',
+    id_user: 'rJDog98lb',
+    status: 1,
+    date: '15-05-2017' },
+  { id: 'BkxJaJewx-',
+    id_collection: 'H1z6V5t8g-',
+    id_user: 'rJDog98lb',
+    status: 1,
+    date: '15-05-2017' },
+  { id: 'HyV6E2IeZ',
+    id_collection: 'Skbe6VcKUl-',
+    id_user: 'rJDog98lb',
+    status: 0,
+    date: '15-05-2017' },
+  { id: 'rkT2kgDgW',
+    id_collection: 'H1z6V5t8g-',
+    id_user: 'rJDog98lb',
+    status: 0,
+    date: '15-05-2017' } ];
 
-function deleteDocument (){
-    elas.deleteDocument ("icolor","users", "rJBkgtYyb")
+function deleteDocument (doc2){
+    elas.deleteDocument ("icolor","like_dislike", doc2)
     .then ( data => {
         console.log (data);
     }, 
@@ -131,14 +177,18 @@ function deleteDocument (){
         console.log (err);
     });
 }
-// deleteDocument();
+doc1.forEach((i) => {
+    //deleteDocument(i);
+})
+
 
 // Add Like & Dislike
 let like = {
-    "id_collection" : "H18Eg10dgk-",
-    "id_user"  : "r1QCo_xkb",
-    "status"   : "like",
-    "date"     : moment().format("DD-MM-YYYY")
+    "id"            : shortid.generate(),
+    "id_collection" : "r1-bxZIEe-",
+    "id_user"       : "rJBkgtYyb",
+    "status"        : 0,
+    "date"          : moment().format("DD-MM-YYYY")
 }
 
 function addLike () {
@@ -147,19 +197,25 @@ function addLike () {
         console.log(data);
     });
 }
-// addLike();
+//addLike();
 
 
 //update
-
-function update () {
-    elas.updateDocument('icolor','users', author);
+let like1 = {
+    "id"            : 'r1eYJW28gZ',
+    "id_collection" : "r1-bxZIEe-",
+    "id_user"       : "rJBkgtYyb",
+    "status"        : 0,
+    "date"          : moment().format("DD-MM-YYYY")
 }
-// update();
+function update () {
+    elas.updateDocument('icolor','like_dislike', like1);
+}
+//update();
 
 // Search ALl for test
 function searchAll (){
-	elas.searchAll("icolor","users")
+	elas.searchAll("icolor","like_dislike")
  .then (data => {
      console.log(data);
  });

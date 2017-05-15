@@ -8,8 +8,13 @@ const moment = require("moment");
 module.exports = function (app, passport) {
 
     app.get ('/', (req, res) => {
-        collection.getAllCollection ()
+        let user_id = 0;
+        if(req.session.user.id) {
+            user_id = req.session.user.id;
+        }
+        collection.getAllCollection (user_id)
         .then (result => {
+            console.log(result)
             res.render ('index', {
                 data: { dt : result, islogin : req.session.login, user : req.session.user.email },
                 vue: {
@@ -20,7 +25,7 @@ module.exports = function (app, passport) {
                             { style: '/public/css/home/style.css',type: 'text/css',rel: 'stylesheet' }
                             ],
                         },
-                    components: ['myheader']
+                    components: ['myheader', 'pallet']
                 }
             });
         });
@@ -64,7 +69,7 @@ module.exports = function (app, passport) {
         collection.getCollection (id)
         .then ( (data) => {
             res.render ('detail', {
-                data: { collection: data[0] , islogin : req.session.login, user : req.session.user.email },
+                data: { collection: data , islogin : req.session.login, user : req.session.user.email },
                 vue: {
                     head: {
                         title: data['name'],
@@ -80,31 +85,26 @@ module.exports = function (app, passport) {
     });
 
     app.post ('/likedislike', (req, res) => {
-        let status = req.body['action'];
-        let user_id = req.body['user_id'];
-        let collection_id = req.body['collection_id'];
+        if(req.session.user.id) {
+            let status = req.body['action'];
+            let user_id = req.session.user.id;
+            let collection_id = req.body['collection_id'];
 
-        let like = {
-            "id_collection" : collection_id,
-            "id_user"  : user_id,
-            "status"   : status,
-            "date"     : moment().format("DD/MM/YYYY")
+            likedislike.clickLikeDislike(collection_id, user_id, status)
+                .then(data => {
+                        collection.getCollection (data, user_id)
+                            .then ( (data1) => {
+                                //console.log(data1);
+                                res.json(data1)
+                            });
+                    },
+                    failed => {
+                        res.json({error: 'failed'});
+                    });
+        }else{
+            //console.log('Unauthorized');
+            res.json({error: 'Error'});
         }
-
-        likedislike.checkLikeDislike(collection_id, user_id, status)
-            .then ( succeed => {
-                status = {
-                    'success' : 'Register succesfull'
-                }
-                res.json( succeed );
-            },
-            failed => {
-                status = {
-                    'error' : 'Email is already used'
-                }
-            });
-            //res.json( status );
-
     });
 
     app.post ('/register', (req, res) => {
@@ -142,4 +142,42 @@ module.exports = function (app, passport) {
     });
 
     app.post ( "/login" ,passport.authenticate ( 'local', { successRedirect: '/logined', failureRedirect: '/logined' }));
+
+
+    //REST for IOS
+
+    app.get ('/all', (req, res) => {
+        let user_id = 0;
+        if(req.session.user.id) {
+            user_id = req.session.user.id;
+        }
+        collection.getAllCollection (user_id)
+        .then (result => {
+            res.json(result)
+        });
+    });
+
+
+    app.get ('/detailios/:id', (req, res) => {
+        let user_id = 0;
+        if(req.session.user.id) {
+            user_id = req.session.user.id;
+        }
+        let id = req.params.id;
+        collection.getCollection (id, user_id)
+        .then ( (data) => {
+            res.json(data)
+        });
+    });
+
+    app.get('/relatedios', (req, res) => {
+        let id = req.query.id;
+        let id_parent = req.query.idparent;
+        let hex = "#" + id;
+        let arr = [];
+        collection.getColorRelated ( hex, id_parent )
+        .then ( data => {
+            res.json (data);
+        });
+    });
 }

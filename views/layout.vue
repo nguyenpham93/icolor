@@ -7,6 +7,7 @@
             <link rel="shortcut icon" type="image/x-icon" href="/public/img/logo.png">
             <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="/public/css/font-awesome.min.css">
+            <link rel="stylesheet" type="text/css" href="/public/css/style.css">
             
             <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>        

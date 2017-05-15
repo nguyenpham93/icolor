@@ -10,14 +10,17 @@ class elastic {
 	}
 
 	updateDocument (index, type, doc) {
-		this.elas.update ({
-			index : index,
-			type : type,
-			id : doc['id'],
-			body : doc
-		}, (err, result, status) => {
-			console.log (result);
-		});
+		return new Promise ( (resolve, reject) => {
+            this.elas.update({
+                index: index,
+                type: type,
+                id: doc['id'],
+                body: {doc: doc},
+				refresh : "wait_for"
+            }, (err, result, status) => {
+                resolve(result);
+            });
+        });
 	};
 
 	createIndex (index, cb) {
@@ -78,27 +81,45 @@ class elastic {
 		})
 	}
 
-	deleteDocument (index, type, id ){
-		return new Promise ( (resolve, reject) => {
-			this.elas.deleteByQuery({  
-				index: index,
-				type: type,
-				body : {
-					"query": {
-							"match": {
-								"id": id
-							}
-						}
-				}
-			},function(err,resp,status) {
-				if (err) {
-					reject (err);
-				} else {
-					resolve (resp);
-				}
-			});
-		}); 
-	}
+	// deleteDocument (index, type, id ){
+	// 	return new Promise ( (resolve, reject) => {
+	// 		this.elas.deleteByQuery({
+	// 			index: index,
+	// 			type: type,
+	// 			body : {
+	// 				"query": {
+	// 						"match": {
+	// 							"id_collection": id
+	// 						}
+	// 					}
+	// 			}
+	// 		},function(err,resp,status) {
+	// 			if (err) {
+	// 				reject (err);
+	// 			} else {
+	// 				resolve (resp);
+	// 			}
+	// 		});
+	// 	});
+	// }
+
+    deleteDocument (index, type, doc ){
+        return new Promise ( (resolve, reject) => {
+            this.elas.delete({
+                index: index,
+                type: type,
+                id : doc['id'],
+                body : doc,
+				refresh : "wait_for"
+            },function(err,resp,status) {
+                if (err) {
+                    reject (err);
+                } else {
+                    resolve (resp);
+                }
+            });
+        });
+    }
 
 	searchAll ( index, type ) {
 		return new Promise ( ( resolve, reject ) => {
@@ -159,6 +180,7 @@ class elastic {
 	}
 
 	search2 ( index, type, term, fields, operator ) {
+
 		return new Promise( ( resolve, reject ) => {
 			this.elas.search ({
 				index : index,
