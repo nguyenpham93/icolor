@@ -32,10 +32,15 @@ class Collection {
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", id)
             .then ( (data) => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
                 // ES search will return an array, so we just get by index 0
                 user.getAuthor ( data[0] , (err, result) => {
                     likedislike.getLikeAndDislike(data[0], (err, result) => {
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             resolve(result);
+                        });
                     });
 
                     // async.mapSeries(data, likedislike.getLikeAndDislike, (err, result) => {
@@ -47,13 +52,18 @@ class Collection {
         });
     }
 
-    searchCollection ( term ) {
+    searchCollection ( term, user_id ) {
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", term)
             .then ( data => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
                     async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
-                        resolve (result);
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            resolve(result);
+                        });
                     });
                 });
             });
@@ -88,7 +98,11 @@ class Collection {
                         });
                     });
                     async.mapSeries ( temp, user.getAuthor, (err, result) => {
-                        resolve (result);
+                        async.mapSeries (temp, likedislike.getLikeAndDislike, (err, result) => {
+                            async.mapSeries (temp, likedislike.checkLikeDislike, (err, result) => {
+                                resolve(result);
+                            });
+                        });
                     });
                 });
             });

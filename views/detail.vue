@@ -9,10 +9,14 @@
 					<!--<div class="box-email"><span><i class="fa fa-envelope-o" aria-hidden="true"></i> Email : {{collection.author_email}}</span></div>-->
 					<div class="box-like-dislike-share">
 						<span class="box-like" v-on:click.stop.prevent="likedislike(collection.id, 1)">
-							<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ collection.like }}
+							<i class="fa fa-thumbs-up" aria-hidden="true" v-if="collection.currentAction === 1"></i>
+                        	<i class="fa fa-thumbs-o-up" aria-hidden="true" v-else></i>
+							{{ collection.like }}
 						</span>
 						<span class="box-dislike" v-on:click.stop.prevent="likedislike(collection.id, 0)">
-							<i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{ collection.dislike }}
+							<i class="fa fa-thumbs-down" aria-hidden="true" v-if="collection.currentAction === 0"></i>
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true" v-else></i>
+							{{ collection.dislike }}
 						</span>
 						<span class="share">
 							<i class="fa fa-share-alt" aria-hidden="true"></i>{{ collection.share }}
@@ -68,7 +72,11 @@
                     action: action
                 })
                     .then (response => {
-                        //this.dt = response.data;
+                        if(response.data.error) {
+                            console.log('Error');
+                        }else{
+                            this.collection = response.data;
+                        }
                     })
                     .catch ( error => {
                         //this.dt = [];
