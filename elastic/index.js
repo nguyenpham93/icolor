@@ -147,16 +147,76 @@ class elastic {
 		})
 	}
 
-	search ( index, type, term ) {
+	searchPagination ( index, type, pgfrom, n ) {
+		return new Promise ( ( resolve, reject ) => {
+			this.elas.search ({
+				index : index,
+				type : type,
+				body : {
+					"from"  : pgfrom,
+					"size"  : n,
+					"query" : {
+						"match_all" : {}
+					}
+				}
+			} , ( err, resp, stt) => {
+				if (err) {
+					reject (err.message);
+				} else {
+					let products = [];
+					resp.hits.hits.forEach ( (product) => {
+						products.push ( product['_source'] );
+					});
+					resolve ( products );
+				}
+			});
+		})
+	}
+
+	searchPaginationTerm ( index, type, term, pgfrom, n ) {
+    	let fields = this.setTypeFields (type);
+
 		return new Promise( ( resolve, reject ) => {
-			let fields = this.setTypeFields (type);
+			this.elas.search ({
+				index : index,
+				type  : type,
+				body  : {
+					"from"  : pgfrom,
+					"size"  : n,
+					query: {
+						"multi_match" : {
+							"query"  	 : term,
+							"type" 	 	 : "best_fields",
+							"fields" 	 : fields,
+							"tie_breaker" : 0.3
+						}
+					}
+				}
+			}, (error, response, status) => {
+				if (error) {
+					reject ( error.message );
+				} else {
+					let products = [];
+					response.hits.hits.forEach ( (product) => {
+						products.push ( product["_source"] );
+					});
+					resolve ( products );
+				}
+			});
+		});
+	}
+
+	search ( index, type, term ) {
+
+		return new Promise( ( resolve, reject ) => {
+    		let fields = this.setTypeFields (type);
 			this.elas.search ({
 				index : index,
 				type  : type,
 				body  : {
 					"from"  : 0,
-					"size"  : 50,
-					query   : {
+					"size"  : 5000,
+					query: {
 						"multi_match" : {
 							"query"  	 : term,
 							"type" 	 	 : "best_fields",

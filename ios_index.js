@@ -50,7 +50,7 @@ app.use(passport.session());
 app.use(auth.checkAuthentication);
 
 //------------Set up passport --------------------
-require('./passport/passport_local')(passport);
+require('./passport/passport-local/passport_local')(passport);
 
 //------------Set up router --------------------
 app.get ('/all', (req, res) => {
@@ -60,7 +60,7 @@ app.get ('/all', (req, res) => {
         }
         collection.getAllCollection (user_id)
         .then (result => {
-            res.json(result)
+            res.json({data: result})
         });
     });
 
@@ -73,7 +73,7 @@ app.get ('/all', (req, res) => {
         let id = req.params.id;
         collection.getCollection (id, user_id)
         .then ( (data) => {
-            res.json(data)
+            res.json({data: data})
         });
     });
 
@@ -84,7 +84,7 @@ app.get ('/all', (req, res) => {
         let arr = [];
         collection.getColorRelated ( hex, id_parent )
         .then ( data => {
-            res.json (data);
+            res.json ({data: data});
         });
     });
 

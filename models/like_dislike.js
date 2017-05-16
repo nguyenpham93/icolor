@@ -58,7 +58,7 @@ class Likedislike {
             let fields = ["id_collection", "id_user"];
             elas.search2("icolor", "like_dislike", collection_id + ' ' + user_id, fields, "AND")
                 .then((data) => {
-                        if (data.length === 1) {
+                        if (data.length >= 1) {
                             //Change or Delete
                             if (data[0].status !== status) {
                                 //Change

@@ -28,6 +28,24 @@ class Collection {
         });
     }
 
+    getPaginationCollection (pgfrom, n, user_id) {
+        return new Promise ( (resolve, reject) => {
+            elas.searchPagination ( "icolor", "collection", pgfrom, n )
+            .then ( (data) => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
+                async.mapSeries (data, user.getAuthor, (err, result) => {
+                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            resolve (result);
+                        });
+                    });
+                });
+            });
+        });
+    }
+
     getCollection (id, user_id) {
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", id)
@@ -55,6 +73,24 @@ class Collection {
     searchCollection ( term, user_id ) {
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", term)
+            .then ( data => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
+                async.mapSeries (data, user.getAuthor, (err, result) => {
+                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            resolve(result);
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    searchPaginationCollection ( term, user_id, pgfrom, n)  {
+        return new Promise ( (resolve, reject) => {
+            elas.searchPaginationTerm ("icolor", "collection", term, pgfrom, n)
             .then ( data => {
                 data.forEach((i) => {
                     i.userlogin = user_id;

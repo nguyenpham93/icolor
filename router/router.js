@@ -4,18 +4,40 @@ const auth = require ( '../passport/auth');
 const user = require('../models/users');
 const likedislike = require('../models/like_dislike');
 const moment = require("moment");
+const Promise = require("bluebird");
 
 module.exports = function (app, passport) {
 
     app.get ('/', (req, res) => {
-        let user_id = 0;
-        if(req.session.user.id) {
-            user_id = req.session.user.id;
+        let user_id = req.session.user.id;
+        let q = req.body['page'];
+        let n = 10;
+        let pgfrom = 0;
+        if (q != undefined && q > 0) {
+            pgfrom = (pgfrom + q - 1) * n;
+        } else {
+            q = 1;
         }
-        collection.getAllCollection (user_id)
+
+        let getAll = Promise.coroutine(function* () {
+            let resultA = yield collection.getPaginationCollection (pgfrom, n, user_id);
+            let resultB = yield collection.getAllCollection (user_id);
+            return [resultA, resultB];
+        });
+
+        getAll()
         .then (result => {
+            let countAll = result[1].length;
+            p = Math.ceil(countAll / n, 0);
+
             res.render ('index', {
-                data: { dt : result, islogin : req.session.login, user : req.session.user.email },
+                data: {
+                    dt : result[0],
+                    islogin : req.session.login,
+                    user : req.session.user.email,
+                    allpage: p,
+                    page: q,
+                },
                 vue: {
                     head: {
                         title: 'Color Pro',
@@ -30,30 +52,81 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get ( '/search/:q/:term' , ( req, res ) => {
+    app.post ( '/search/:q/:term' , ( req, res ) => {
         let q = req.params['q'];
         let term = req.params['term'];
         let user_id = 0;
+        //console.log(req.body)
+
+        let selected = req.body['selected'];
+        let page = req.body['page'];
+
         if(req.session.user.id) {
             user_id = req.session.user.id;
         }
-        if ( q === 'all' ) {
-            collection.getAllCollection (user_id)
-            .then ( data => {
-                res.json ( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
+
+        let n = 10;
+        let pgfrom = (page - 1) * n;
+
+        if(q === 'all'){
+            let getAll = Promise.coroutine(function* () {
+                let resultA = yield collection.getPaginationCollection (pgfrom, n, user_id);
+                let resultB = yield collection.getAllCollection (user_id);
+                return [resultA, resultB];
             });
-        } else if ( q === 'hex' ) {
-            term = '#' + term;
-            collection.searchCollection (term, user_id)
-            .then (data => {
-                res.json ( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
+
+            getAll()
+                .then(data => {
+                    let countAll = data[1].length;
+                    p = Math.ceil(countAll / n, 0);
+                    res.json({
+                        dt: data[0],
+                        islogin: req.session.login,
+                        user: req.session.user.email,
+                        allpage: p,
+                        page: page,
+                    });
+                });
+        }else {
+
+            if(q === 'hex'){
+                term = '#' + term;
+            }
+            //collection.searchCollection(term, user_id)
+            let getTerm = Promise.coroutine(function* () {
+                let resultA = yield collection.searchPaginationCollection (term, user_id, pgfrom, n);
+                let resultB = yield collection.searchCollection (term, user_id);
+                return [resultA, resultB];
             });
-        } else {
-            collection.searchCollection (term, user_id)
-            .then (data => {
-                res.json( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
-            });
+
+            getTerm()
+                .then(data => {
+                    let countAll = data[1].length;
+                    p = Math.ceil(countAll / n, 0);
+                    res.json({
+                        dt: data[0],
+                        islogin: req.session.login,
+                        user: req.session.user.email,
+                        allpage: p,
+                        page: page,
+                    });
+                });
         }
+
+        // if ( q === 'all' ) {
+        //     collection.getAllCollection (user_id)
+        //     .then ( data => {
+        //         res.json ( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
+        //     });
+        // } else {
+        //     if(q === 'hex'){
+        //         term = '#' + term;
+        //     }
+        //     collection.searchCollection (term, user_id)
+        //     .then (data => {
+        //         res.json( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
+        //     });
+        // }
     });
     
     app.get('/relate', (req, res) => {
@@ -100,7 +173,6 @@ module.exports = function (app, passport) {
             let status = req.body['action'];
             let user_id = req.session.user.id;
             let collection_id = req.body['collection_id'];
-
             likedislike.clickLikeDislike(collection_id, user_id, status)
                 .then(data => {
                         collection.getCollection (data, user_id)
@@ -148,34 +220,33 @@ module.exports = function (app, passport) {
         } else {
             data = { 'islogin' : false };
         }
-        // res.json ( data );
-        res.redirect ('/');
+        res.json ( data );
     });
 
     //------------Passport-Local Strategy--------------------
     app.post ( "/login" ,passport.authenticate ( 'local', { successRedirect: '/logined', failureRedirect: '/logined' }));
 
     //------------Facebook OAuth 2.0 with Passport--------------------
-    app.get('/login/facebook', 
+    app.get('/login/facebook',
         passport.authenticate('facebook', { scope : ['email', 'profile'] }
     ));
-    
+
     // handle the callback after facebook has authenticated the user
     app.get('/login/facebook/callback', passport.authenticate('facebook', {
-            successRedirect : '/logined',
-            failureRedirect : '/logined'
+            successRedirect : '/',
+            failureRedirect : '/'
         })
     );
 
     //------------Google OAuth 2.0 with Passport--------------------
-    app.get('/login/google', 
+    app.get('/login/google',
         passport.authenticate('google', { scope : ['email', 'profile'] }
     ));
-    
+
     // handle the callback after facebook has authenticated the user
     app.get('/login/google/callback', passport.authenticate('google', {
-            successRedirect : '/logined',
-            failureRedirect : '/logined'
+            successRedirect : '/',
+            failureRedirect : '/'
         })
     );
 
