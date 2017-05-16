@@ -228,7 +228,7 @@ module.exports = function (app, passport) {
 
     //------------Facebook OAuth 2.0 with Passport--------------------
     app.get('/login/facebook',
-        passport.authenticate('facebook', { scope : ['email', 'profile'] }
+        passport.authenticate('facebook', { scope : ['email'] }
     ));
 
     // handle the callback after facebook has authenticated the user

@@ -9,7 +9,8 @@ module.exports = function (passport){
     passport.use('facebook', new FacebookStrategy({
         clientID        : config.facebookAuth.clientID,
         clientSecret    : config.facebookAuth.clientSecret,
-        callbackURL     : config.facebookAuth.callbackURL
+        callbackURL     : config.facebookAuth.callbackURL,
+        profileFields: ['id', 'emails', 'name']
     },
     
     // facebook will send back the tokens and profile
@@ -18,9 +19,7 @@ module.exports = function (passport){
         process.nextTick (function() {
         
         // find the user in the database based on their facebook id
-        console.log(access_token);
-        console.log(profile);
-        elas.search ( 'icolor', 'users', profile.emails.value)
+        elas.search ( 'icolor', 'users', profile.emails[0].value)
         .then (user => {
             user = user[0];    
             if (user) {
@@ -29,7 +28,10 @@ module.exports = function (passport){
                 } else {
                     user['facebook_id'] = profile.id;
                     user['facebook_access_token'] = access_token;
-                    return done (null, user); 
+                    elas.insertDocument ("icolor", "users", user)
+                    .then ((data) => {
+                        return done (null, user); 
+                    });
                 }
             } else {    
                 bcrypt.hash ( config.facebookAuth.secretPassword, null, null, function(err, hash) {
@@ -54,7 +56,7 @@ module.exports = function (passport){
         error => {
             // if there is an error, stop everything and return that
             // ie an error connecting to the database
-            return done(err);
+            return done(error);
         });
         });
     }));
