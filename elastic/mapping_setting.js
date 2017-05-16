@@ -60,7 +60,7 @@ function config () {
 					"date" : {
 						"type" 			 : "date",
 						"include_in_all" : true,
-						"format": "dd-MM-yyyy"
+						"format": "dd-MM-yyyy HH:mm:ss"
 					}
 				}
 			},
@@ -82,7 +82,7 @@ function config () {
 					"date" : {
 						"type" 			 : "date",
 						"include_in_all" : true,
-						"format": "dd-MM-yyyy"
+						"format": "dd-MM-yyyy HH:mm:ss"
 					}
 				} 
 			},

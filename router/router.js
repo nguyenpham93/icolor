@@ -148,9 +148,35 @@ module.exports = function (app, passport) {
         } else {
             data = { 'islogin' : false };
         }
-        res.json ( data );
+        // res.json ( data );
+        res.redirect ('/');
     });
 
+    //------------Passport-Local Strategy--------------------
     app.post ( "/login" ,passport.authenticate ( 'local', { successRedirect: '/logined', failureRedirect: '/logined' }));
+
+    //------------Facebook OAuth 2.0 with Passport--------------------
+    app.get('/login/facebook', 
+        passport.authenticate('facebook', { scope : ['email', 'profile'] }
+    ));
+    
+    // handle the callback after facebook has authenticated the user
+    app.get('/login/facebook/callback', passport.authenticate('facebook', {
+            successRedirect : '/logined',
+            failureRedirect : '/logined'
+        })
+    );
+
+    //------------Google OAuth 2.0 with Passport--------------------
+    app.get('/login/google', 
+        passport.authenticate('google', { scope : ['email', 'profile'] }
+    ));
+    
+    // handle the callback after facebook has authenticated the user
+    app.get('/login/google/callback', passport.authenticate('google', {
+            successRedirect : '/logined',
+            failureRedirect : '/logined'
+        })
+    );
 
 }

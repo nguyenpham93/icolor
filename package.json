@@ -12,6 +12,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "color-convert": "^1.9.0",
+    "cors": "^2.8.3",
     "elasticsearch": "^13.0.0",
     "elasticsearch-deletebyquery": "^1.6.0",
     "express": "^4.15.2",
@@ -20,6 +21,8 @@
     "jsonwebtoken": "^7.4.0",
     "moment": "^2.18.1",
     "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "shortid": "^2.2.8"

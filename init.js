@@ -46,7 +46,7 @@ function initData() {
         data[count].color4 = data[count]['array'][3];
         data[count].color5 = data[count]['array'][4];
         delete data[count]["array"];
-        data[count].date = moment().format("DD-MM-YYYY");
+        data[count].date = moment().format("DD-MM-YYYY HH:mm:ss");
         data[count].description = "Color collection";
         data[count]['id_user'] = "rJBkgtYyb";
         delete data[count].author;
@@ -73,16 +73,16 @@ function merge(item, cb){
 }
 
 
-
-// Add add Author
+// Add author
 let author = {
     "id"  : 'rJBkgtYyb',
-    // "name" : "The Shepherd's Man",
     "email" : "bluevn@gmail.com",
     "password" : "rootvn",
-    // "description" : "Nodejs programmer",
-    // "website" : "https://www.icolor.com",
-    "date" :  moment().format("DD-MM-YYYY")
+    'facebook_id' : "",
+    "facebook_access_token" : "",
+    'google_id' : "",
+    "google_access_token" : "",
+    "date" :  moment().format("DD-MM-YYYY HH:mm:ss")
 }
 
 function addAuthor (author){
@@ -105,7 +105,7 @@ let collection = {
     color3: '#B38184',
     color4: '#F77825',
     color5: '#E6AC27',
-    date: moment().format("DD-MM-YYYY"),
+    date: moment().format("DD-MM-YYYY HH:mm:ss"),
     description: 'Pro color',
     id_user: 'rJBkgtYyb',
     share: 0
@@ -188,9 +188,8 @@ let like = {
     "id_collection" : "r1-bxZIEe-",
     "id_user"       : "rJBkgtYyb",
     "status"        : 0,
-    "date"          : moment().format("DD-MM-YYYY")
+    "date"          : moment().format("DD-MM-YYYY HH:mm:ss")
 }
-
 function addLike () {
     elas.insertDocument ("icolor", "like_dislike", like)
     .then ((data) => {
@@ -206,7 +205,7 @@ let like1 = {
     "id_collection" : "r1-bxZIEe-",
     "id_user"       : "rJBkgtYyb",
     "status"        : 0,
-    "date"          : moment().format("DD-MM-YYYY")
+    "date"          : moment().format("DD-MM-YYYY HH:mm:ss")
 }
 function update () {
     elas.updateDocument('icolor','like_dislike', like1);
@@ -215,7 +214,7 @@ function update () {
 
 // Search ALl for test
 function searchAll (){
-	elas.searchAll("icolor","like_dislike")
+	elas.searchAll("icolor","users")
  .then (data => {
      console.log(data);
  });

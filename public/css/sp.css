@@ -12,3 +12,27 @@
     font-family: overpassSemiBold;
     src: url('../fonts/overpass-mono/overpass-mono-semibold.woff');
 }
+
+.or {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.btn-facebook{
+	background-color: #3b5998;
+	color: #fff;
+    font-size:15px;
+}
+.btn-facebook:hover{
+	background-color: #334F8A;
+	color: #fff;
+}
+.btn-google{
+	background-color: #c23321;
+	color: #fff;
+    font-size:15px;
+}
+.btn-google:hover{
+	background-color: #B53121;
+	color: #fff;
+}

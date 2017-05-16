@@ -5,12 +5,17 @@ const bodyParser = require ("body-parser");
 const path = require ('path');
 const async = require ('async');
 const elas = require ("./elastic/index");
-// const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const auth = require ('./passport/auth');
-// const passportJWT = require("passport-jwt");
-
 const session = require('express-session');
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.use(session({
   cookie: { maxAge: (3600 * 1000) },
   unser : 'destroy',
@@ -43,8 +48,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(auth.checkAuthentication);
 
-//------------Set up passport --------------------
-require('./passport/passport_local')(passport);
+//------------Set up Passport--------------------
+require('./passport/passport')(passport);
+
+//------------Set up Passport-local strategy--------------------
+require('./passport/passport-local/passport_local')(passport);
+
+//------------Set up Facebook OAuth 2.0 with Passport--------------------
+require('./passport/facebook/passport_facebook')(passport);
+
+//------------Set up Google OAuth 2.0 with Passport--------------------
+require('./passport/google/passport_google')(passport);
 
 //------------Set up router --------------------
 require('./router/router')(app, passport);
