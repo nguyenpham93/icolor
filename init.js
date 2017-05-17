@@ -214,10 +214,10 @@ function update () {
 
 // Search ALl for test
 function searchAll (){
-	elas.searchAll("icolor","users")
- .then (data => {
-     console.log(data);
- });
+	elas.searchAll("icolor","collection")
+     .then (data => {
+         console.log(data);
+     });
 }
 searchAll(); 
 

@@ -147,7 +147,21 @@ class elastic {
 		})
 	}
 
-	searchPagination ( index, type, pgfrom, n ) {
+	searchPagination ( index, type, pgfrom, n, selected ) {
+    	let sort = {};
+    	if(selected === 'like') {
+            sort = {
+                "date": {
+                    "order": "asc"
+                }
+            };
+        }else{
+    		sort = {
+                "date": {
+                    "order": "desc"
+                }
+            };
+		}
 		return new Promise ( ( resolve, reject ) => {
 			this.elas.search ({
 				index : index,
@@ -155,6 +169,7 @@ class elastic {
 				body : {
 					"from"  : pgfrom,
 					"size"  : n,
+					sort: sort,
 					"query" : {
 						"match_all" : {}
 					}
@@ -173,9 +188,22 @@ class elastic {
 		})
 	}
 
-	searchPaginationTerm ( index, type, term, pgfrom, n ) {
+	searchPaginationTerm ( index, type, term, selected, pgfrom, n ) {
     	let fields = this.setTypeFields (type);
-
+    	let sort = {};
+    	if(selected === 'like') {
+            // sort = {
+            //     "date": {
+            //         "order": "desc"
+            //     }
+            // };
+        }else{
+    		sort = {
+                "date": {
+                    "order": "desc"
+                }
+            };
+		}
 		return new Promise( ( resolve, reject ) => {
 			this.elas.search ({
 				index : index,
@@ -183,6 +211,40 @@ class elastic {
 				body  : {
 					"from"  : pgfrom,
 					"size"  : n,
+					sort: sort,
+					query: {
+						"multi_match" : {
+							"query"  	 : term,
+							"type" 	 	 : "best_fields",
+							"fields" 	 : fields,
+							"tie_breaker" : 0.3
+						}
+					}
+				}
+			}, (error, response, status) => {
+				if (error) {
+					reject ( error.message );
+				} else {
+					let products = [];
+					response.hits.hits.forEach ( (product) => {
+						products.push ( product["_source"] );
+					});
+					resolve ( products );
+				}
+			});
+		});
+	}
+
+	searchTerm ( index, type, term, selected ) {
+
+		return new Promise( ( resolve, reject ) => {
+    		let fields = this.setTypeFields (type);
+			this.elas.search ({
+				index : index,
+				type  : type,
+				body  : {
+					"from"  : 0,
+					"size"  : 5000,
 					query: {
 						"multi_match" : {
 							"query"  	 : term,

@@ -28,9 +28,9 @@ class Collection {
         });
     }
 
-    getPaginationCollection (pgfrom, n, user_id) {
+    getPaginationCollection (pgfrom, n, selected, user_id) {
         return new Promise ( (resolve, reject) => {
-            elas.searchPagination ( "icolor", "collection", pgfrom, n )
+            elas.searchPagination ( "icolor", "collection", pgfrom, n, selected )
             .then ( (data) => {
                 data.forEach((i) => {
                     i.userlogin = user_id;
@@ -70,9 +70,9 @@ class Collection {
         });
     }
 
-    searchCollection ( term, user_id ) {
+    searchCollection ( term, user_id, selected ) {
         return new Promise ( (resolve, reject) => {
-            elas.search ("icolor", "collection", term)
+            elas.searchTerm ("icolor", "collection", term, selected)
             .then ( data => {
                 data.forEach((i) => {
                     i.userlogin = user_id;
@@ -88,9 +88,9 @@ class Collection {
         });
     }
 
-    searchPaginationCollection ( term, user_id, pgfrom, n)  {
+    searchPaginationCollection ( term, user_id, selected, pgfrom, n)  {
         return new Promise ( (resolve, reject) => {
-            elas.searchPaginationTerm ("icolor", "collection", term, pgfrom, n)
+            elas.searchPaginationTerm ("icolor", "collection", term, selected, pgfrom, n)
             .then ( data => {
                 data.forEach((i) => {
                     i.userlogin = user_id;

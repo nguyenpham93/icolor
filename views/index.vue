@@ -4,10 +4,8 @@
                   :searchable="searchable"></myheader>
         <div class="row">
             <select name="sort" v-model="selected" v-on:change="search1()">
-                <option value="all">All</option>
+                <option value="latest" selected="selected">Latest</option>
                 <option value="like">Like</option>
-                <option value="share">Share</option>
-                <option value="latest">Latest</option>
             </select>
             <div id="container-color" v-if="dt">
                 <div class="item" v-for="i in dt">

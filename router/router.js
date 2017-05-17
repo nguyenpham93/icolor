@@ -70,7 +70,7 @@ module.exports = function (app, passport) {
 
         if(q === 'all'){
             let getAll = Promise.coroutine(function* () {
-                let resultA = yield collection.getPaginationCollection (pgfrom, n, user_id);
+                let resultA = yield collection.getPaginationCollection (pgfrom, n, selected, user_id);
                 let resultB = yield collection.getAllCollection (user_id);
                 return [resultA, resultB];
             });
@@ -94,8 +94,8 @@ module.exports = function (app, passport) {
             }
             //collection.searchCollection(term, user_id)
             let getTerm = Promise.coroutine(function* () {
-                let resultA = yield collection.searchPaginationCollection (term, user_id, pgfrom, n);
-                let resultB = yield collection.searchCollection (term, user_id);
+                let resultA = yield collection.searchPaginationCollection (term, user_id, selected, pgfrom, n);
+                let resultB = yield collection.searchCollection (term, user_id, selected);
                 return [resultA, resultB];
             });
 
