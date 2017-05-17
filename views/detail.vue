@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-	<myheader :user="user" :islogin="islogin" :searchable="searchable"></myheader>
+	<myheader :users="users" :islogin="islogin" :searchable="searchable"></myheader>
 		<div id="container-color" v-if="collection" class="container">
 			<div class="row">
 				<div class="col-sm-2 info">
@@ -27,11 +27,11 @@
 				</div>
 				<div class="box-colors col-sm-6">
 					<!--<h1 class="name">{{collection.name}}</h1>-->
-					<span class="colors" :style="{ backgroundColor:  collection.color1 }"  v-on:click="getRelated" :data-clipboard-text="collection.color1"><i :data-clipboard-text="collection.color1" class="myclipboard" aria-hidden="true">{{collection.color1}}</i></span>
-					<span class="colors" :style="{ backgroundColor:  collection.color2 }"  v-on:click="getRelated" :data-clipboard-text="collection.color2"><i :data-clipboard-text="collection.color2" class="myclipboard" aria-hidden="true">{{collection.color2}}</i></span>
-					<span class="colors" :style="{ backgroundColor:  collection.color3 }"  v-on:click="getRelated" :data-clipboard-text="collection.color3"><i :data-clipboard-text="collection.color3" class="myclipboard" aria-hidden="true">{{collection.color3}}</i></span>
-					<span class="colors" :style="{ backgroundColor:  collection.color4 }"  v-on:click="getRelated" :data-clipboard-text="collection.color4"><i :data-clipboard-text="collection.color4" class="myclipboard" aria-hidden="true">{{collection.color4}}</i></span>
-					<span class="colors" :style="{ backgroundColor:  collection.color5 }"  v-on:click="getRelated" :data-clipboard-text="collection.color5"><i :data-clipboard-text="collection.color5" class="myclipboard" aria-hidden="true">{{collection.color5}}</i></span>
+					<span class="colors" :style="{ backgroundColor:  collection.color1 }"  v-on:click="getRelated" :data-clipboard-text="collection.color1" v-on:click.stop.prevent="copy(collection.color1)"><i :data-clipboard-text="collection.color1" class="myclipboard" aria-hidden="true">{{collection.color1}}</i></span>
+					<span class="colors" :style="{ backgroundColor:  collection.color2 }"  v-on:click="getRelated" :data-clipboard-text="collection.color2" v-on:click.stop.prevent="copy(collection.color2)"><i :data-clipboard-text="collection.color2" class="myclipboard" aria-hidden="true">{{collection.color2}}</i></span>
+					<span class="colors" :style="{ backgroundColor:  collection.color3 }"  v-on:click="getRelated" :data-clipboard-text="collection.color3" v-on:click.stop.prevent="copy(collection.color3)"><i :data-clipboard-text="collection.color3" class="myclipboard" aria-hidden="true">{{collection.color3}}</i></span>
+					<span class="colors" :style="{ backgroundColor:  collection.color4 }"  v-on:click="getRelated" :data-clipboard-text="collection.color4" v-on:click.stop.prevent="copy(collection.color4)"><i :data-clipboard-text="collection.color4" class="myclipboard" aria-hidden="true">{{collection.color4}}</i></span>
+					<span class="colors" :style="{ backgroundColor:  collection.color5 }"  v-on:click="getRelated" :data-clipboard-text="collection.color5" v-on:click.stop.prevent="copy(collection.color5)"><i :data-clipboard-text="collection.color5" class="myclipboard" aria-hidden="true">{{collection.color5}}</i></span>
 				</div>
 				<!--<footerdetail :collection="collection"></footerdetail>-->
 			</div>
@@ -47,7 +47,7 @@
             return {
 				collection : {},
                 related_collection : [],
-				user : {},
+				users : {},
 				islogin : false,
 				searchable : false
             }
@@ -59,7 +59,7 @@
                         .then(response => {
 							let result = response.data;
                             this.related_collection = result.dt;
-							this.user = result.user;
+							this.users = result.users;
 							this.islogin = result.islogin;
                         })
                         .catch(error => {
@@ -81,6 +81,9 @@
                     .catch ( error => {
                         //this.dt = [];
                     });
+            },
+            copy(text){
+                copyTextToClipboard(text);
             }
         },
         ready() {

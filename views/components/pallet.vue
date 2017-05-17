@@ -28,11 +28,11 @@
         </div>
             <div class="box-colors col-sm-8">
                 <div class="row">
-                    <span class="colors" :style="{ backgroundColor:  i.color1 }" :data-clipboard-text="i.color1"><i class="myclipboard" aria-hidden="true">{{i.color1}}</i></span>
-                    <span class="colors" :style="{ backgroundColor:  i.color2 }" :data-clipboard-text="i.color2"><i class="myclipboard" aria-hidden="true">{{i.color2}}</i></span>
-                    <span class="colors" :style="{ backgroundColor:  i.color3 }" :data-clipboard-text="i.color3"><i class="myclipboard" aria-hidden="true">{{i.color3}}</i></span>
-                    <span class="colors" :style="{ backgroundColor:  i.color4 }" :data-clipboard-text="i.color4"><i class="myclipboard" aria-hidden="true">{{i.color4}}</i></span>
-                    <span class="colors" :style="{ backgroundColor:  i.color5 }" :data-clipboard-text="i.color5"><i class="myclipboard" aria-hidden="true">{{i.color5}}</i></span>
+                    <span class="colors" :style="{ backgroundColor:  i.color1 }" :data-clipboard-text="i.color1" v-on:click.stop.prevent="copy(i.color1)"><i class="myclipboard" aria-hidden="true">{{i.color1}}</i></span>
+                    <span class="colors" :style="{ backgroundColor:  i.color2 }" :data-clipboard-text="i.color2" v-on:click.stop.prevent="copy(i.color2)"><i class="myclipboard" aria-hidden="true">{{i.color2}}</i></span>
+                    <span class="colors" :style="{ backgroundColor:  i.color3 }" :data-clipboard-text="i.color3" v-on:click.stop.prevent="copy(i.color3)"><i class="myclipboard" aria-hidden="true">{{i.color3}}</i></span>
+                    <span class="colors" :style="{ backgroundColor:  i.color4 }" :data-clipboard-text="i.color4" v-on:click.stop.prevent="copy(i.color4)"><i class="myclipboard" aria-hidden="true">{{i.color4}}</i></span>
+                    <span class="colors" :style="{ backgroundColor:  i.color5 }" :data-clipboard-text="i.color5" v-on:click.stop.prevent="copy(i.color5)"><i class="myclipboard" aria-hidden="true">{{i.color5}}</i></span>
                 </div>
             </div>
     </div>
@@ -57,6 +57,9 @@
                     .catch ( error => {
                         //this.dt = [];
                     });
+            },
+            copy(text){
+                copyTextToClipboard(text);
             }
         }
     }

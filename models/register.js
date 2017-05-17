@@ -18,7 +18,7 @@ class Register {
                             id: shortid.generate(),
                             email: email,
                             password: hash,
-                            date: moment().format("DD-MM-YYYY")
+                            date: moment().format("DD-MM-YYYY HH:mm:ss")
                         }
                         elas.insertDocument('icolor', 'users', user)
                         .then(data => {

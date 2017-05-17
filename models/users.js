@@ -6,19 +6,39 @@ const Promise = require("bluebird");
 const quickSort = require('./quicksort');
 
 class User {
-    constructor(){}
+    constructor() {
+    }
 
-    getAuthor (item, cb) {
-        elas.search ("icolor", "users", item['id_user'])
-        .then ( (data) => {
-            item['author'] = data[0]['email'];
-            // item['author_email'] = data[0]['email'];
-            cb (null, item);
-        }, 
-        error => {
-            cb (null, item);
+    getAuthor(item, cb) {
+        elas.search("icolor", "users", item['id_user'])
+            .then((data) => {
+                    item['author'] = data[0]['email'];
+                    // item['author_email'] = data[0]['email'];
+                    cb(null, item);
+                },
+                error => {
+                    cb(null, item);
+                });
+    }
+
+    getUser(user_id) {
+        return new Promise((resolve, reject) => {
+            elas.search("icolor", "users", user_id)
+                .then((data) => {
+                    //console.log(data);
+                    resolve(data);
+                });
+        });
+    }
+
+    updateUser(user){
+        console.log(user);
+        return new Promise((resolve, reject) => {
+            elas.updateDocument("icolor", "users", user)
+                .then((data) => {
+                    resolve(data);
+                });
         });
     }
 }
-
 module.exports = new User();

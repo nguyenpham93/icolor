@@ -28,7 +28,7 @@
 			<!-- is user login? -->
 			<span v-if="islogin">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Welcome {{ user }}</a></li>
+					<li><a href="/myaccount111">Welcome {{ users }}</a></li>
 					<li><a id="logout" v-on:click="logout" >Logout</a></li>
 				</ul>
 			</span>
@@ -56,9 +56,9 @@
 									<input type="email" class="form-control" id="login_email" name="login_email" placeholder="Email" required="" autofocus="" />
 								</div>
 								<div class="form-group">
-									<input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password" required=""/>     		  
+									<input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password" required=""/>
 								</div>
-								<button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" >Login</button>  			
+								<button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" >Login</button>
 							</form>
 							<div class="text-center or">OR</div>
 							<div class="social text-center">
@@ -116,7 +116,7 @@
 <script>
 	// Vue
 	export default {
-	    props : [ 'islogin', 'user', 'search', 'searchable', 'onup', 'ondown'],
+	    props : [ 'islogin', 'users', 'search', 'searchable', 'onup', 'ondown'],
         methods : {
 			deleteCookie () {
 				document.cookie = 'connect.sid=; Max-Age=0';
@@ -137,7 +137,7 @@
                         $("#register_status").text ( "Email is already existed" );
 	                    $("#register_status").css ('color','red');
 					}
-					this.user = result.user;
+					this.users = result.users;
 					this.islogin = result.islogin;
 				});
 			},
@@ -145,14 +145,13 @@
 				axios.get ( '/logout' )
 				.then ( response => {
 					let result = response.data;
-					this.user = result.user;
+					this.users = result.users;
 					this.islogin = result.islogin;
-					return false;
 				})
 				.catch(error => {
-                    this.user = {};
+                    this.users = {};
 					this.islogin = false;
-	            });;
+	            });
 			},
             login () {
 	            axios.post('/login', {
@@ -162,7 +161,7 @@
 	                .then(response => {
 	                    let result = response.data;
                         if ( result.islogin ) {
-							this.user = result.user;
+							this.users = result.users;
 							this.islogin = result.islogin;
                             $("#login_status").empty ();
                             $('#login-modal').modal ('hide');
@@ -173,7 +172,7 @@
                         }
 	                })
 	                .catch(error => {
-                        this.user = {};
+                        this.users = {};
 						this.islogin = false;
 	                });
 	        },
@@ -182,13 +181,13 @@
 	            axios.get(`/login/${type}`)
 	                .then(response => {
 	                    let result = response.data;
-							this.user = result.user;
+							this.users = result.users;
 							this.islogin = result.islogin;
                             $("#login_status").empty ();
                             $('#login-modal').modal ('hide');
 	                })
 	                .catch(error => {
-                        this.user = {};
+                        this.users = {};
 						this.islogin = false;
 	                });
 	        }

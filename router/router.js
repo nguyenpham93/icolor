@@ -8,10 +8,12 @@ const Promise = require("bluebird");
 
 module.exports = function (app, passport) {
 
+    require('./users')(app, passport);
+
     app.get ('/', (req, res) => {
         let user_id = req.session.user.id;
         let q = req.body['page'];
-        let n = 10;
+        let n = 1;
         let pgfrom = 0;
         if (q != undefined && q > 0) {
             pgfrom = (pgfrom + q - 1) * n;
@@ -29,12 +31,11 @@ module.exports = function (app, passport) {
         .then (result => {
             let countAll = result[1].length;
             p = Math.ceil(countAll / n, 0);
-
             res.render ('index', {
                 data: {
                     dt : result[0],
                     islogin : req.session.login,
-                    user : req.session.user.email,
+                    users : req.session.user.email || '',
                     allpage: p,
                     page: q,
                 },
@@ -65,7 +66,7 @@ module.exports = function (app, passport) {
             user_id = req.session.user.id;
         }
 
-        let n = 10;
+        let n = 1;
         let pgfrom = (page - 1) * n;
 
         if(q === 'all'){
@@ -82,7 +83,7 @@ module.exports = function (app, passport) {
                     res.json({
                         dt: data[0],
                         islogin: req.session.login,
-                        user: req.session.user.email,
+                        users: req.session.user.email || '',
                         allpage: p,
                         page: page,
                     });
@@ -106,7 +107,7 @@ module.exports = function (app, passport) {
                     res.json({
                         dt: data[0],
                         islogin: req.session.login,
-                        user: req.session.user.email,
+                        users: req.session.user.email || '',
                         allpage: p,
                         page: page,
                     });
@@ -138,8 +139,8 @@ module.exports = function (app, passport) {
         .then ( data => {
             res.json ({
                 dt : data, islogin :
-                req.session.login, user :
-                req.session.user.email
+                req.session.login,
+                users : req.session.user.email || ''
             });
         });
     });
@@ -153,7 +154,7 @@ module.exports = function (app, passport) {
         collection.getCollection (id, user_id)
         .then ( (data) => {
             res.render ('detail', {
-                data: { collection: data[0] , islogin : req.session.login, user : req.session.user.email },
+                data: { collection: data[0] , islogin : req.session.login, users : req.session.user.email || '' },
                 vue: {
                     head: {
                         title: data['name'],
@@ -200,23 +201,24 @@ module.exports = function (app, passport) {
             } else {
                 status = false;
             }
-            res.json( { status : status ,islogin : req.session.login, user : req.session.user.email} );
+            res.json( { status : status ,islogin : req.session.login, users : req.session.user.email || ''} );
         });
     });
+
 
     app.get ('/logout', (req, res)=>{
         let session = req.session;
         session.login = false;
         session.user = {};
         session.destroy(function (err) {
-            res.json ( { islogin : false } ); 
+            res.json ( { islogin : false, users: '' } );
         });
     });
 
     app.get ( "/logined" , ( req, res ) => {
         let data = {};
         if (req.session.login) {
-            data = { 'islogin' : true, 'user' : req.session.user.email };
+            data = { 'islogin' : true, 'users' : req.session.user.email || '' };
         } else {
             data = { 'islogin' : false };
         }

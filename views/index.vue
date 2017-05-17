@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <myheader :islogin="islogin" :user="user" :onup="onup" :ondown="ondown" :search="search"
+        <myheader :islogin="islogin" :users="users" :onup="onup" :ondown="ondown" :search="search"
                   :searchable="searchable"></myheader>
         <div class="row">
             <select name="sort" v-model="selected" v-on:change="search1()">
@@ -15,14 +15,16 @@
                     <nav aria-label="...">
                         <ul class="pagination">
                             <template v-for="i in allpage">
-                                <li v-if="page === i + 1" class="active">
-                                    <a :href="i + 1" v-on:click.stop.prevent=""
-                                       v-model="page">{{i + 1}}</a>
+                                <li v-if="i === page" class="active">
+                                    <a :href="i" v-on:click.stop.prevent="" v-model="page">{{i}}</a>
                                 </li>
-                                <li v-else>
-                                    <a :href="i + 1" v-on:click.stop.prevent="search2(i + 1)" v-model="page">{{i +
-                                        1}}</a>
+                                <li v-else-if="i === 1 || i === 2 || i === 3 || page === i - 2 || page === i - 1 || page === i + 1 || page === i + 2 || i === allpage - 2 ||  i === allpage - 1 || i === allpage">
+                                    <a :href="i" v-on:click.stop.prevent="search2(i)" v-model="page">{{i}}</a>
                                 </li>
+                                <li v-else-if="i === page - 3 || i === page + 3">
+                                    <a href="#" v-on:click.stop.prevent="" v-model="page">..</a>
+                                </li>
+                                <li v-else></li>
                             </template>
                         </ul>
                     </nav>
@@ -38,7 +40,7 @@
         data() {
             return {
                 dt: [],
-                user: {},
+                users: {},
                 'searchable': true,
                 typingTimer: '',                //timer identifier
                 doneTypingInterval: 100,  //time in ms, 5 second for example
@@ -84,7 +86,7 @@
                     .then(response => {
                         let result = response.data;
                         this.islogin = result.islogin;
-                        this.user = result.user;
+                        this.users = result.users;
                         this.dt = result.dt;
                         this.allpage = response.data.allpage;
                         this.page = response.data.page;
@@ -100,9 +102,6 @@
         },
         ready() {
             new Clipboard('.colors');
-            $(".colors").hover(function () {
-                $('.myclipboard', this).toggleClass('clipboard_show');
-            });
         },
     }
 </script>

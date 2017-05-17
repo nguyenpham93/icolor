@@ -1,3 +1,7 @@
 .box-like-dislike-share span{
     cursor: pointer;
 }
+
+.colors:hover i{
+    display:block;
+}

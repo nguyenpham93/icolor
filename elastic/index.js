@@ -3,6 +3,7 @@ const analyse_setting = require ("./analyse_setting");
 const mapping_setting = require ("./mapping_setting");
 const Promise = require('bluebird');
 const shortid = require("shortid");
+const elas = require('../elastic/index');
 
 class elastic {
 	constructor () {
