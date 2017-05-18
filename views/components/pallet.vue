@@ -3,8 +3,7 @@
         <div class="box-info col-sm-4">
             <div class="row">
                 <div class="box-name">{{ i.name }}</div>
-                {{i.date}}
-                <!--<div class="box-date"><i class="fa fa-calendar" aria-hidden="true"></i>{{ i.date }}</div>-->
+                <div class="box-date"><i class="fa fa-calendar" aria-hidden="true"></i>{{ i.date }}</div>
                 <div class="box-author">
                     <i class="fa fa-user" aria-hidden="true"></i> {{ i.author }}
                     <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> {{ i.author_email }} -->

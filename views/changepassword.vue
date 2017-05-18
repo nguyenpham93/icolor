@@ -12,15 +12,15 @@
                     <form action="" method="post" v-on:submit.prevent="change">
                         <div class="form-group">
                             <label for="">Old password</label>
-                            <input type="password" class="form-control" name="oldpass">
+                            <input type="password" class="form-control" name="oldpass" required>
                         </div>
                         <div class="form-group">
                             <label for="">New password</label>
-                            <input type="password" class="form-control" name="newpass">
+                            <input type="password" class="form-control" name="newpass" required>
                         </div>
                         <div class="form-group">
                             <label for="">Confirm new password</label>
-                            <input type="password" class="form-control" name="confirmnewpass">
+                            <input type="password" class="form-control" name="confirmnewpass" required>
                         </div>
 
                         <div class="form-group">
@@ -37,7 +37,6 @@
     export default {
         data() {
             return {
-                userfull: '',
                 users: {},
                 islogin: false,
 				searchable : false,

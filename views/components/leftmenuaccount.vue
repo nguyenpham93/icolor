@@ -7,8 +7,8 @@
             <li role="presentation" v-if="pagecurrent === 'changepassword'" class="active"><a href="/myaccount111/changepassword">Change Password</a></li>
             <li role="presentation" v-else=""><a href="/myaccount111/changepassword">Change Password</a></li>
 
-            <li role="presentation" v-if="pagecurrent === 'mypallet'" class="active"><a href="/myaccount111/mypallet">My Pallet</a></li>
-            <li role="presentation" v-else=""><a href="/myaccount111/mypallet">My Pallet</a></li>
+            <li role="presentation" v-if="pagecurrent === 'mypallet'" class="active"><a href="/myaccount111/my-pallet">My Pallet</a></li>
+            <li role="presentation" v-else=""><a href="/myaccount111/my-pallet">My Pallet</a></li>
         </ul>
     </div>
 </template>

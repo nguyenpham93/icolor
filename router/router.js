@@ -22,7 +22,7 @@ module.exports = function (app, passport) {
         }
 
         let getAll = Promise.coroutine(function* () {
-            let resultA = yield collection.getPaginationCollection (pgfrom, n, user_id);
+            let resultA = yield collection.getPaginationCollection (pgfrom, n, '', user_id);
             let resultB = yield collection.getAllCollection (user_id);
             return [resultA, resultB];
         });
@@ -31,6 +31,7 @@ module.exports = function (app, passport) {
         .then (result => {
             let countAll = result[1].length;
             p = Math.ceil(countAll / n, 0);
+
             res.render ('index', {
                 data: {
                     dt : result[0],

@@ -38,6 +38,7 @@ class Collection {
                 async.mapSeries (data, user.getAuthor, (err, result) => {
                     async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            //console.log(result);
                             resolve (result);
                         });
                     });
@@ -94,6 +95,44 @@ class Collection {
             .then ( data => {
                 data.forEach((i) => {
                     i.userlogin = user_id;
+                });
+                async.mapSeries (data, user.getAuthor, (err, result) => {
+                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            resolve(result);
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    searchCollectionByIdUser ( term ) {
+        return new Promise ( (resolve, reject) => {
+            let fields = ["id_user"];
+            elas.search2 ("icolor", "collection", term, fields, "AND")
+                .then ( data => {
+                    data.forEach((i) => {
+                        i.userlogin = term;
+                    });
+                    async.mapSeries (data, user.getAuthor, (err, result) => {
+                        async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
+                            async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                                resolve(result);
+                            });
+                        });
+                    });
+                });
+        });
+    }
+
+    searchPaginationCollectionByIdUser ( term, pgfrom, n)  {
+        return new Promise ( (resolve, reject) => {
+            let fields = ["id_user"];
+            elas.search2Pagination ("icolor", "collection", term, fields, "AND", pgfrom, n)
+            .then ( data => {
+                data.forEach((i) => {
+                    i.userlogin = term;
                 });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
                     async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {

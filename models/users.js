@@ -32,7 +32,7 @@ class User {
     }
 
     updateUser(user){
-        console.log(user);
+        //console.log(user);
         return new Promise((resolve, reject) => {
             elas.updateDocument("icolor", "users", user)
                 .then((data) => {
@@ -40,5 +40,7 @@ class User {
                 });
         });
     }
+
+
 }
 module.exports = new User();

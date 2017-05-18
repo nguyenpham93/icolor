@@ -200,16 +200,69 @@ function addLike () {
 
 
 //update
-let like1 = {
-    "id"            : 'r1eYJW28gZ',
-    "id_collection" : "r1-bxZIEe-",
-    "id_user"       : "rJBkgtYyb",
-    "status"        : 0,
-    "date"          : moment().format("DD-MM-YYYY HH:mm:ss")
+let like1 = [{ id: 'B1PxaN5YUeZ',
+    name: 'Headache',
+    color1: '#655643',
+    color2: '#80BCA3',
+    color3: '#F6F7BD',
+    color4: '#E6AC27',
+    color5: '#BF4D28',
+    date: '15-05-2017',
+    description: 'Color collection',
+    id_user: 'rJDog98lb',
+    share: 0 },
+  { id: 'Bkdxa4cFUlb',
+    name: 'Storming Psychedelia',
+    color1: '#BCBDAC',
+    color2: '#CFBE27',
+    color3: '#F27435',
+    color4: '#F02475',
+    color5: '#3B2D38',
+    date: '15-05-2017',
+    description: 'Color collection',
+    id_user: 'rJDog98lb',
+    share: 0 },
+  { id: 'S1ql649F8l-',
+    name: 'forever lost',
+    color1: '#5D4157',
+    color2: '#838689',
+    color3: '#A8CABA',
+    color4: '#CAD7B2',
+    color5: '#EBE3AA',
+    date: '15-05-2017',
+    description: 'Color collection',
+    id_user: 'rJDog98lb',
+    share: 0 },
+  { id: 'rkl-64ctIxZ',
+    name: 't r a n c e',
+    color1: '#452632',
+    color2: '#91204D',
+    color3: '#E4844A',
+    color4: '#E8BF56',
+    color5: '#E2F7CE',
+    date: '15-05-2017',
+    description: 'Color collection',
+    id_user: 'rJDog98lb',
+    share: 0 },
+  { id: 'SyXZaVqYLgW',
+    name: 'Hymn For My Soul',
+    color1: '#2A044A',
+    color2: '#0B2E59',
+    color3: '#0D6759',
+    color4: '#7AB317',
+    color5: '#A0C55F',
+    date: '15-05-2017',
+    description: 'Color collection',
+    id_user: 'rJDog98lb',
+    share: 0 } ];
+function update (val) {
+    elas.updateDocument('icolor','collection', val);
 }
-function update () {
-    elas.updateDocument('icolor','like_dislike', like1);
-}
+
+like1.forEach((i) => {
+    //update (i)
+});
+
 //update();
 
 // Search ALl for test
@@ -226,6 +279,6 @@ searchAll();
 //      console.log(data);
 //  });
 
-
+// rJDog98lb
 
 

@@ -19,7 +19,8 @@ class elastic {
                 body: {doc: doc},
 				refresh : "wait_for"
             }, (err, result, status) => {
-                resolve(result);
+					resolve(result);
+
             });
         });
 	};
@@ -311,6 +312,41 @@ class elastic {
 				body  : {
 					"from"  : 0,
 					"size"  : 50,
+					query   : {
+						"multi_match" : {
+							"query"  	 : term,
+							"type" 	 	 : "cross_fields",
+							"fields" 	 : fields,
+							"tie_breaker" : 0.3,
+							"operator" : operator
+						}
+					}
+				}
+			}, (error, response, status) => {
+				if (error) {
+					console.log(error);
+					reject ( error.message );
+				} else {
+					let products = [];
+					response.hits.hits.forEach ( (product) => {
+						products.push ( product["_source"] );
+					});
+					resolve ( products );
+
+				}
+			});
+		});
+	}
+
+	search2Pagination ( index, type, term, fields, operator, pgfrom, n ) {
+
+		return new Promise( ( resolve, reject ) => {
+			this.elas.search ({
+				index : index,
+				type  : type,
+				body  : {
+					"from"  : pgfrom,
+					"size"  : n,
 					query   : {
 						"multi_match" : {
 							"query"  	 : term,
