@@ -128,10 +128,56 @@
     /*float: left;    */
 }
 
-
-
-
-
 .clipboard_show {
     display: block !important;
+}
+
+#addnewpallet{
+    position: relative;
+}
+
+div#waiting {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 9;
+    text-align: center;
+    line-height: 100%;
+}
+
+div#waiting img {
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+div#waiting {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: -1;
+    text-align: center;
+    line-height: 100%;
+    opacity: 0;
+}
+
+div#waiting img {
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+div#waiting.wait {
+    opacity: 1;
+    z-index: 99;
 }

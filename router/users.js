@@ -107,7 +107,7 @@ module.exports = function (app, passport) {
                                     facebook_access_token: "",
                                     google_id: "",
                                     google_access_token: "",
-                                    date: moment().format("DD-MM-YYYY")
+                                    date: moment().format("DD-MM-YYYY HH:mm:ss")
                                 };
                                 user.updateUser(doc)
                                     .then(data => {
@@ -199,7 +199,7 @@ module.exports = function (app, passport) {
 
             collection.searchPaginationCollectionByIdUser(user_id, pgfrom, n)
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     res.json({
                             dt: data,
                             islogin: req.session.login,

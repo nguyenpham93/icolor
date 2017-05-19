@@ -122,54 +122,12 @@ function addCollection2 (collection){
 }
 // addCollection2(collection);
 
-let doc1 = [ { id: 'B1xTygvlW',
-    id_collection: 'H1z6V5t8g-',
-    id_user: 'rJDog98lb',
-    status: 0,
-    date: '15-05-2017' },
-  { id: 'HkR31xDxZ',
-    id_collection: 'H1z6V5t8g-',
-    id_user: 'rJDog98lb',
-    status: 0,
-    date: '15-05-2017' },
-  { id: 'SkfsrnIgW',
-    id_collection: 'rJ0g645F8gZ',
-    id_user: 'rJDog98lb',
-    status: 1,
-    date: '15-05-2017' },
-  { id: 'ryG8rh8gb',
-    id_collection: 'S1tg6E5K8eZ',
-    id_user: 'rJDog98lb',
-    status: 1,
-    date: '15-05-2017' },
-  { id: 'rJzpkgwxb',
-    id_collection: 'H1z6V5t8g-',
-    id_user: 'rJDog98lb',
-    status: 0,
-    date: '15-05-2017' },
-  { id: 'rynUS3Ll-',
-    id_collection: 'SyjeTNcKLlW',
-    id_user: 'rJDog98lb',
-    status: 1,
-    date: '15-05-2017' },
-  { id: 'BkxJaJewx-',
-    id_collection: 'H1z6V5t8g-',
-    id_user: 'rJDog98lb',
-    status: 1,
-    date: '15-05-2017' },
-  { id: 'HyV6E2IeZ',
-    id_collection: 'Skbe6VcKUl-',
-    id_user: 'rJDog98lb',
-    status: 0,
-    date: '15-05-2017' },
-  { id: 'rkT2kgDgW',
-    id_collection: 'H1z6V5t8g-',
-    id_user: 'rJDog98lb',
-    status: 0,
-    date: '15-05-2017' } ];
+let doc1 = [ {
+    id: 'B1GkgJ3xb'
+} ];
 
 function deleteDocument (doc2){
-    elas.deleteDocument ("icolor","like_dislike", doc2)
+    elas.deleteDocument ("icolor","collection", doc2)
     .then ( data => {
         console.log (data);
     }, 
@@ -178,9 +136,8 @@ function deleteDocument (doc2){
     });
 }
 doc1.forEach((i) => {
-    //deleteDocument(i);
+    deleteDocument(i);
 })
-
 
 // Add Like & Dislike
 let like = {
@@ -270,9 +227,10 @@ function searchAll (){
 	elas.searchAll("icolor","collection")
      .then (data => {
          console.log(data);
+         console.log(data.length);
      });
 }
-searchAll(); 
+searchAll();
 
 // elas.search("icolor","color_related", "#D95B43")
 //  .then (data => {
@@ -280,5 +238,65 @@ searchAll();
 //  });
 
 // rJDog98lb
+let allPallet = [
+    {
+        id: 'B1GkgJ3xb',
+        name: 'TD123',
+        color1: '#234567',
+        color2: '#234568',
+        color3: '#234569',
+        color4: '#234560',
+        color5: '#234561',
+        date: '19-05-2017',
+        description: '',
+        id_user: 'rJDog98lb',
+        share: 0
+    },
+    {
+        id: 'B1GkgJ3xb1',
+        name: 'TD',
+        color1: '#234567',
+        color2: '#234568',
+        color3: '#234569',
+        color4: '#234560',
+        color5: '#234561',
+        date: '19-05-2017',
+        description: '',
+        id_user: 'rJDog98lb',
+        share: 0
+    },
+];
 
+let userPallet = {
+        id: 'rJW-xyngZ',
+        name: ' td123 ',
+        color1: '#234567',
+        color2: '#234568',
+        color3: '#234569',
+        color4: '#234560',
+        color5: '#234561',
+        date: '19-05-2017',
+        description: '',
+        id_user: 'rJDog98lb',
+        share: 0
+    };
 
+let isSamePallet = ( allPallet , userPallet ) => {
+    let n = allPallet.length;
+    let check = 0;
+    for(let i = 0; i < n; i++){
+        let name_old = allPallet[i].name.trim().toLowerCase();
+        let name_new = userPallet.name.trim().toLowerCase();
+
+        if(name_old === name_new){
+            check = 1;
+        }
+    }
+    if(check === 1){
+        return true
+    }else{
+        return false;
+    }
+};
+
+//console.log(isSamePallet ( allPallet , userPallet ));

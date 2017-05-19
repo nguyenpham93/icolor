@@ -12,7 +12,7 @@
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<div class="col-sm-6 col-md-6">
+			<div class="col-sm-4 col-md-4">
 				<div v-if="searchable">
 					<form class="navbar-form" role="search" v-on:submit.prevent="search">
 						<div class="input-group" id="search">
@@ -28,6 +28,7 @@
 			<!-- is user login? -->
 			<span v-if="islogin">
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/addnewpallet">Add new pallet</a></li>
 					<li><a href="/myaccount111">Welcome {{ users }}</a></li>
 					<li><a id="logout" v-on:click="logout" >Logout</a></li>
 				</ul>

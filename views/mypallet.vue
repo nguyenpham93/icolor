@@ -8,7 +8,7 @@
                     <h2>My Pallet</h2>
                     <div id="container-color" v-if="dt">
                         <div class="item" v-for="i in dt">
-                            <pallet :i="i"></pallet>
+                            <pallet :i="i" v-on:mypallet="getChildPage"></pallet>
                         </div>
                         <div id="pagination" v-if="allpage > 1">
                             <nav aria-label="...">
@@ -68,7 +68,14 @@
                     .catch(error => {
                         this.dt = [];
                     });
-            }
+            },
+            getChildPage () {
+                console.log('---');
+                console.log(this.$children[1]);
+                console.log('---');
+			    this.page = 1;
+			    this.dt = this.$children[1].dt;
+			}
         }
     }
 </script>

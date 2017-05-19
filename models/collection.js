@@ -215,6 +215,15 @@ class Collection {
         });
     }
 
+    deleteCollection(item, cb){
+        return new Promise ( (resolve, reject) => {
+            elas.deleteDocument("icolor", "collection", item)
+                .then((data) => {
+                        resolve(data);
+                    });
+        });
+    }
+
     /*
     * Param id : id cua pallet muon kiem tra
     * Param id_parent : id cua pallet duoc tim kiem lien quan
@@ -240,16 +249,18 @@ class Collection {
             .then ( pallets => {
                 if ( that.isPalletExist ( pallets, userPallet ) ) {
                     reject ( 'Pallet already existed' );
+                }else if(that.isSamePalletName(pallets, userPallet)){
+                    reject ( 'Pallet Name already existed' );
                 } else {
                     elas.insertDocument ( "icolor", "collection", userPallet )
                     .then (() => {
                         let colors = that.getColorsInPallet ( userPallet );
                         that.addColor ( colors )
                         .then ( data => {
-                            resolve ( "Insert succeed" );
+                            resolve ( "Add new pallet successful" );
                         },
                         error => {
-                            resolve ( "Insert succeed" );
+                            resolve ( "Add new pallet fail" );
                         });
                     });
                 }
@@ -266,7 +277,16 @@ class Collection {
     */
 
     isPalletExist ( allPallet, userPallet ) {
+
+        console.log('All Palet');
+        console.log(allPallet);
+        console.log('---------');
+
+        console.log('User Palet');
+        console.log(userPallet);
+        console.log('---------');
         let n = allPallet.length;
+
         let pallet2 = this.getColorsInPallet ( userPallet );
         for ( let i = 0; i < n; i++ ) {
             let pallet1 = this.getColorsInPallet ( allPallet[i] );               
@@ -294,6 +314,29 @@ class Collection {
             if ( !flag ) { return false; }
         }
         return true;
+    }
+
+    // TODO : Check if two Pallet Name is the same
+    /*
+    * Return 'TRUE' if two Pallets are the same
+    * Return 'FALSE' if they are not same
+    */
+    isSamePalletName( allPallet , userPallet ){
+        let n = allPallet.length;
+        let check = 0;
+        for(let i = 0; i < n; i++){
+            let name_old = allPallet[i].name.trim().toLowerCase();
+            let name_new = userPallet.name.trim().toLowerCase();
+
+            if(name_old === name_new){
+                check = 1;
+            }
+        }
+        if(check === 1){
+            return true
+        }else{
+            return false;
+        }
     }
 
     // TODO : Just get all colors of Pallet

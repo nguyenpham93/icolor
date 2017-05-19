@@ -22,6 +22,7 @@
                     <span class="share"> <i class="fa fa-share-alt" aria-hidden="true"></i>{{ i.share }}</span>
                 </div>
                 <a class="more_detail" :href="'/detail/' + i.id">More Detail</a>
+                <a class="more_detail deletepallet" href="#" v-on:click.stop.prevent="deletepallet(confirm('You want delete this Pallet!'), i.id, i.id_user)">Delete</a>
                 <!--<div class="box-des">{{ i.description }}</div>-->
             </div>
         </div>
@@ -56,6 +57,20 @@
                     .catch ( error => {
                         //this.dt = [];
                     });
+            },
+            deletepallet(action, pallet_id, user_id){
+                if(action) {
+                    axios.post('/delete-pallet', {
+                        pallet_id: pallet_id,
+                        user_id: user_id
+                    })
+                        .then(response => {
+                            window.location.reload()
+                        })
+                        .catch(error => {
+                            //this.dt = [];
+                        });
+                }
             },
             copy(text){
                 copyTextToClipboard(text);

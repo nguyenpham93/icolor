@@ -10,6 +10,8 @@ module.exports = function (app, passport) {
 
     require('./users')(app, passport);
 
+    require('./pallet')(app, passport);
+
     app.get ('/', (req, res) => {
         let user_id = req.session.user.id;
         let q = req.body['page'];
