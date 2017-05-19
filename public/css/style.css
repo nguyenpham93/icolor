@@ -181,3 +181,25 @@ div#waiting.wait {
     opacity: 1;
     z-index: 99;
 }
+.preview-color{
+    width: 100%;;
+    height:30px;
+    display: block;
+        border: 1px solid #000;
+}
+.previewimg {
+    text-align: center;
+}
+
+.previewimg img {
+    max-width: 400px;
+    max-height: 400px;
+    margin-top: 10px;
+}
+#cs{
+    display:none;
+}
+.social img{
+    margin-right: 15px;
+    height: 35px !important;
+}

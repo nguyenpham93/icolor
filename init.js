@@ -51,6 +51,8 @@ function initData() {
         data[count]['id_user'] = "rJBkgtYyb";
         delete data[count].author;
         delete data[count].author_email;
+        data[count].like = 0;
+        data[count].dislike = 0;
         data[count].share = 0;
         colors.push(data[count]);
     }
@@ -108,6 +110,8 @@ let collection = {
     date: moment().format("DD-MM-YYYY HH:mm:ss"),
     description: 'Pro color',
     id_user: 'rJBkgtYyb',
+    like: 0,
+    dislike: 0
     share: 0
 }
 

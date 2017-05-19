@@ -82,7 +82,6 @@ module.exports = function (app, passport) {
         if(error.length > 0){
             res.json({errMsg: error})
         }else{
-            console.log('Start');
             let id = shortid.generate();
             let color = [{
                 id: id,
@@ -92,15 +91,13 @@ module.exports = function (app, passport) {
                 color3: '#' + color3,
                 color4: '#' + color4,
                 color5: '#' + color5,
-                date: moment().format("DD-MM-YYYY"),
+                date: moment().format("DD-MM-YYYY HH:mm:ss"),
                 description: description,
                 id_user: user_id,
                 share: 0
             }];
 
             async.mapSeries (color, merge, (err, rs) => {
-                console.log('Success');
-                console.log(rs);
                 res.json({
                     errMsg: rs[0],
                     islogin : req.session.login,
