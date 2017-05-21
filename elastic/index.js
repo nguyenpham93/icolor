@@ -153,8 +153,8 @@ class elastic {
     	let sort = {};
     	if(selected === 'like') {
             sort = {
-                "date": {
-                    "order": "asc"
+                "like": {
+                    "order": "desc"
                 }
             };
         }else{
@@ -194,11 +194,11 @@ class elastic {
     	let fields = this.setTypeFields (type);
     	let sort = {};
     	if(selected === 'like') {
-            // sort = {
-            //     "date": {
-            //         "order": "desc"
-            //     }
-            // };
+             sort = {
+                 "like": {
+                     "order": "desc"
+                 }
+             };
         }else{
     		sort = {
                 "date": {

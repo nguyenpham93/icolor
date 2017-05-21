@@ -6,6 +6,7 @@ const Promise = require("bluebird");
 const quickSort = require('./quicksort');
 const shortid = require('shortid');
 const moment = require("moment");
+const collection = require('../models/collection');
 
 class Likedislike {
     constructor(){}
@@ -58,41 +59,84 @@ class Likedislike {
             let fields = ["id_collection", "id_user"];
             elas.search2("icolor", "like_dislike", collection_id + ' ' + user_id, fields, "AND")
                 .then((data) => {
-                        if (data.length >= 1) {
-                            //Change or Delete
-                            if (data[0].status !== status) {
-                                //Change
-                                if (data[0].status === 1) {
-                                    data[0].status = 0;
+                        elas.search ("icolor", "collection", collection_id)
+                            .then(data2 => {
+                                 let like_old = data2[0].like;
+                                 let dislike_old = data2[0].dislike;
+                                 if (data.length >= 1) {
+                                    //Change or Delete
+                                    if (data[0].status !== status) {
+                                        //Change
+                                        let doc1 = {};
+                                        if (data[0].status === 1) {
+                                            data[0].status = 0;
+                                            doc1 = {
+                                                id: collection_id,
+                                                like: like_old - 1,
+                                                dislike: dislike_old + 1
+                                            };
+                                        } else {
+                                            data[0].status = 1;
+                                            doc1 = {
+                                                id: collection_id,
+                                                like: like_old + 1,
+                                                dislike: dislike_old - 1
+                                            };
+                                        }
+
+                                        elas.updateDocument('icolor', 'like_dislike', data[0])
+                                            .then((data1) => {
+                                                elas.updateDocument('icolor', 'collection', doc1)
+                                                .then((data3) => {
+                                                    resolve(collection_id)
+                                                })
+                                            })
+                                    } else {
+                                        //Delete
+                                        let doc1 = {};
+                                        if (status === 1) {
+                                            doc1 = {
+                                                id: collection_id,
+                                                like: like_old - 1
+                                            };
+                                        }else{
+                                            doc1 = {
+                                                id: collection_id,
+                                                dislike: dislike_old - 1
+                                            };
+                                        }
+                                        elas.deleteDocument('icolor', 'like_dislike', data[0])
+                                            .then((data1) => {
+                                                elas.updateDocument('icolor', 'collection', doc1)
+                                                .then((data3) => {
+                                                    resolve(collection_id)
+                                                })
+                                            })
+
+                                    }
                                 } else {
-                                    data[0].status = 1;
+                                    //Insert
+                                    let doc = {
+                                        "id": shortid.generate(),
+                                        "id_collection": collection_id,
+                                        "id_user": user_id,
+                                        "status": status,
+                                        "date": moment().format("DD-MM-YYYY HH:mm:ss")
+                                    };
+                                    let doc1 = {
+                                        id: collection_id,
+                                        like: like_old + 1
+                                    };
+                                    elas.insertDocument('icolor', 'like_dislike', doc)
+                                        .then((data1) => {
+                                            elas.updateDocument('icolor', 'collection', doc1)
+                                            .then((data3) => {
+                                                resolve(collection_id)
+                                            })
+                                        })
                                 }
-                                elas.updateDocument('icolor', 'like_dislike', data[0])
-                                    .then((data1) => {
-                                        resolve(collection_id);
-                                    })
-                            } else {
-                                elas.deleteDocument('icolor', 'like_dislike', data[0])
-                                    .then((data1) => {
-                                        resolve(collection_id)
-                                    })
 
-                            }
-                        } else {
-                            //Insert
-                            let doc = {
-                                "id": shortid.generate(),
-                                "id_collection": collection_id,
-                                "id_user": user_id,
-                                "status": status,
-                                "date": moment().format("DD-MM-YYYY")
-                            };
-                            elas.insertDocument('icolor', 'like_dislike', doc)
-                                .then((data1) => {
-                                    resolve(collection_id)
-                                })
-                        }
-
+                            })
                     },
                     error => {
                         return '';

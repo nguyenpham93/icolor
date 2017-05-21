@@ -15,7 +15,7 @@ module.exports = function (app, passport) {
     app.get ('/', (req, res) => {
         let user_id = req.session.user.id;
         let q = req.body['page'];
-        let n = 1;
+        let n = 10;
         let pgfrom = 0;
         if (q != undefined && q > 0) {
             pgfrom = (pgfrom + q - 1) * n;
@@ -69,7 +69,7 @@ module.exports = function (app, passport) {
             user_id = req.session.user.id;
         }
 
-        let n = 1;
+        let n = 10;
         let pgfrom = (page - 1) * n;
 
         if(q === 'all'){

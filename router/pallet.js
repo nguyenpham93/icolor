@@ -94,6 +94,8 @@ module.exports = function (app, passport) {
                 date: moment().format("DD-MM-YYYY HH:mm:ss"),
                 description: description,
                 id_user: user_id,
+                like: 0,
+                dislike:0,
                 share: 0
             }];
 

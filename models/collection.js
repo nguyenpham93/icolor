@@ -18,11 +18,9 @@ class Collection {
                     i.userlogin = user_id;
                 });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
-                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             resolve (result);
                         });
-                    });
                 });
             });
         });
@@ -36,12 +34,10 @@ class Collection {
                     i.userlogin = user_id;
                 });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
-                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             //console.log(result);
                             resolve (result);
                         });
-                    });
                 });
             });
         });
@@ -56,11 +52,9 @@ class Collection {
                 });
                 // ES search will return an array, so we just get by index 0
                 user.getAuthor ( data[0] , (err, result) => {
-                    likedislike.getLikeAndDislike(data[0], (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             resolve(result);
                         });
-                    });
 
                     // async.mapSeries(data, likedislike.getLikeAndDislike, (err, result) => {
                     //
@@ -79,11 +73,9 @@ class Collection {
                     i.userlogin = user_id;
                 });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
-                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             resolve(result);
                         });
-                    });
                 });
             });
         });
@@ -97,11 +89,9 @@ class Collection {
                     i.userlogin = user_id;
                 });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
-                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             resolve(result);
                         });
-                    });
                 });
             });
         });
@@ -116,11 +106,9 @@ class Collection {
                         i.userlogin = term;
                     });
                     async.mapSeries (data, user.getAuthor, (err, result) => {
-                        async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                             async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                                 resolve(result);
                             });
-                        });
                     });
                 });
         });
@@ -135,11 +123,9 @@ class Collection {
                     i.userlogin = term;
                 });
                 async.mapSeries (data, user.getAuthor, (err, result) => {
-                    async.mapSeries (data, likedislike.getLikeAndDislike, (err, result) => {
                         async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
                             resolve(result);
                         });
-                    });
                 });
             });
         });
@@ -173,11 +159,9 @@ class Collection {
                         });
                     });
                     async.mapSeries ( temp, user.getAuthor, (err, result) => {
-                        async.mapSeries (temp, likedislike.getLikeAndDislike, (err, result) => {
                             async.mapSeries (temp, likedislike.checkLikeDislike, (err, result) => {
                                 resolve(result);
                             });
-                        });
                     });
                 });
             });
