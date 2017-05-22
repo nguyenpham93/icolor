@@ -62,6 +62,7 @@
                             }else{
 							    this.errMsg = ''
                             }
+                            $('input').val('');
                         })
                         .catch(error => {
                             //this.related_collection = [];

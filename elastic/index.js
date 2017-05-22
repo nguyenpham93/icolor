@@ -149,6 +149,37 @@ class elastic {
 		})
 	}
 
+	searchIdNameCollection ( index, type ) {
+		return new Promise ( ( resolve, reject ) => {
+			this.elas.search ({
+				index : index,
+				type : type,
+				body : {
+					"from"  : 0,
+					"size"  : 5000,
+					"sort"	: {
+						"date": {
+							"order": "desc"
+						}
+					},
+					"query" : {
+						"match_all" : {}
+					}
+				}
+			} , ( err, resp, stt) => {
+				if (err) {
+					reject (err.message);
+				} else {
+					let products = [];
+					resp.hits.hits.forEach ( (product) => {
+						products.push ( product['_source'] );
+					});
+					resolve ( products );
+				}
+			});
+		})
+	}
+
 	searchPagination ( index, type, pgfrom, n, selected ) {
     	let sort = {};
     	if(selected === 'like') {

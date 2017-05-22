@@ -33,18 +33,27 @@ module.exports = function (app, passport) {
         if (typeof user_id === 'undefined') {
             res.redirect('/');
         } else {
-            res.render ('addnewpallet', {
-                data: {
-                    islogin : req.session.login,
-                    users : req.session.user.email || ''
-                },
-                vue: {
-                    head: {
-                        title: 'Add new pallet'
+            collection.getIdNameCollection ()
+            .then (result => {
+                res.render ('addnewpallet', {
+                    data: {
+                        dt: result,
+                        islogin : req.session.login,
+                        users : req.session.user.email || ''
                     },
-                    components: ['myheader']
-                }
+                    vue: {
+                        head: {
+                            title: 'Add new pallet',
+                            meta: [
+                                    { script: '/public/js/select2.min.js' },
+                                    { style: '/public/css/select2.min.css',type: 'text/css',rel: 'stylesheet' }
+                                ]
+                        },
+                        components: ['myheader']
+                    }
+                });
             });
+
         }
     });
 
@@ -146,6 +155,23 @@ module.exports = function (app, passport) {
                 users : req.session.user.email || ''
             })
         }
+    });
+
+    app.post('/clonepallet', (req, res) => {
+        let user_id = req.session.user.id;
+        let idPallet = req.body['idPallet'];
+
+            collection.getCollection(idPallet, user_id)
+                .then(data => {
+                    res.json({
+                            pallet: data,
+                            islogin: req.session.login,
+                            users: req.session.user.email || ''
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                });
     });
 
 };

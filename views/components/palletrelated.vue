@@ -16,9 +16,9 @@
                     <i class="fa fa-thumbs-o-down" aria-hidden="true" v-else></i>
                     {{ collection.dislike }}
                 </span>
-                <span class="share">
-                    <i class="fa fa-share-alt" aria-hidden="true"></i>{{ collection.share }}
-                </span>
+                <!--<span class="share">-->
+                    <!--<i class="fa fa-share-alt" aria-hidden="true"></i>{{ collection.share }}-->
+                <!--</span>-->
             </div>
             <div class="box-date">
                 <span><i class="fa fa-calendar" aria-hidden="true"></i>Updated {{collection.date}}</span>

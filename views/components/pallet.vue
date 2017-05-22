@@ -2,10 +2,20 @@
     <div class="item_inner moredetail">
         <div class="box-info col-sm-4">
             <div class="row">
-                <div class="box-name">{{ i.name }}</div>
-                <div class="box-date"><i class="fa fa-calendar" aria-hidden="true"></i>{{ i.date }}</div>
+                <div class="box-name">
+                    <a class="more_detail" :href="'/detail/' + i.id">
+                        <h4 >{{ i.name }}</h4>
+                    </a>
+                </div>
+                <div class="box-date">
+                    <a class="more_detail" :href="'/detail/' + i.id">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>{{ i.date }}
+                    </a>
+                </div>
                 <div class="box-author">
-                    <i class="fa fa-user" aria-hidden="true"></i> {{ i.author }}
+                    <a class="more_detail" :href="'/detail/' + i.id">
+                        <i class="fa fa-user" aria-hidden="true"></i> {{ i.author }}
+                    </a>
                     <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> {{ i.author_email }} -->
                 </div>
                 <div class="box-like-dislike-share">
@@ -19,9 +29,9 @@
                         <i class="fa fa-thumbs-o-down" aria-hidden="true" v-else></i>
                         {{ i.dislike }}
                     </span>
-                    <span class="share"> <i class="fa fa-share-alt" aria-hidden="true"></i>{{ i.share }}</span>
+                    <!--<span class="share"> <i class="fa fa-share-alt" aria-hidden="true"></i>{{ i.share }}</span>-->
                 </div>
-                <a class="more_detail" :href="'/detail/' + i.id">More Detail</a>
+                <!--<a class="more_detail" :href="'/detail/' + i.id">More Detail</a>-->
                 <a class="more_detail deletepallet" href="#" v-on:click.stop.prevent="deletepallet(confirm('You want delete this Pallet!'), i.id, i.id_user)">Delete</a>
                 <!--<div class="box-des">{{ i.description }}</div>-->
             </div>

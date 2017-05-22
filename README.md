@@ -10,6 +10,7 @@ Color Collection using Express + Vuejs + ElasticSearch
 5) Thêm Pallet
 6) Chọn màu từ ảnh
 7) Like, Dislike, share
+8) Clone pallet
 
 ## Sử dụng
 1) Express

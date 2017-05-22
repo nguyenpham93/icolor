@@ -123,10 +123,19 @@ class Likedislike {
                                         "status": status,
                                         "date": moment().format("DD-MM-YYYY HH:mm:ss")
                                     };
-                                    let doc1 = {
-                                        id: collection_id,
-                                        like: like_old + 1
-                                    };
+
+                                    let doc1 = {};
+                                    if (status === 1) {
+                                        doc1 = {
+                                            id: collection_id,
+                                            like: like_old + 1
+                                        };
+                                    }else{
+                                        doc1 = {
+                                            id: collection_id,
+                                            dislike: dislike_old + 1
+                                        };
+                                    }
                                     elas.insertDocument('icolor', 'like_dislike', doc)
                                         .then((data1) => {
                                             elas.updateDocument('icolor', 'collection', doc1)

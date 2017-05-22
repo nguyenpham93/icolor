@@ -22,8 +22,14 @@
 					<div class="box-date"><span><i class="fa fa-calendar" aria-hidden="true"></i>Updated {{collection.date}}</span></div>
 					<div class="box-share">
                         <i class="fa fa-share-alt" aria-hidden="true"></i> Share </br>
-                        <a id="facebook" class="social" target="_blank" onclick="shareSocial('facebook', 600,300)" :href="'http://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://www.localhost:3000/detail/' + collection.id + '&p[images][0]=http://localhost:3000/public/img/thumbnail.png&p[title]=' + collection.name + '&p[summary]=' + collection.description" ><img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" /></a>
-                        <a id="twitter" class="twitter-share-button social" target="_blank" onclick="shareSocial('twitter', 600,300)" :href="'https://twitter.com/share?text=' + collection.name + '&tw_p=tweetbutton&url=https://localhost:3000/detail/' + collection.id " data-show-count="false"><img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" /></a>
+
+						<div class="fb-share-button" :data-href="urlCurrent" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+							<a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Chia sẻ</a>
+						</div>
+
+						<div class="g-plusone" data-size="medium" :data-href="urlCurrent"></div>
+                        <!--<a id="facebook" class="social" target="_blank" onclick="shareSocial('facebook', 600,300)" :href="'http://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://www.localhost:3000/detail/' + collection.id + '&p[images][0]=http://localhost:3000/public/img/thumbnail.png&p[title]=' + collection.name + '&p[summary]=' + collection.description" ><img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" /></a>-->
+                        <!--<a id="twitter" class="twitter-share-button social" target="_blank" onclick="shareSocial('twitter', 600,300)" :href="'https://twitter.com/share?text=' + collection.name + '&tw_p=tweetbutton&url=https://localhost:3000/detail/' + collection.id " data-show-count="false"><img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" /></a>-->
                     </div>
 					<!--</div>-->
 				</div>
@@ -51,7 +57,8 @@
                 related_collection : [],
 				users : {},
 				islogin : false,
-				searchable : false
+				searchable : false,
+				urlCurrent: ''
             }
         },
         methods : {
@@ -86,13 +93,17 @@
             },
             copy(text){
                 copyTextToClipboard(text);
-            }
+            },
+			getUrlCurrent(){
+				let urlCurrent = window.location.href;
+				this.urlCurrent = urlCurrent;
+			}
         },
+		mounted() {
+            this.getUrlCurrent();
+		},
         ready() {
             new Clipboard('.colors');
-			$(".colors").hover ( function () {
-				$('.myclipboard', this).toggleClass ('clipboard_show');
-			});
         }
     }
 </script>

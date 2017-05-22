@@ -43,6 +43,15 @@ class Collection {
         });
     }
 
+    getIdNameCollection () {
+        return new Promise ( (resolve, reject) => {
+            elas.searchIdNameCollection ( "icolor", "collection" )
+            .then ( (data) => {
+                resolve (data);
+            });
+        });
+    }
+
     getCollection (id, user_id) {
         return new Promise ( (resolve, reject) => {
             elas.search ("icolor", "collection", id)

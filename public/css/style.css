@@ -34,7 +34,6 @@
 .myclipboard {
     position: absolute;
     bottom: 25%;
-    font-family: overpassRegular;
     left:15%;
     text-align: left;
     padding-left: 35px;
@@ -53,7 +52,6 @@
 
 *{
     box-sizing: border-box;
-    font-family: overpassRegular;
 }
 
 
@@ -91,7 +89,8 @@
     color : #337ab7;
 }
 
-.box-info .row > div{
+.box-info .box-date,
+.box-info .box-author{
     padding-bottom: 10px;
 }
 
@@ -192,9 +191,9 @@ div#waiting.wait {
 }
 
 .previewimg img {
-    max-width: 400px;
-    max-height: 400px;
-    margin-top: 10px;
+    max-width: 600px;
+    max-height: 600px;
+    background: #fff;
 }
 #cs{
     display:none;
@@ -202,4 +201,57 @@ div#waiting.wait {
 .social img{
     margin-right: 15px;
     height: 35px !important;
+}
+.deletepallet{
+    display:none;
+}
+.mypallet .deletepallet{
+    display:inline-block;
+}
+.previewimg img:hover {
+    cursor: crosshair;
+}
+.box-share > div {
+    display: inline-block !important;
+    vertical-align: bottom !important;
+    margin-right: 10px;
+}
+
+.scolor {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    position: absolute;
+    /* background: #fff; */
+    left: 0;
+    top: 0;
+    z-index: -1;
+    opacity: 0;
+    border: 1px solid #fff;
+    border-radius: 100%;
+    box-shadow: 0px 0px 3px #000;
+}
+
+.previewimg > span {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.scolor.active {
+    z-index: 9;
+}
+.select2-container {
+    width: 400px !important;
+}
+.select2-container ul li abbr{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.select2-container ul li span{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right:10px;
 }

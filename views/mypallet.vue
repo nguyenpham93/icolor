@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container mypallet">
         <myheader :users="users" :islogin="islogin" :searchable="searchable"></myheader>
         <div class="row">
             <leftmenuaccount :pagecurrent="pagecurrent"></leftmenuaccount>

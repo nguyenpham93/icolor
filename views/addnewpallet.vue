@@ -28,9 +28,23 @@
                                 <input type="file" accept="image/*"
                                        @change="onFileChange">
                                 <div class="previewimg">
-                                    <img :src="image" id="scream"/>
-                                    <canvas id="cs"></canvas>
+                                    <span>
+                                        <img :src="image" id="scream"/>
+                                        <canvas id="cs"></canvas>
+                                        <abbr class="scolor1 scolor"></abbr>
+                                        <abbr class="scolor2 scolor"></abbr>
+                                        <abbr class="scolor3 scolor"></abbr>
+                                        <abbr class="scolor4 scolor"></abbr>
+                                        <abbr class="scolor5 scolor"></abbr>
+                                    </span>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <select id="clonepallet">
+                                    <option value=""> --- </option>
+                                    <option v-for="i in dt" :value="i.id" :color1="i.color1" :color2="i.color2" :color3="i.color3" :color4="i.color4" :color5="i.color5">{{ i.name }}</option>
+                                </select>
+                                <input class="btn btn-default" type="button" value="Clone Pallet"  v-on:click="getList">
                             </div>
                             <div class="form-group box-color">
                                 <div class="row">
@@ -87,6 +101,7 @@
     export default {
         data() {
             return {
+                dt: '',
                 users: {},
                 islogin: false,
                 errMsg: '',
@@ -102,8 +117,8 @@
         },
         methods: {
             addnew(){
-                this.errMsg = '',
-                    $('#waiting').addClass('wait');
+                this.errMsg = '';
+                $('#waiting').addClass('wait');
 
                 let name = $('input[name="name"]').val();
                 let description = $('textarea[name="description"]').val();
@@ -155,6 +170,8 @@
                     this.pickColor();
                 }
 
+                $('.scolor').removeAttr('style');
+
                 reader.onload = (e) => {
                     vm.image = e.target.result;
                 };
@@ -162,6 +179,8 @@
             },
             saveInput(color){
                 this.inputActive = color;
+                $('.scolor').removeClass('active');
+                $('.s' + color).addClass('active');
             },
             pickColor() {
                 let that = this;
@@ -195,8 +214,12 @@
                         //     p[2] + ')</span>';
                         let hexColor = rgbToHex(p[0], p[1], p[2]);
                         let colorCurrent = that.inputActive;
+//                        console.log('x = ' + x)
+//                        console.log('y = ' + y)
 //                        console.log(hexColor);
 //                        console.log(colorCurrent);
+
+                        $('.s' + colorCurrent).attr('style', 'opacity: 1; left: ' + (x-2) + 'px; top: ' + (y-2) + 'px;');
 
                         that['p' + colorCurrent] = hexColor;
                         // add background in body
@@ -265,7 +288,60 @@
                     }
                     return undefined;
                 }
+            },
+            formatState(color){
+                if (!color.id) {
+                    return color.text;
+                }
+                let color1 = color.element.attributes.color1.nodeValue;
+                let color2 = color.element.attributes.color2.nodeValue;
+                let color3 = color.element.attributes.color3.nodeValue;
+                let color4 = color.element.attributes.color4.nodeValue;
+                let color5 = color.element.attributes.color5.nodeValue;
+
+                let $color = $('<span>' + color.text + '</span><abbr style="background: ' + color1 +'"></abbr><abbr style="background: ' + color2 +'"></abbr><abbr style="background: ' + color3 +'"></abbr><abbr style="background: ' + color4 +'"></abbr><abbr style="background: ' + color5 +'"></abbr>');
+                return $color;
+            },
+            selectSearch(){
+                $("#clonepallet").select2({
+                    templateResult: this.formatState
+                });
+            },
+            getList() {
+                let selectCurrent = $('#clonepallet option:selected').val();
+                if(selectCurrent.trim().length > 0){
+                    $('#waiting').addClass('wait');
+                    axios.post('/clonepallet', {
+                        idPallet: selectCurrent,
+                    })
+                        .then(res => {
+                            $('#waiting').removeClass('wait');
+
+                            this.users = res.data.users;
+                            this.islogin = res.data.islogin;
+                            this.pcolor1 = res.data.pallet[0].color1.replace('#', '');
+                            this.pcolor2 = res.data.pallet[0].color2.replace('#', '');
+                            this.pcolor3 = res.data.pallet[0].color3.replace('#', '');
+                            this.pcolor4 = res.data.pallet[0].color4.replace('#', '');
+                            this.pcolor5 = res.data.pallet[0].color5.replace('#', '');
+
+                            $('.scolor').removeAttr('style');
+
+                        })
+                        .catch(error => {
+                            $('#waiting').removeClass('wait');
+                            //this.related_collection = [];
+                        });
+                }
             }
+        },
+        mounted(){
+            this.selectSearch();
+//            let $eventSelect = $("#clonepallet");
+//            let that = this;
+//            $eventSelect.on("select2:select", function (e) {
+//                that.getList();
+//            });
         }
     }
 </script>
