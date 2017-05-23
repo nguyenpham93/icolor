@@ -434,7 +434,8 @@ function searchAll (){
          console.log(data.length);
      });
 }
-searchAll();
+//searchAll();
+
 
 // elas.search("icolor","color_related", "#D95B43")
 //  .then (data => {
@@ -504,3 +505,9 @@ let isSamePallet = ( allPallet , userPallet ) => {
 };
 
 //console.log(isSamePallet ( allPallet , userPallet ));
+
+function centuryFromYear(n) {
+    let s =  n*n + ((n-1)*(n-1)) ;
+    return s;
+}
+console.log(centuryFromYear(5))

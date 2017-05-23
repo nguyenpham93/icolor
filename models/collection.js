@@ -74,6 +74,24 @@ class Collection {
         });
     }
 
+    getCollectionById (id, user_id) {
+        return new Promise ( (resolve, reject) => {
+            elas.search2 ("icolor", "collection", id, "id", "AND")
+            .then ( (data) => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
+
+                user.getAuthor ( data[0] , (err, result) => {
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            resolve(result);
+                        });
+
+                });
+            });
+        });
+    }
+
     searchCollection ( term, user_id, selected ) {
         return new Promise ( (resolve, reject) => {
             elas.searchTerm ("icolor", "collection", term, selected)
@@ -271,13 +289,6 @@ class Collection {
 
     isPalletExist ( allPallet, userPallet ) {
 
-        console.log('All Palet');
-        console.log(allPallet);
-        console.log('---------');
-
-        console.log('User Palet');
-        console.log(userPallet);
-        console.log('---------');
         let n = allPallet.length;
 
         let pallet2 = this.getColorsInPallet ( userPallet );
@@ -365,7 +376,6 @@ class Collection {
         return new Promise (( resolve, reject ) => {
             elas.search ( "icolor", "color", color )
             .then (data => {
-                console.log(data.length);
                 if ( !data.length ) {
                     let temp = {
                         "id" : color

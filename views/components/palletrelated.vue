@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="col-sm-2 info">
+        <div class="col-sm-3 info">
             <div class="footer"><span><h3>{{collection.name}}</h3></span></div>
             <div class="box-author">
                 <span><i class="fa fa-user" aria-hidden="true"></i>Author : {{collection.author}}</span>
@@ -24,7 +24,7 @@
                 <span><i class="fa fa-calendar" aria-hidden="true"></i>Updated {{collection.date}}</span>
             </div>
         </div>
-        <div class="box-colors col-sm-6">
+        <div class="box-colors-detail col-sm-9">
             <span class="colors" :style="{ backgroundColor:  collection.color1 }" :data-clipboard-text="collection.color1" v-on:click.stop.prevent="copy(collection.color1)"><i class="myclipboard" aria-hidden="true">{{collection.color1}}</i></span>
             <span class="colors" :style="{ backgroundColor:  collection.color2 }" :data-clipboard-text="collection.color2" v-on:click.stop.prevent="copy(collection.color2)"><i class="myclipboard" aria-hidden="true">{{collection.color2}}</i></span>
             <span class="colors" :style="{ backgroundColor:  collection.color3 }" :data-clipboard-text="collection.color3" v-on:click.stop.prevent="copy(collection.color3)"><i class="myclipboard" aria-hidden="true">{{collection.color3}}</i></span>
@@ -39,6 +39,9 @@
         props : [ "collection"],
         methods: {
             likedislike(collection_id, action ){
+
+                $('.box-like-dislike-share > span').addClass('disabled');
+
                 axios.post('/likedislike', {
                     collection_id: collection_id,
                     action: action
@@ -49,9 +52,11 @@
                         }else{
                             this.collection = response.data;
                         }
+                		$('.box-like-dislike-share > span').removeClass('disabled');
                     })
                     .catch ( error => {
                         //this.dt = [];
+                		$('.box-like-dislike-share > span').removeClass('disabled');
                     });
             },
             copy(text){

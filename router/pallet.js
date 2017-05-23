@@ -70,26 +70,30 @@ module.exports = function (app, passport) {
         let error = '';
 
         if(name.trim().length < 1){
-            error += 'Name required \n';
+            error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Name required <br>';
         }
         if(!isHexaColor(color1)){
-            error += 'Color 1 invalid \n';
+            error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Color 1 invalid <br>';
         }
         if(!isHexaColor(color2)){
-            error += 'Color 2 invalid \n';
+            error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Color 2 invalid <br>';
         }
         if(!isHexaColor(color3)){
-            error += 'Color 3 invalid \n';
+            error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Color 3 invalid <br>';
         }
         if(!isHexaColor(color4)){
-            error += 'Color 4 invalid \n';
+            error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Color 4 invalid <br>';
         }
         if(!isHexaColor(color5)){
-            error += 'Color 5 invalid \n';
+            error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Color 5 invalid <br>';
         }
 
         if(error.length > 0){
-            res.json({errMsg: error})
+            res.json({
+                errMsg: error,
+                islogin : req.session.login,
+                users : req.session.user.email || ''
+            })
         }else{
             let id = shortid.generate();
             let color = [{
@@ -107,12 +111,13 @@ module.exports = function (app, passport) {
                 dislike:0,
                 share: 0
             }];
-
+            let islogin = req.session.login;
+            let users = req.session.user.email || '';
             async.mapSeries (color, merge, (err, rs) => {
                 res.json({
                     errMsg: rs[0],
-                    islogin : req.session.login,
-                    users : req.session.user.email || ''
+                    islogin : islogin,
+                    users : users
                 })
             });
         }
@@ -166,11 +171,16 @@ module.exports = function (app, passport) {
                     res.json({
                             pallet: data,
                             islogin: req.session.login,
-                            users: req.session.user.email || ''
+                            users: req.session.user.email || '',
+                            msgClone: 'Clone Successful'
                         })
                 })
                 .catch(err => {
-                    console.log(err);
+                    res.json({
+                            islogin: req.session.login,
+                            users: req.session.user.email || '',
+                            msgClone: 'Clone Fail'
+                        })
                 });
     });
 

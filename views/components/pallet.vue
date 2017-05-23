@@ -53,6 +53,7 @@
         props : [ "i" ],
         methods: {
             likedislike(collection_id, action ){
+                $('.box-like-dislike-share > span').addClass('disabled');
                 axios.post('/likedislike', {
                     collection_id: collection_id,
                     action: action
@@ -63,9 +64,11 @@
                         }else{
                             this.i = response.data;
                         }
+                        $('.box-like-dislike-share > span').removeClass('disabled');
                     })
                     .catch ( error => {
                         //this.dt = [];
+                        $('.box-like-dislike-share > span').removeClass('disabled');
                     });
             },
             deletepallet(action, pallet_id, user_id){

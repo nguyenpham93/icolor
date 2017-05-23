@@ -6,7 +6,7 @@
             <div class="col-md-9">
                 <div id="mypallet">
                     <h2>My Pallet</h2>
-                    <div id="container-color" v-if="dt">
+                    <div id="container-color" class="1" v-if="dt.length > 0">
                         <div class="item" v-for="i in dt">
                             <pallet :i="i"></pallet>
                         </div>
@@ -29,7 +29,7 @@
                             </nav>
                         </div>
                     </div>
-                    <div v-else id="container-color">No colors.</div>
+                    <div id="container-color1" class="3" v-else>No colors.</div>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
     export default {
         data() {
             return {
-                dt: '',
+                dt: [],
                 users: {},
                 islogin: false,
 				searchable : false,

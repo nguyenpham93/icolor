@@ -255,3 +255,33 @@ div#waiting.wait {
     vertical-align: middle;
     margin-right:10px;
 }
+span.disabled {
+    pointer-events: none;
+}
+.msgClone{
+    display: inline-block;
+    padding: 6px 10px;
+    vertical-align: top;
+    margin-left: 10px;
+    margin-bottom: 0;
+}
+
+.box-colors-detail {
+    display: inline-block;
+}
+.box-colors-detail span {
+    cursor: pointer;
+    width: 100%;
+    height: 80px;
+    display: block;
+    float: left;
+    margin-bottom: 10px;
+}
+.collection {
+    margin-bottom: 50px;
+}
+div#container-color {
+    margin-bottom: 30px;
+    display: inline-block;
+    width: 100%;
+}

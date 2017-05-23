@@ -71,7 +71,7 @@ app.get ('/all', (req, res) => {
             user_id = req.session.user.id;
         }
         let id = req.params.id;
-        collection.getCollection (id, user_id)
+        collection.getCollectionById (id, user_id)
         .then ( (data) => {
             res.json({data: data})
         });

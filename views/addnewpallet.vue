@@ -8,7 +8,7 @@
                         <img src="/public/img/spinner.gif">
                     </div>
                     <h2>Add New Pallet</h2>
-                    <div class="alert alert-danger err" role="alert" v-if="errMsg">
+                    <div class="alert alert-danger err" role="alert" v-if="errMsg" v-html="errMsg">
                         {{ errMsg }}
                     </div>
                     <div class="addnewpallet-conatiner">
@@ -37,6 +37,9 @@
                                         <abbr class="scolor4 scolor"></abbr>
                                         <abbr class="scolor5 scolor"></abbr>
                                     </span>
+                                    <p>
+                                        <input v-if="image" class="btn btn-default" type="button" value="Remove image"  v-on:click="removeimage">
+                                    </p>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -45,6 +48,7 @@
                                     <option v-for="i in dt" :value="i.id" :color1="i.color1" :color2="i.color2" :color3="i.color3" :color4="i.color4" :color5="i.color5">{{ i.name }}</option>
                                 </select>
                                 <input class="btn btn-default" type="button" value="Clone Pallet"  v-on:click="getList">
+                                <div class="alert alert-success msgClone" role="alert" v-if="msgClone">{{ msgClone }}</div>
                             </div>
                             <div class="form-group box-color">
                                 <div class="row">
@@ -112,7 +116,8 @@
                 pcolor5: '',
                 image: '',
                 inputActive: '',
-                uploadimage: 0
+                uploadimage: 0,
+                msgClone: ''
             }
         },
         methods: {
@@ -310,29 +315,40 @@
             getList() {
                 let selectCurrent = $('#clonepallet option:selected').val();
                 if(selectCurrent.trim().length > 0){
-                    $('#waiting').addClass('wait');
                     axios.post('/clonepallet', {
                         idPallet: selectCurrent,
                     })
                         .then(res => {
-                            $('#waiting').removeClass('wait');
 
                             this.users = res.data.users;
                             this.islogin = res.data.islogin;
-                            this.pcolor1 = res.data.pallet[0].color1.replace('#', '');
-                            this.pcolor2 = res.data.pallet[0].color2.replace('#', '');
-                            this.pcolor3 = res.data.pallet[0].color3.replace('#', '');
-                            this.pcolor4 = res.data.pallet[0].color4.replace('#', '');
-                            this.pcolor5 = res.data.pallet[0].color5.replace('#', '');
+                            this.msgClone = res.data.msgClone;
+
+                            $('.msgClone').slideDown('fast');
+
+                            if(res.data.pallet[0].color1) {
+                                this.pcolor1 = res.data.pallet[0].color1.replace('#', '');
+                                this.pcolor2 = res.data.pallet[0].color2.replace('#', '');
+                                this.pcolor3 = res.data.pallet[0].color3.replace('#', '');
+                                this.pcolor4 = res.data.pallet[0].color4.replace('#', '');
+                                this.pcolor5 = res.data.pallet[0].color5.replace('#', '');
+                            }
 
                             $('.scolor').removeAttr('style');
 
+                            setTimeout(function(){
+                                $('.msgClone').slideUp('fast');
+                            }, 1000)
+
                         })
                         .catch(error => {
-                            $('#waiting').removeClass('wait');
                             //this.related_collection = [];
                         });
                 }
+            },
+            removeimage(){
+                this.image = '';
+                $('input[type="file"]').val('');
             }
         },
         mounted(){

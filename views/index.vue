@@ -99,6 +99,7 @@
             search2(page) {
                 this.page = page;
                 this.search();
+                $("html, body").animate({ scrollTop: 0 }, "fast");
             }
         },
         ready() {
