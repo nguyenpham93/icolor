@@ -38,7 +38,7 @@ function npm_install(path) {
 
 gulp.task('default', ['start_web', 'start_ios']);
 
-gulp.task('install', ['install_web',]);
+gulp.task('install', ['install_web', 'install_gulp']);
 
 //-------- Running app using npm start
 gulp.task('start_web', () => {
@@ -52,4 +52,8 @@ gulp.task('start_ios', () => {
 //-------- Installation using npm install -----------
 gulp.task('install_web', () => {
   npm_install("../");
+});
+
+gulp.task('install_gulp', () => {
+  npm_install("../gulp/");
 });
