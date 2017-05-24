@@ -255,4 +255,8 @@ module.exports = function (app, passport) {
         })
     );
 
+    app.get('/test', (req, res) =>{
+        res.json({errMsg: 'ok WEB'});
+    })
+
 }

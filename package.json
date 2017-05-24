@@ -5,6 +5,14 @@
   "main": "index.js",
   "author": "nguyenpham93",
   "license": "MIT",
+  "scripts": {
+    "start": "npm start --prefix gulp/",
+    "install": "npm install --prefix gulp/"
+  },
+  "keywords": [
+    "gulp",
+    "automation"
+  ],
   "dependencies": {
     "async": "^2.3.0",
     "bcrypt-nodejs": "^0.0.3",

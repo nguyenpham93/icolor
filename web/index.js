@@ -4,9 +4,9 @@ const app = express();
 const bodyParser = require ("body-parser");
 const path = require ('path');
 const async = require ('async');
-const elas = require ("./elastic/index");
+const elas = require ("../elastic/index");
 const passport = require('passport');
-const auth = require ('./passport/auth');
+const auth = require ('../passport/auth');
 const session = require('express-session');
 
 app.use(function(req, res, next) {
@@ -21,20 +21,20 @@ app.use(session({
   unser : 'destroy',
   secret: 'JackCodeHammer', 
   resave: false, 
-  saveUninitialized: true, 
+  saveUninitialized: true,
   cookie: {secure: false}
 }))
 
-app.use ('/public', express.static ('public'))
+
+app.use ('/public', express.static ('../public'))
 
 app.engine ('vue', expressVue);
 
 app.set ('view engine', 'vue');
 
-app.set ('views', path.join (__dirname, '/views'));
-
+app.set ('views', path.join (__dirname, '/../views'));
 app.set ('vue', {
-	componentsDir: path.join (__dirname, 'views', 'components'),
+	componentsDir: path.join (__dirname, '../views', 'components'),
 	defaultLayout : 'layout'
 });
 
@@ -49,20 +49,20 @@ app.use(passport.session());
 app.use(auth.checkAuthentication);
 
 //------------Set up Passport--------------------
-require('./passport/passport')(passport);
+require('../passport/passport')(passport);
 
 //------------Set up Passport-local strategy--------------------
-require('./passport/passport-local/passport_local')(passport);
+require('../passport/passport-local/passport_local')(passport);
 
 //------------Set up Facebook OAuth 2.0 with Passport--------------------
-require('./passport/facebook/passport_facebook')(passport);
+require('../passport/facebook/passport_facebook')(passport);
 
 //------------Set up Google OAuth 2.0 with Passport--------------------
-require('./passport/google/passport_google')(passport);
+require('../passport/google/passport_google')(passport);
 
 //------------Set up router --------------------
-require('./router/router')(app, passport);
+require('../router/router')(app, passport);
 
-  app.listen(3000, () => {
+app.listen(3000, () => {
     console.log("Express running at port 3000");
-  });
+});

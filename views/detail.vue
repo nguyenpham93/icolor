@@ -36,7 +36,7 @@
 
 					<a :href="urlCurrent" class="twitter-share-button" data-count="horizontal">Tweet</a>
 
-					<a :href="urlCurrent" data-pin-count="beside">
+					<a href="https://www.pinterest.com/pin/create/button/" data-pin-count="beside">
 						<img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" />
 					</a>
 				</div>

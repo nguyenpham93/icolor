@@ -522,18 +522,22 @@ let isSamePallet = ( allPallet , userPallet ) => {
 //
 //     if(n > 1){
 //         var a = 0;
-//         for(var i = 1; i < n; i++){
-//             var b = statues[i] - statues[i-1];
+//         var current = 0;
+//         for(var i = n-2; i >=0; i--){
+//             var b = statues[i+1] - statues[i];
 //             if(b > 1) {
-//                 a += b;
-//                 statues[i]
+//                a += b - 1;
 //             }
 //         }
+//
+//         // for(var j = current - 1; j >=0; j--){
+//         //     a += statues[current] - statues[j] - 1;
+//         // }
 //     }
 //
 //     return a;
 //
 // }
-// [2,3,5,6]
-// console.log(makeArrayConsecutive2([6,2,5,3]))
+// //[2,3,5,6]
+// console.log(makeArrayConsecutive2([5,4,6]))
 //makeArrayConsecutive2([6,2,3,8])

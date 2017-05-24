@@ -4,16 +4,16 @@ const app = express();
 const bodyParser = require ("body-parser");
 const path = require ('path');
 const async = require ('async');
-const elas = require ("./elastic/index");
+const elas = require ("../elastic/index");
 // const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const auth = require ('./passport/auth');
+const auth = require ('../passport/auth');
 // const passportJWT = require("passport-jwt");
 
-const collection = require ('./models/collection');
-const account = require ('./models/register');
-const user = require('./models/users');
-const likedislike = require('./models/like_dislike');
+const collection = require ('../models/collection');
+const account = require ('../models/register');
+const user = require('../models/users');
+const likedislike = require('../models/like_dislike');
 
 
 const session = require('express-session');
@@ -50,7 +50,7 @@ app.use(passport.session());
 app.use(auth.checkAuthentication);
 
 //------------Set up passport --------------------
-require('./passport/passport-local/passport_local')(passport);
+require('../passport/passport-local/passport_local')(passport);
 
 //------------Set up router --------------------
 app.get ('/all', (req, res) => {
@@ -88,6 +88,10 @@ app.get ('/all', (req, res) => {
         });
     });
 
-  app.listen(3001, () => {
-    console.log("Express running at port 3001");
+    app.get('/test', (req, res) =>{
+        res.json({errMsg: 'ok IOS'});
+    })
+
+  app.listen(3002, () => {
+    console.log("Express running at port 3002");
   });
