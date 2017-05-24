@@ -3,7 +3,7 @@
         <myheader :islogin="islogin" :users="users" :onup="onup" :ondown="ondown" :search="search"
                   :searchable="searchable"></myheader>
         <div class="row">
-            Sort :
+            <span>Sort</span>
             <select name="sort" v-model="selected" v-on:change="search1()">
                 <option value="latest" selected="selected">Latest</option>
                 <option value="like">Like</option>

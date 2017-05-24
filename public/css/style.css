@@ -211,7 +211,9 @@ div#waiting.wait {
 .previewimg img:hover {
     cursor: crosshair;
 }
-.box-share > div {
+.box-share > div,
+.box-share > span,
+.box-share > iframe {
     display: inline-block !important;
     vertical-align: bottom !important;
     margin-right: 10px;

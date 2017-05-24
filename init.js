@@ -428,13 +428,13 @@ like1.forEach((i) => {
 
 // Search ALl for test
 function searchAll (){
-	elas.searchAll1("icolor","collection")
+	elas.search("icolor","users", "thanhdat21293@gmail.com")
      .then (data => {
          console.log(data);
          console.log(data.length);
      });
 }
-//searchAll();
+searchAll();
 
 
 // elas.search("icolor","color_related", "#D95B43")
@@ -506,8 +506,34 @@ let isSamePallet = ( allPallet , userPallet ) => {
 
 //console.log(isSamePallet ( allPallet , userPallet ));
 
-function centuryFromYear(n) {
-    let s =  n*n + ((n-1)*(n-1)) ;
-    return s;
-}
-console.log(centuryFromYear(5))
+// function makeArrayConsecutive2(statues) {
+//     var n = statues.length;
+//     var a = 0;
+//
+//     for(var i = 0; i < n; i++){
+//         for(var j = i-1; j >= 0; j--){
+//             if(statues[j] > statues[j + 1]) {
+//                 var term = statues[j];
+//                 statues[j] = statues[j+1];
+//                 statues[j+1] = term;
+//             }
+//         }
+//     }
+//
+//     if(n > 1){
+//         var a = 0;
+//         for(var i = 1; i < n; i++){
+//             var b = statues[i] - statues[i-1];
+//             if(b > 1) {
+//                 a += b;
+//                 statues[i]
+//             }
+//         }
+//     }
+//
+//     return a;
+//
+// }
+// [2,3,5,6]
+// console.log(makeArrayConsecutive2([6,2,5,3]))
+//makeArrayConsecutive2([6,2,3,8])

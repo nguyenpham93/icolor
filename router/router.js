@@ -69,7 +69,7 @@ module.exports = function (app, passport) {
             user_id = req.session.user.id;
         }
 
-        let n = 10;
+        let n = 20;
         let pgfrom = (page - 1) * n;
 
         if(q === 'all'){
