@@ -92,6 +92,6 @@ app.get ('/all', (req, res) => {
         res.json({errMsg: 'ok IOS'});
     })
 
-  app.listen(3002, () => {
-    console.log("Express running at port 3002");
+  app.listen(4001, () => {
+    console.log("Express running at port 4001");
   });
