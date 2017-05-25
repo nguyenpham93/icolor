@@ -140,6 +140,9 @@ module.exports = function (app, passport) {
         let arr = [];
         collection.getColorRelated ( hex, id_parent )
         .then ( data => {
+            data.forEach((i) => {
+                i.date = i.date.split(" ")[0];
+            })
             res.json ({
                 dt : data,
                 islogin : req.session.login,
@@ -156,6 +159,7 @@ module.exports = function (app, passport) {
         }
         collection.getCollectionById (id, user_id)
         .then ( (data) => {
+            data[0].date = data[0].date.split(" ")[0];
             res.render ('detail', {
                 data: { collection: data[0] , islogin : req.session.login, users : req.session.user.email || '' },
                 vue: {

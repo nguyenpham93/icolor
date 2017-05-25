@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="col-sm-3 info">
-            <div class="footer"><span><h3>{{collection.name}}</h3></span></div>
+            <h3>{{collection.name}}</h3>
             <div class="box-author">
-                <span><i class="fa fa-user" aria-hidden="true"></i>Author : {{collection.author}}</span>
+                <span>{{collection.author}}</span>
             </div>
             <div class="box-like-dislike-share">
                 <span class="box-like" v-on:click.stop.prevent="likedislike(collection.id, 1)">
@@ -20,9 +20,9 @@
                     <!--<i class="fa fa-share-alt" aria-hidden="true"></i>{{ collection.share }}-->
                 <!--</span>-->
             </div>
-            <div class="box-date">
-                <span><i class="fa fa-calendar" aria-hidden="true"></i>Updated {{collection.date}}</span>
-            </div>
+            <!--<div class="box-date">-->
+                <!--<span>{{collection.date}}</span>-->
+            <!--</div>-->
         </div>
         <div class="box-colors-detail col-sm-9">
             <span class="colors" :style="{ backgroundColor:  collection.color1 }" :data-clipboard-text="collection.color1" v-on:click.stop.prevent="copy(collection.color1)"><i class="myclipboard" aria-hidden="true">{{collection.color1}}</i></span>

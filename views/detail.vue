@@ -3,13 +3,9 @@
 	<myheader :users="users" :islogin="islogin" :searchable="searchable"></myheader>
 		<div id="container-color" class="container1" v-if="collection">
 			<div class="col-sm-3 info">
-				<div class="footer">
-					<span>
-						<h3>{{collection.name}}</h3>
-					</span>
-				</div>
+				<h3>{{collection.name}}</h3>
 				<div class="box-author">
-					<span><i class="fa fa-user" aria-hidden="true"></i>Author : {{collection.author}}</span>
+					<span>Author : {{collection.author}}</span>
 				</div>
 				<!--<div class="box-email"><span><i class="fa fa-envelope-o" aria-hidden="true"></i> Email : {{collection.author_email}}</span></div>-->
 				<div class="box-like-dislike-share">
@@ -24,9 +20,9 @@
 						{{ collection.dislike }}
 					</span>
 				</div>
-				<div class="box-date"><span><i class="fa fa-calendar" aria-hidden="true"></i>Updated {{collection.date}}</span></div>
+				<div class="box-date">
+					<span> {{collection.date}}</span></div>
 				<div class="box-share">
-					<i class="fa fa-share-alt" aria-hidden="true"></i> Share </br>
 
 					<div class="fb-share-button" :data-href="urlCurrent" data-layout="button_count" data-size="small" data-mobile-iframe="true">
 						<a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Chia sẻ</a>
@@ -79,7 +75,7 @@
                         })
                         .catch(error => {
                             this.related_collection = [];
-                        }); 
+                        });
             },
 			likedislike(collection_id, action ){
 

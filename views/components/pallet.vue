@@ -7,14 +7,14 @@
                         <h4 >{{ i.name }}</h4>
                     </a>
                 </div>
-                <div class="box-date">
-                    <a class="more_detail" :href="'/detail/' + i.id">
-                        <i class="fa fa-calendar" aria-hidden="true"></i>{{ i.date }}
-                    </a>
-                </div>
+                <!--<div class="box-date">-->
+                    <!--<a class="more_detail" :href="'/detail/' + i.id">-->
+                        <!--<i class="fa fa-calendar" aria-hidden="true"></i>{{ i.date }}-->
+                    <!--</a>-->
+                <!--</div>-->
                 <div class="box-author">
                     <a class="more_detail" :href="'/detail/' + i.id">
-                        <i class="fa fa-user" aria-hidden="true"></i> {{ i.author }}
+                        {{ i.author }}
                     </a>
                     <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> {{ i.author_email }} -->
                 </div>

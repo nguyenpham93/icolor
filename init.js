@@ -62,7 +62,7 @@ function initData() {
     });
 }
 
- //initData();
+//initData();
 
 function merge(item, cb){
     coll.addCollection(item)
@@ -127,7 +127,8 @@ function addCollection2 (collection){
 }
 // addCollection2(collection);
 
-let doc1 = [ { id: 'SkQW2aJWb',
+let doc1 = [
+    { id: 'SkQW2aJWb',
       name: 'Dat',
       color1: '#ffffff',
       color2: '#ffff00',
@@ -287,7 +288,8 @@ function addLike () {
 
 
 //update
-let like1 = [ { id: 'SkQW2aJWb',
+let like1 = [
+    { id: 'SkQW2aJWb',
       name: 'Dat',
       color1: '#ffffff',
       color2: '#ffff00',
@@ -428,13 +430,13 @@ like1.forEach((i) => {
 
 // Search ALl for test
 function searchAll (){
-	elas.search("icolor","users", "thanhdat21293@gmail.com")
+	elas.searchAll("icolor","collection")
      .then (data => {
          console.log(data);
          console.log(data.length);
      });
 }
-searchAll();
+//searchAll();
 
 
 // elas.search("icolor","color_related", "#D95B43")
@@ -504,40 +506,14 @@ let isSamePallet = ( allPallet , userPallet ) => {
     }
 };
 
-//console.log(isSamePallet ( allPallet , userPallet ));
 
-// function makeArrayConsecutive2(statues) {
-//     var n = statues.length;
-//     var a = 0;
+// function matrixElementsSum(matrix) {
+//     for(var i = 0; i < matrix.length; i++){
+//         for(var j = 0; j < i.length; i++){
 //
-//     for(var i = 0; i < n; i++){
-//         for(var j = i-1; j >= 0; j--){
-//             if(statues[j] > statues[j + 1]) {
-//                 var term = statues[j];
-//                 statues[j] = statues[j+1];
-//                 statues[j+1] = term;
-//             }
 //         }
 //     }
-//
-//     if(n > 1){
-//         var a = 0;
-//         var current = 0;
-//         for(var i = n-2; i >=0; i--){
-//             var b = statues[i+1] - statues[i];
-//             if(b > 1) {
-//                a += b - 1;
-//             }
-//         }
-//
-//         // for(var j = current - 1; j >=0; j--){
-//         //     a += statues[current] - statues[j] - 1;
-//         // }
-//     }
-//
-//     return a;
-//
 // }
-// //[2,3,5,6]
-// console.log(makeArrayConsecutive2([5,4,6]))
-//makeArrayConsecutive2([6,2,3,8])
+//
+// //console.log(matrixElementsSum([[0,1,1,2],[0,5,0,0], [2,0,3,3]]));
+// matrixElementsSum([[0,1,1,2],[0,5,0,0], [2,0,3,3]])

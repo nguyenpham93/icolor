@@ -1,7 +1,4 @@
 @import url("/public/css/sp.css");
-body {
-    font-family: overpassRegular;
-}
 
 .box-colors span {
     cursor: pointer;
@@ -46,7 +43,6 @@ body {
     padding: 15px 15px 0 0;
     color: #607d8b;
     letter-spacing : -.02em;
-    padding-top: 5%;
 }
 
 .info > div {
@@ -54,7 +50,7 @@ body {
 }
 
 .info div span > i {
-    margin-right: 10px;
+    margin-right: 0px;
 }
 
 .box-colors {

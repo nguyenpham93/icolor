@@ -26,7 +26,7 @@ app.use(session({
 }))
 
 
-app.use ('/public', express.static ('../public'))
+app.use ('/public', express.static ('public'))
 
 app.engine ('vue', expressVue);
 
@@ -63,6 +63,6 @@ require('../passport/google/passport_google')(passport);
 //------------Set up router --------------------
 require('../router/router')(app, passport);
 
-app.listen(4000, () => {
-    console.log("Express running at port 4000");
+app.listen(3000, () => {
+    console.log("Express running at port 3000");
 });
