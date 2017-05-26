@@ -74,3 +74,9 @@
     font-weight: bold;
     text-transform: lowercase;
 }
+
+.related {
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+}

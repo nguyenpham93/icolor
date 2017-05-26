@@ -24,7 +24,17 @@
                                 </textarea>
                             </div>
                             <div class="form-group">
-                                <label for="">Get colors from image</label>
+                                <select id="clonepallet">
+                                    <option value=""> --- </option>
+                                    <option v-for="i in dt" :value="i.id" :color1="i.color1" :color2="i.color2" :color3="i.color3" :color4="i.color4" :color5="i.color5">{{ i.name }}</option>
+                                </select>
+                                <input class="btn btn-default" type="button" value="Clone Pallet"  v-on:click="getList">
+                                <div class="alert alert-success msgClone" role="alert" v-if="msgClone">{{ msgClone }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Get colors from image
+                                    <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-html="true" title="<div style='text-align:left'>1) Upload your image <br>2) Select color boxes (#1 -> #5)<br>3) Choose colors from image</div>"></i>
+                                </label>
                                 <input type="file" accept="image/*"
                                        @change="onFileChange">
                                 <div class="previewimg">
@@ -41,14 +51,6 @@
                                         <input v-if="image" class="btn btn-default" type="button" value="Remove image"  v-on:click="removeimage">
                                     </p>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <select id="clonepallet">
-                                    <option value=""> --- </option>
-                                    <option v-for="i in dt" :value="i.id" :color1="i.color1" :color2="i.color2" :color3="i.color3" :color4="i.color4" :color5="i.color5">{{ i.name }}</option>
-                                </select>
-                                <input class="btn btn-default" type="button" value="Clone Pallet"  v-on:click="getList">
-                                <div class="alert alert-success msgClone" role="alert" v-if="msgClone">{{ msgClone }}</div>
                             </div>
                             <div class="form-group box-color">
                                 <div class="row">
@@ -344,6 +346,8 @@
                         .catch(error => {
                             //this.related_collection = [];
                         });
+                }else{
+                    alert('Please select pallet')
                 }
             },
             removeimage(){
@@ -353,6 +357,7 @@
         },
         mounted(){
             this.selectSearch();
+            $('[data-toggle="tooltip"]').tooltip()
 //            let $eventSelect = $("#clonepallet");
 //            let that = this;
 //            $eventSelect.on("select2:select", function (e) {

@@ -9,4 +9,5 @@ COPY . /usr/src/icolor
 EXPOSE 4000
 EXPOSE 4001
 RUN npm install
+RUN cd gulp && npm install
 CMD ["npm", "start"]

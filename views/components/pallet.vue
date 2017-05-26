@@ -60,7 +60,7 @@
                 })
                     .then (response => {
                         if(response.data.error) {
-                            console.log('Error');
+                            alert(response.data.error)
                         }else{
                             this.i = response.data;
                         }

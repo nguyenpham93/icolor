@@ -189,11 +189,11 @@ module.exports = function (app, passport) {
                             });
                     },
                     failed => {
-                        res.json({error: 'failed'});
+                        res.json({error: 'Failed'});
                     });
         }else{
             //console.log('Unauthorized');
-            res.json({error: 'Error'});
+            res.json({error: 'You must login to like or dislike'});
         }
     });
 

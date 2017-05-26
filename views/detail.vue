@@ -36,6 +36,10 @@
 						<img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" />
 					</a>
 				</div>
+				<div class="coppyall">
+					<button class="btn btn-default" v-on:click.prevent="copyall()">Copy all colors</button>
+					<div class="alert alert-success msgClone" role="alert" v-if="msgCoppy">{{ msgCoppy }}</div>
+				</div>
 			</div>
 			<div class="box-colors-detail col-sm-9">
 				<!--<h1 class="name">{{collection.name}}</h1>-->
@@ -60,7 +64,8 @@
 				users : {},
 				islogin : false,
 				searchable : false,
-				urlCurrent: ''
+				urlCurrent: '',
+				msgCoppy: ''
             }
         },
         methods : {
@@ -87,7 +92,7 @@
                 })
                     .then (response => {
                         if(response.data.error) {
-                            console.log('Error');
+                            alert(response.data.error)
                         }else{
                             this.collection = response.data;
                         }
@@ -98,6 +103,15 @@
                 		$('.box-like-dislike-share > span').removeClass('disabled');
                     });
             },
+			copyall(){
+			    let colors = [this.collection.color1, this.collection.color2, this.collection.color3, this.collection.color4, this.collection.color5];
+			    copyTextToClipboard('[' + colors + ']');
+			    this.msgCoppy = 'Copy successful';
+			    let that = this;
+			    setTimeout(function(){
+					that.msgCoppy = '';
+				}, 1000)
+			},
             copy(text){
                 copyTextToClipboard(text);
             },

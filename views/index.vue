@@ -3,11 +3,16 @@
         <myheader :islogin="islogin" :users="users" :onup="onup" :ondown="ondown" :search="search"
                   :searchable="searchable"></myheader>
         <div class="row">
-            <span>Sort</span>
-            <select name="sort" v-model="selected" v-on:change="search1()">
-                <option value="latest" selected="selected">Latest</option>
-                <option value="like">Like</option>
-            </select>
+            <div class="col-md-12">
+                <span>Sort</span> &nbsp; &nbsp;
+                <!--<select name="sort" v-model="selected" v-on:change="search1()">-->
+                    <!--<option value="latest" selected="selected">Latest</option>-->
+                    <!--<option value="like">Like</option>-->
+                <!--</select>-->
+                <input type="radio" name="sort" v-model="selected" value="latest" :checked="selected === 'latest'" v-on:click.prevent="search1()">&nbsp;Latest
+                &nbsp; &nbsp;
+                <input type="radio" name="sort" v-model="selected" value="like" v-on:click.prevent="search1()">&nbsp; Like
+            </div>
             <div id="container-color" v-if="dt">
                 <div class="item" v-for="i in dt">
                     <pallet :i="i"></pallet>
@@ -46,7 +51,7 @@
                 typingTimer: '',                //timer identifier
                 doneTypingInterval: 100,  //time in ms, 5 second for example
                 islogin: false,
-                selected: 'all',
+                selected: 'latest',
                 page: 1,
                 allpage: '',
                 searchText: ''
