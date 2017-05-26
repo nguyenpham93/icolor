@@ -35,6 +35,7 @@
 			</span>
 			<span v-else>
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" data-toggle="modal" data-target="#login-modal">Add new pallet</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#signin-modal">Register</a></li>
 				</ul>

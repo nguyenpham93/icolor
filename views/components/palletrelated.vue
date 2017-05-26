@@ -23,6 +23,10 @@
             <!--<div class="box-date">-->
                 <!--<span>{{collection.date}}</span>-->
             <!--</div>-->
+            <div class="coppyall">
+                <button class="btn btn-default" v-on:click.prevent="copyall()">Copy all colors</button>
+                <div class="alert alert-success msgClone" role="alert" v-if="msgCoppy">{{ msgCoppy }}</div>
+            </div>
         </div>
         <div class="box-colors-detail col-sm-9">
             <span class="colors" :style="{ backgroundColor:  collection.color1 }" :data-clipboard-text="collection.color1" v-on:click.stop.prevent="copy(collection.color1)"><i class="myclipboard" aria-hidden="true">{{collection.color1}}</i></span>
@@ -36,7 +40,7 @@
 <script>
     // Vue
     export default {
-        props : [ "collection"],
+        props : [ "collection", "msgCoppy"],
         methods: {
             likedislike(collection_id, action ){
 
@@ -59,6 +63,15 @@
                 		$('.box-like-dislike-share > span').removeClass('disabled');
                     });
             },
+            copyall(){
+			    let colors = this.collection.color1 + ', ' + this.collection.color2 + ', ' + this.collection.color3 + ', ' + this.collection.color4 + ', ' + this.collection.color5;
+			    copyTextToClipboard(colors);
+			    this.msgCoppy = 'Copy successful';
+			    let that = this;
+			    setTimeout(function(){
+					that.msgCoppy = '';
+				}, 1000)
+			},
             copy(text){
                 copyTextToClipboard(text);
             }

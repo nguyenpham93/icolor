@@ -32,13 +32,13 @@ function npm_start(path) {
   run_command('npm', ['start', '--prefix', path]);
 }
 
-function npm_install(path) {
-  run_command('npm', ['install', '--prefix', path]);
-}
+// function npm_install(path) {
+//   run_command('npm', ['install', '--prefix', path]);
+// }
 
 gulp.task('default', ['start_web', 'start_ios']);
 
-gulp.task('install', ['install_web', 'install_gulp']);
+//gulp.task('install', ['install_gulp']);
 
 //-------- Running app using npm start
 gulp.task('start_web', () => {
@@ -50,10 +50,7 @@ gulp.task('start_ios', () => {
 });
 
 //-------- Installation using npm install -----------
-gulp.task('install_web', () => {
-  npm_install("../");
-});
 
-gulp.task('install_gulp', () => {
-  npm_install("../gulp/");
-});
+// gulp.task('install_gulp', () => {
+//   npm_install("./");
+// });

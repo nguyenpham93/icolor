@@ -13,17 +13,49 @@
                     </div>
                     <div class="addnewpallet-conatiner">
                         <form action="" method="post" v-on:submit.prevent="addnew">
-                            <div class="form-group">
-                                <label for="">Pallet name</label>
-                                <input type="text" class="form-control" name="name" required>
+                            <div class="form-group box-color">
+                                <label>Option 1: Enter hex colors</label>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <span for="">Color #1</span>
+                                        <input type="text" class="form-control" name="color1" v-on:click.prevent="saveInput('color1')" v-model="pcolor1"
+                                               required>
+                                        <span class="preview-color" v-if="pcolor1.length === 6"
+                                              :style="{backgroundColor: '#' + pcolor1}"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span for="">Color #2</span>
+                                        <input type="text" class="form-control" name="color2" v-on:click.prevent="saveInput('color2')" v-model="pcolor2"
+                                               required>
+                                        <span class="preview-color" v-if="pcolor2.length === 6"
+                                              :style="{backgroundColor: '#' + pcolor2}"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span for="">Color #3</span>
+                                        <input type="text" class="form-control" name="color3" v-on:click.prevent="saveInput('color3')" v-model="pcolor3"
+                                               required>
+                                        <span class="preview-color" v-if="pcolor3.length === 6"
+                                              :style="{backgroundColor: '#' + pcolor3}"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span for="">Color #4</span>
+                                        <input type="text" class="form-control" name="color4" v-on:click.prevent="saveInput('color4')" v-model="pcolor4"
+                                               required>
+                                        <span class="preview-color" v-if="pcolor4.length === 6"
+                                              :style="{backgroundColor: '#' + pcolor4}"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span for="">Color #5</span>
+                                        <input type="text" class="form-control" name="color5" v-on:click.prevent="saveInput('color5')" v-model="pcolor5"
+                                               required>
+                                        <span class="preview-color" v-if="pcolor5.length === 6"
+                                              :style="{backgroundColor: '#' + pcolor5}"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="">Description</label>
-                                <textarea name="description" class="form-control" rows="3">
 
-                                </textarea>
-                            </div>
                             <div class="form-group">
+                                <label>Option 2: Clone pallet</label> <br>
                                 <select id="clonepallet">
                                     <option value=""> --- </option>
                                     <option v-for="i in dt" :value="i.id" :color1="i.color1" :color2="i.color2" :color3="i.color3" :color4="i.color4" :color5="i.color5">{{ i.name }}</option>
@@ -31,8 +63,9 @@
                                 <input class="btn btn-default" type="button" value="Clone Pallet"  v-on:click="getList">
                                 <div class="alert alert-success msgClone" role="alert" v-if="msgClone">{{ msgClone }}</div>
                             </div>
+
                             <div class="form-group">
-                                <label for="">Get colors from image
+                                <label for="">Option 3: Get color from image
                                     <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-html="true" title="<div style='text-align:left'>1) Upload your image <br>2) Select color boxes (#1 -> #5)<br>3) Choose colors from image</div>"></i>
                                 </label>
                                 <input type="file" accept="image/*"
@@ -52,45 +85,19 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="form-group box-color">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label for="">Color #1</label>
-                                        <input type="text" class="form-control" name="color1" v-on:click.prevent="saveInput('color1')" v-model="pcolor1"
-                                               required>
-                                        <span class="preview-color" v-if="pcolor1.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor1}"></span>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="">Color #2</label>
-                                        <input type="text" class="form-control" name="color2" v-on:click.prevent="saveInput('color2')" v-model="pcolor2"
-                                               required>
-                                        <span class="preview-color" v-if="pcolor2.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor2}"></span>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="">Color #3</label>
-                                        <input type="text" class="form-control" name="color3" v-on:click.prevent="saveInput('color3')" v-model="pcolor3"
-                                               required>
-                                        <span class="preview-color" v-if="pcolor3.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor3}"></span>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="">Color #4</label>
-                                        <input type="text" class="form-control" name="color4" v-on:click.prevent="saveInput('color4')" v-model="pcolor4"
-                                               required>
-                                        <span class="preview-color" v-if="pcolor4.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor4}"></span>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="">Color #5</label>
-                                        <input type="text" class="form-control" name="color5" v-on:click.prevent="saveInput('color5')" v-model="pcolor5"
-                                               required>
-                                        <span class="preview-color" v-if="pcolor5.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor5}"></span>
-                                    </div>
-                                </div>
+
+                            <div class="form-group">
+                                <label for="">Pallet name</label>
+                                <input type="text" class="form-control" name="name" required>
                             </div>
+
+                            <div class="form-group">
+                                <label for="">Description</label>
+                                <textarea name="description" class="form-control" rows="3">
+
+                                </textarea>
+                            </div>
+
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Add New Pallet</button>

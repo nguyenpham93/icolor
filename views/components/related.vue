@@ -4,6 +4,7 @@
         <div class="row collection" v-for="collection in collections">
 			<palletrelated :collection="collection"></palletrelated>
     	</div>
+	</div>
 	<div v-else></div>
 </template>
 <script>
