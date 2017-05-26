@@ -45,7 +45,7 @@ module.exports = function (passport){
                     newUser['facebook_access_token'] = access_token; // we will save the token that facebook provides to the user                    
                     newUser['google_id']  = '';
                     newUser['google_access_token'] = '';
-                    newUser['date'] = moment().format("DD-MM-YYYY");
+                    newUser['date'] = moment().format("DD-MM-YYYY HH:mm:ss");
                     elas.insertDocument ("icolor", "users", newUser)
                     .then ((data) => {
                         return done(null, newUser);

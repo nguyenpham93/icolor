@@ -104,8 +104,8 @@
                     });
             },
 			copyall(){
-			    let colors = [this.collection.color1, this.collection.color2, this.collection.color3, this.collection.color4, this.collection.color5];
-			    copyTextToClipboard('[' + colors + ']');
+			    let colors = this.collection.color1 + ', ' + this.collection.color2 + ', ' + this.collection.color3 + ', ' + this.collection.color4 + ', ' + this.collection.color5;
+			    copyTextToClipboard(colors);
 			    this.msgCoppy = 'Copy successful';
 			    let that = this;
 			    setTimeout(function(){

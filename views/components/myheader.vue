@@ -20,6 +20,7 @@
 							<div class="input-group-btn">
 								<button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
 							</div>
+								<span id="previewsearch" style=""></span>
 						</div>
 					</form>
 				</div>
@@ -118,7 +119,7 @@
 <script>
 	// Vue
 	export default {
-	    props : [ 'islogin', 'users', 'search', 'searchable', 'onup', 'ondown'],
+	    props : [ 'islogin', 'users', 'search', 'searchable', 'onup', 'ondown', 'textsearch'],
         methods : {
 			deleteCookie () {
 				document.cookie = 'connect.sid=; Max-Age=0';

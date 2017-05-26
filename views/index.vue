@@ -53,8 +53,7 @@
                 islogin: false,
                 selected: 'latest',
                 page: 1,
-                allpage: '',
-                searchText: ''
+                allpage: ''
             }
         },
         methods: {
@@ -99,6 +98,15 @@
                         this.dt = result.dt;
                         this.allpage = response.data.allpage;
                         this.page = response.data.page;
+                        if (temp.indexOf("#") === 0) {
+                            let hex = temp.slice(1);
+                            if ( hex.length <= 6 ) {
+                                hex = hex + '0'.repeat( 6 - hex.length);
+                            }
+                            $('#previewsearch').attr('style', 'background: #' + hex)
+                        }else{
+                            $('#previewsearch').removeAttr('style')
+                        }
                     })
                     .catch(error => {
                         this.dt = [];
