@@ -1,4 +1,4 @@
-#FROM node:7.7.4-alpine
+FROM node:7.7.4-alpine
 
 #Create app directory
 #RUN apt-get remove docker docker-engine
