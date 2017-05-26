@@ -49,7 +49,7 @@
                 users: {},
                 'searchable': true,
                 typingTimer: '',                //timer identifier
-                doneTypingInterval: 100,  //time in ms, 5 second for example
+                doneTypingInterval: 300,  //time in ms, 5 second for example
                 islogin: false,
                 selected: 'latest',
                 page: 1,
@@ -78,6 +78,9 @@
                 if (temp.length > 0) {
                     if (temp.indexOf("#") === 0) {
                         let hex = temp.slice(1);
+                        if ( hex.length <= 6 ) {
+                            hex = hex + '0'.repeat( 6 - hex.length);
+                        }
                         url = `/search/hex/${hex}`;
                     } else {
                         url = `/search/notall/${temp}`;

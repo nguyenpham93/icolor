@@ -4,6 +4,8 @@ const mapping_setting = require ("./mapping_setting");
 const Promise = require('bluebird');
 const shortid = require("shortid");
 const elas = require('../elastic/index');
+const convert = require("color-convert");
+const core = require("../models/core");
 
 class elastic {
 	constructor () {
@@ -180,93 +182,70 @@ class elastic {
 		})
 	}
 
-	searchPagination ( index, type, pgfrom, n, selected ) {
-    	let sort = {};
-    	if(selected === 'like') {
-            sort = {
-                "like": {
-                    "order": "desc"
-                }
-            };
-        }else{
-    		sort = {
-                "date": {
-                    "order": "desc"
-                }
-            };
-		}
-		return new Promise ( ( resolve, reject ) => {
-			this.elas.search ({
-				index : index,
-				type : type,
-				body : {
-					"from"  : pgfrom,
-					"size"  : n,
-					sort: sort,
-					"query" : {
-						"match_all" : {}
-					}
-				}
-			} , ( err, resp, stt) => {
-				if (err) {
-					reject (err.message);
-				} else {
-					let products = [];
-					resp.hits.hits.forEach ( (product) => {
-						products.push ( product['_source'] );
-					});
-					resolve ( products );
-				}
-			});
-		})
-	}
+	// searchPagination ( index, type, pgfrom, n, selected ) {
+    // 	let sort = {};
+    // 	if(selected === 'like') {
+    //         sort = {
+    //             "like": {
+    //                 "order": "desc"
+    //             }
+    //         };
+    //     }else{
+    // 		sort = {
+    //             "date": {
+    //                 "order": "desc"
+    //             }
+    //         };
+	// 	}
+	// 	return new Promise ( ( resolve, reject ) => {
+	// 		this.elas.search ({
+	// 			index : index,
+	// 			type : type,
+	// 			body : {
+	// 				"from"  : pgfrom,
+	// 				"size"  : n,
+	// 				sort: sort,
+	// 				"query" : {
+	// 					"match_all" : {}
+	// 				}
+	// 			}
+	// 		} , ( err, resp, stt) => {
+	// 			if (err) {
+	// 				reject (err.message);
+	// 			} else {
+	// 				let products = [];
+	// 				resp.hits.hits.forEach ( (product) => {
+	// 					products.push ( product['_source'] );
+	// 				});
+	// 				resolve ( products );
+	// 			}
+	// 		});
+	// 	})
+	// }
 
-	searchPaginationTerm ( index, type, term, selected, pgfrom, n ) {
-    	let fields = this.setTypeFields (type);
-    	let sort = {};
-    	if(selected === 'like') {
-             sort = {
-                 "like": {
-                     "order": "desc"
-                 }
-             };
-        }else{
-    		sort = {
-                "date": {
-                    "order": "desc"
-                }
-            };
-		}
-		return new Promise( ( resolve, reject ) => {
-			this.elas.search ({
-				index : index,
-				type  : type,
-				body  : {
-					"from"  : pgfrom,
-					"size"  : n,
-					sort: sort,
-					query: {
-						"multi_match" : {
-							"query"  	 : term,
-							"type" 	 	 : "best_fields",
-							"fields" 	 : fields,
-							"tie_breaker" : 0.3
-						}
-					}
-				}
-			}, (error, response, status) => {
-				if (error) {
-					reject ( error.message );
-				} else {
-					let products = [];
-					response.hits.hits.forEach ( (product) => {
-						products.push ( product["_source"] );
-					});
-					resolve ( products );
-				}
+	searchHEX( index, type, term, selected ) {
+
+        let nearColor = [];
+        let that = this;
+
+        return new Promise( (resolve, reject) => {
+			that.searchAll ( index, type )
+			.then ( data => {
+				data.forEach((color2) => {
+                    let lab1 = convert.hex.lab(term);
+                    let lab2 = convert.hex.lab(color2['id']);
+                    let distance = core.DeltaECIE(lab1, lab2);
+
+                    // color related if score between two colors less than 30
+                    if (distance < 30) {
+						color2['_score'] = distance;
+                        nearColor.push(color2);
+                    }
+                })
+				resolve ( nearColor );
 			});
-		});
-	}
+        });
+    }
 
 	searchTerm ( index, type, term, selected ) {
 
@@ -300,6 +279,53 @@ class elastic {
 			});
 		});
 	}
+
+	// searchPaginationTerm ( index, type, term, selected, pgfrom, n ) {
+    // 	let fields = this.setTypeFields (type);
+    // 	let sort = {};
+    // 	if(selected === 'like') {
+    //          sort = {
+    //              "like": {
+    //                  "order": "desc"
+    //              }
+    //          };
+    //     }else{
+    // 		sort = {
+    //             "date": {
+    //                 "order": "desc"
+    //             }
+    //         };
+	// 	}
+	// 	return new Promise( ( resolve, reject ) => {
+	// 		this.elas.search ({
+	// 			index : index,
+	// 			type  : type,
+	// 			body  : {
+	// 				"from"  : pgfrom,
+	// 				"size"  : n,
+	// 				sort: sort,
+	// 				query: {
+	// 					"multi_match" : {
+	// 						"query"  	 : term,
+	// 						"type" 	 	 : "best_fields",
+	// 						"fields" 	 : fields,
+	// 						"tie_breaker" : 0.3
+	// 					}
+	// 				}
+	// 			}
+	// 		}, (error, response, status) => {
+	// 			if (error) {
+	// 				reject ( error.message );
+	// 			} else {
+	// 				let products = [];
+	// 				response.hits.hits.forEach ( (product) => {
+	// 					products.push ( product["_source"] );
+	// 				});
+	// 				resolve ( products );
+	// 			}
+	// 		});
+	// 	});
+	// }
 
 	search ( index, type, term ) {
 

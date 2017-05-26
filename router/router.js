@@ -6,11 +6,38 @@ const likedislike = require('../models/like_dislike');
 const moment = require("moment");
 const Promise = require("bluebird");
 
+const convert = require("color-convert");
+const core = require("../models/core");
+
 module.exports = function (app, passport) {
 
     require('./users')(app, passport);
 
     require('./pallet')(app, passport);
+
+    // TEST
+    app.get('/calculate', (req, res) => {
+        let hex2 = "#FFFFFF";
+        let arr = [];
+        console.time('testspeed');
+        collection.getAllColor ()
+            .then (data => {
+                data.forEach ( (color2) => {
+                    let temp1 = {};
+                    let lab1 = convert.hex.lab ( hex2 );
+                    let lab2 = convert.hex.lab ( color2['id'] );
+                    let distance = core.DeltaECIE ( lab1, lab2 );
+
+                    // color related if score between two colors less than 50
+                    if ( distance < 50 ) {
+                        color2.score = distance;
+                        arr.push(color2);
+                    } 
+                });
+                console.log(arr);
+                console.timeEnd('testspeed');
+            });
+    });
 
     app.get ('/', (req, res) => {
         let user_id = req.session.user.id;
@@ -23,20 +50,15 @@ module.exports = function (app, passport) {
             q = 1;
         }
 
-        let getAll = Promise.coroutine(function* () {
-            let resultA = yield collection.getPaginationCollection (pgfrom, n, '', user_id);
-            let resultB = yield collection.getAllCollection (user_id);
-            return [resultA, resultB];
-        });
-
-        getAll()
+        collection.getAllCollection (user_id)
         .then (result => {
-            let countAll = result[1].length;
+            let countAll = result.length;
             p = Math.ceil(countAll / n, 0);
+            let items = result.slice ( pgfrom, pgfrom + n );
 
             res.render ('index', {
                 data: {
-                    dt : result[0],
+                    dt : items,
                     islogin : req.session.login,
                     users : req.session.user.email || '',
                     allpage: p,
@@ -73,64 +95,65 @@ module.exports = function (app, passport) {
         let pgfrom = (page - 1) * n;
 
         if(q === 'all'){
-            let getAll = Promise.coroutine(function* () {
-                let resultA = yield collection.getPaginationCollection (pgfrom, n, selected, user_id);
-                let resultB = yield collection.getAllCollection (user_id);
-                return [resultA, resultB];
-            });
+            // let getAll = Promise.coroutine(function* () {
+            //     let resultA = yield collection.getPaginationCollection (pgfrom, n, selected, user_id);
+            //     let resultB = yield collection.getAllCollection (user_id);
+            //     return [resultA, resultB];
+            // });
 
-            getAll()
+            collection.getAllCollection (user_id)
                 .then(data => {
-                    let countAll = data[1].length;
+                    let countAll = data.length;
                     p = Math.ceil(countAll / n, 0);
+                    let items = data.slice ( pgfrom, pgfrom + n );
                     res.json({
-                        dt: data[0],
+                        dt: items,
                         islogin: req.session.login,
                         users: req.session.user.email || '',
                         allpage: p,
                         page: page,
                     });
                 });
-        }else {
-
+        } else {
+            // Search by HEX
             if(q === 'hex'){
+
+                let nearColor = [];
                 term = '#' + term;
-            }
-            //collection.searchCollection(term, user_id)
-            let getTerm = Promise.coroutine(function* () {
-                let resultA = yield collection.searchPaginationCollection (term, user_id, selected, pgfrom, n);
-                let resultB = yield collection.searchCollection (term, user_id, selected);
-                return [resultA, resultB];
-            });
 
-            getTerm()
-                .then(data => {
-                    let countAll = data[1].length;
-                    p = Math.ceil(countAll / n, 0);
-                    res.json({
-                        dt: data[0],
-                        islogin: req.session.login,
-                        users: req.session.user.email || '',
-                        allpage: p,
-                        page: page,
+                collection.searchCollectionByHex ( term, user_id, selected )
+                    .then( data => {
+
+                        let countAll = data.length;
+                        p = Math.ceil(countAll / n, 0);
+                        let items = data.slice ( pgfrom, pgfrom + n );
+
+                        res.json({
+                            dt: items,
+                            islogin: req.session.login,
+                            users: req.session.user.email || '',
+                            allpage: p,
+                            page: page,
+                        });
+
                     });
-                });
+            } else {
+            // SEARCH BY TERM
+                collection.searchCollection (term, user_id, selected)
+                    .then(data => {
+                        let countAll = data.length;
+                        p = Math.ceil(countAll / n, 0);
+                        let items = data.slice ( pgfrom, pgfrom + n );
+                        res.json({
+                            dt: items,
+                            islogin: req.session.login,
+                            users: req.session.user.email || '',
+                            allpage: p,
+                            page: page,
+                        });
+                    });
+            }
         }
-
-        // if ( q === 'all' ) {
-        //     collection.getAllCollection (user_id)
-        //     .then ( data => {
-        //         res.json ( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
-        //     });
-        // } else {
-        //     if(q === 'hex'){
-        //         term = '#' + term;
-        //     }
-        //     collection.searchCollection (term, user_id)
-        //     .then (data => {
-        //         res.json( {dt : data ,islogin : req.session.login, user : req.session.user.email} );
-        //     });
-        // }
     });
     
     app.get('/relate', (req, res) => {

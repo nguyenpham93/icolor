@@ -26,22 +26,22 @@ class Collection {
         });
     }
 
-    getPaginationCollection (pgfrom, n, selected, user_id) {
-        return new Promise ( (resolve, reject) => {
-            elas.searchPagination ( "icolor", "collection", pgfrom, n, selected )
-            .then ( (data) => {
-                data.forEach((i) => {
-                    i.userlogin = user_id;
-                });
-                async.mapSeries (data, user.getAuthor, (err, result) => {
-                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
-                            //console.log(result);
-                            resolve (result);
-                        });
-                });
-            });
-        });
-    }
+    // getPaginationCollection (pgfrom, n, selected, user_id) {
+    //     return new Promise ( (resolve, reject) => {
+    //         elas.searchPagination ( "icolor", "collection", pgfrom, n, selected )
+    //         .then ( (data) => {
+    //             data.forEach((i) => {
+    //                 i.userlogin = user_id;
+    //             });
+    //             async.mapSeries (data, user.getAuthor, (err, result) => {
+    //                     async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+    //                         //console.log(result);
+    //                         resolve (result);
+    //                     });
+    //             });
+    //         });
+    //     });
+    // }
 
     getIdNameCollection () {
         return new Promise ( (resolve, reject) => {
@@ -92,6 +92,7 @@ class Collection {
         });
     }
 
+    
     searchCollection ( term, user_id, selected ) {
         return new Promise ( (resolve, reject) => {
             elas.searchTerm ("icolor", "collection", term, selected)
@@ -108,21 +109,77 @@ class Collection {
         });
     }
 
-    searchPaginationCollection ( term, user_id, selected, pgfrom, n)  {
+    // searchPaginationCollection ( term, user_id, selected, pgfrom, n)  {
+    //     return new Promise ( (resolve, reject) => {
+    //         elas.searchPaginationTerm ("icolor", "collection", term, selected, pgfrom, n)
+    //         .then ( data => {
+    //             data.forEach((i) => {
+    //                 i.userlogin = user_id;
+    //             });
+    //             async.mapSeries (data, user.getAuthor, (err, result) => {
+    //                     async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+    //                         resolve(result);
+    //                     });
+    //             });
+    //         });
+    //     });
+    // }
+
+    searchCollectionByHex ( term, user_id, selected ) {
+        let that = this;
         return new Promise ( (resolve, reject) => {
-            elas.searchPaginationTerm ("icolor", "collection", term, selected, pgfrom, n)
+            elas.searchHEX ("icolor", "color", term, selected)
             .then ( data => {
-                data.forEach((i) => {
-                    i.userlogin = user_id;
+
+
+                // data is an array contains color Object
+                let n = data.length;
+                let sorted = quickSort ( data, 0, n-1 );
+                let arrId = [];
+
+                
+                sorted.forEach( (item) => {
+                    arrId.push ( item['id'] );
                 });
-                async.mapSeries (data, user.getAuthor, (err, result) => {
-                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+
+
+                that.getCollectionRelated (arrId)
+                .then ( (data) => {
+
+                    let temp = [];
+
+                    data.map ( (item) => {
+                        temp.push ( ...item );
+                    });
+
+                    // Remove pallet if exist
+                    let n = temp.length;
+
+                    temp.forEach ( ( item , index ) => {
+
+                        let same = temp.filter ( (obj) => {
+                            return obj['id'] === item['id'];
+                        });
+
+                        if ( same.length >= 2 ) {
+                            temp.splice ( index , 1 );
+                        } else {
+                            item.userlogin = user_id;
+                        }
+
+                    });
+
+                    // Get author and Like each Pallet
+                    async.mapSeries ( temp, user.getAuthor, (err, result) => {
+                        async.mapSeries ( temp, likedislike.checkLikeDislike, (err, result) => {
                             resolve(result);
                         });
+                    });
                 });
             });
         });
     }
+
 
     searchCollectionByIdUser ( term ) {
         return new Promise ( (resolve, reject) => {
