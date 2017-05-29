@@ -436,7 +436,7 @@ function searchAll (){
          console.log(data.length);
      });
 }
-searchAll();
+//searchAll();
 
 
 // elas.search("icolor","color_related", "#D95B43")
@@ -517,3 +517,19 @@ let isSamePallet = ( allPallet , userPallet ) => {
 //
 // //console.log(matrixElementsSum([[0,1,1,2],[0,5,0,0], [2,0,3,3]]));
 // matrixElementsSum([[0,1,1,2],[0,5,0,0], [2,0,3,3]])
+
+let test = (a, b) => {
+    let result = 0;
+    let nhiphanold = a.toString(2);
+    let n2 = nhiphanold.length;
+    nhiphanold = [...nhiphanold];
+    nhiphanold[n2 - b] = 0;
+    nhiphannew = nhiphanold.join("");
+    for(var i = 0; i < nhiphannew.length; i++){
+        result += nhiphannew[i] * Math.pow(2, (n2 - i - 1));
+    }
+    console.log(result)
+    //return result;
+};
+
+test(37, 3);
