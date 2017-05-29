@@ -16,7 +16,7 @@
 				<div v-if="searchable">
 					<form class="navbar-form" role="search" v-on:submit.prevent="search">
 						<div class="input-group" id="search">
-							<input type="text" v-on:keyup="onup()" v-on:keydown="ondown()" class="form-control" id="searchterm" placeholder="Search" name="q">
+							<input type="text" v-on:keyup="onup()" v-on:keydown="ondown()" class="form-control" id="searchterm" placeholder="Color hex (#000), name" name="q">
 							<div class="input-group-btn">
 								<button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
 							</div>
