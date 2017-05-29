@@ -88,6 +88,8 @@ module.exports = function (app, passport) {
             error += '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Color 5 invalid <br>';
         }
 
+
+
         if(error.length > 0){
             res.json({
                 errMsg: error,

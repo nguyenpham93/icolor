@@ -319,7 +319,9 @@ class Collection {
                     reject ( 'Pallet already existed' );
                 }else if(that.isSamePalletName(pallets, userPallet)){
                     reject ( 'Pallet Name already existed' );
-                } else {
+                }else if(that.isColorExist(userPallet) ){
+                    reject ( 'Colors is existed in this pallet' );
+                }else {
                     elas.insertDocument ( "icolor", "collection", userPallet )
                     .then (() => {
                         let colors = that.getColorsInPallet ( userPallet );
@@ -334,6 +336,17 @@ class Collection {
                 }
             });
         });
+    }
+
+    isColorExist(pallet){
+        let arr = this.getColorsInPallet(pallet);
+        for (let i = 0; i < arr.length; i++){
+            let arr2 = arr.filter( k => k === arr[i]);
+            if (arr2.length > 1){
+                return true;
+            }
+        }
+        return false;
     }
 
     // TODO : Check if Pallet already existed in database

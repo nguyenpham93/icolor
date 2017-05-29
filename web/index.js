@@ -8,6 +8,9 @@ const elas = require ("../elastic/index");
 const passport = require('passport');
 const auth = require ('../passport/auth');
 const session = require('express-session');
+const NodeCache = require( "node-cache" );
+
+const myCache = new NodeCache( { stdTTL: 0, checkperiod: 600 } );
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
