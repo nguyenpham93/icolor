@@ -81,11 +81,14 @@
                             hex = hex + '0'.repeat( 6 - hex.length);
                         }
                         url = `/search/hex/${hex}`;
+                        $('#previewsearch').attr('style', 'background: #' + hex)
                     } else {
                         url = `/search/notall/${temp}`;
+                        $('#previewsearch').removeAttr('style')
                     }
                 } else {
                     url = `/search/all/searchall`;
+                    $('#previewsearch').removeAttr('style')
                 }
                 axios.post(url, {
                     selected: this.selected,
@@ -98,15 +101,15 @@
                         this.dt = result.dt;
                         this.allpage = response.data.allpage;
                         this.page = response.data.page;
-                        if (temp.indexOf("#") === 0) {
-                            let hex = temp.slice(1);
-                            if ( hex.length <= 6 ) {
-                                hex = hex + '0'.repeat( 6 - hex.length);
-                            }
-                            $('#previewsearch').attr('style', 'background: #' + hex)
-                        }else{
-                            $('#previewsearch').removeAttr('style')
-                        }
+//                        if (temp.indexOf("#") === 0) {
+//                            let hex = temp.slice(1);
+//                            if ( hex.length <= 6 ) {
+//                                hex = hex + '0'.repeat( 6 - hex.length);
+//                            }
+//                            $('#previewsearch').attr('style', 'background: #' + hex)
+//                        }else{
+//                            $('#previewsearch').removeAttr('style')
+//                        }
                     })
                     .catch(error => {
                         this.dt = [];
