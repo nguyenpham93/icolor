@@ -10,7 +10,7 @@ const convert = require("color-convert");
 const core = require("../models/core");
 const NodeCache = require( "node-cache" );
 
-const myCache = new NodeCache( { stdTTL: 0, checkperiod: 600 } );
+const myCache = new NodeCache( { stdTTL: 43200, checkperiod: 600 } );
 
 module.exports = function (app, passport) {
 
