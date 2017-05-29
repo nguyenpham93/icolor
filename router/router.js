@@ -8,9 +8,9 @@ const Promise = require("bluebird");
 
 const convert = require("color-convert");
 const core = require("../models/core");
-const NodeCache = require( "node-cache" );
+const NodeCache = require("node-cache");
 
-const myCache = new NodeCache( { stdTTL: 43200, checkperiod: 600 } );
+const myCache = new NodeCache({stdTTL: 43200, checkperiod: 600});
 
 module.exports = function (app, passport) {
 
@@ -52,62 +52,68 @@ module.exports = function (app, passport) {
         } else {
             q = 1;
         }
-
+        //myCache.del( "home");
         myCache.get("home", function (err, value) {
             if (!err) {
                 if (value == undefined) {
                     collection.getAllCollection(user_id)
-                    .then(result => {
+                        .then(result => {
 
-                        let countAll = result.length;
-                        p = Math.ceil(countAll / n, 0);
-                        let items = result.slice(pgfrom, pgfrom + n);
+                            let countAll = result.length;
+                            p = Math.ceil(countAll / n, 0);
+                            let items = result.slice(pgfrom, pgfrom + n);
 
-                        let obj = {
+                            myCache.set("home", result, function (err, success) {
+                                if (!err && success) {
+                                    console.log(success);
+                                }
+                            });
+                            res.render('index', {
+                                data: {
+                                    dt: items,
+                                    islogin: req.session.login,
+                                    users: req.session.user.email || '',
+                                    allpage: p,
+                                    page: q,
+                                },
+                                vue: {
+                                    head: {
+                                        title: 'Color Pro',
+                                        meta: [
+                                            // { script: '/public/js/home/script.js' },
+                                            {style: '/public/css/home/style.css', type: 'text/css', rel: 'stylesheet'}
+                                        ],
+                                    },
+                                    components: ['myheader', 'pallet']
+                                }
+                            });
+                        });
+                } else {
+                    let countAll = value.length;
+                    p = Math.ceil(countAll / n, 0);
+                    let items = value.slice(pgfrom, pgfrom + n);
+                    res.render('index', {
+                        data: {
                             dt: items,
                             islogin: req.session.login,
                             users: req.session.user.email || '',
                             allpage: p,
                             page: q,
-                        };
-
-                        myCache.set("home", obj, function (err, success) {
-                            if (!err && success) {
-                                console.log(success);
-                            }
-                        });
-                        res.render('index', {
-                            data: obj,
-                            vue: {
-                                head: {
-                                    title: 'Color Pro',
-                                    meta: [
-                                        // { script: '/public/js/home/script.js' },
-                                        {style: '/public/css/home/style.css', type: 'text/css', rel: 'stylesheet'}
-                                    ],
-                                },
-                                components: ['myheader', 'pallet']
-                            }
-                        });
+                        },
+                        vue: {
+                            head: {
+                                title: 'Color Pro',
+                                meta: [
+                                    // { script: '/public/js/home/script.js' },
+                                    {style: '/public/css/home/style.css', type: 'text/css', rel: 'stylesheet'}
+                                ],
+                            },
+                            components: ['myheader', 'pallet']
+                        }
                     });
-                } else {
-                    res.render('index', {
-                            data: value,
-                            vue: {
-                                head: {
-                                    title: 'Color Pro',
-                                    meta: [
-                                        // { script: '/public/js/home/script.js' },
-                                        {style: '/public/css/home/style.css', type: 'text/css', rel: 'stylesheet'}
-                                    ],
-                                },
-                                components: ['myheader', 'pallet']
-                            }
-                        });
                 }
             }
         });
-
 
 
     });
@@ -134,12 +140,31 @@ module.exports = function (app, passport) {
             //     let resultB = yield collection.getAllCollection (user_id);
             //     return [resultA, resultB];
             // });
-
-            collection.getAllCollection(user_id)
+            // myCache.get("home", function (err, value) {
+            //     if (!err) {
+            //         if (value == undefined) {
+            //             // key not found
+            //         } else {
+            //             console.log(value)
+            //             let countAll = value.length;
+            //             p = Math.ceil(countAll / n, 0);
+            //             let items = value.slice(pgfrom, pgfrom + n);
+            //             res.json({
+            //                 dt: items,
+            //                 islogin: req.session.login,
+            //                 users: req.session.user.email || '',
+            //                 allpage: p,
+            //                 page: page,
+            //             });
+            //         }
+            //     }
+            // });
+            collection.getAllCollectionBylike(user_id, selected)
                 .then(data => {
                     let countAll = data.length;
                     p = Math.ceil(countAll / n, 0);
                     let items = data.slice(pgfrom, pgfrom + n);
+
                     res.json({
                         dt: items,
                         islogin: req.session.login,
@@ -242,6 +267,7 @@ module.exports = function (app, passport) {
                 .then(data => {
                         collection.getCollection(data, user_id)
                             .then((data1) => {
+                                myCache.del( "home");
                                 res.json(data1[0])
                             });
                     },
@@ -282,6 +308,7 @@ module.exports = function (app, passport) {
     app.get("/logined", (req, res) => {
         let data = {};
         if (req.session.login) {
+            myCache.del( "home");
             data = {'islogin': true, 'users': req.session.user.email || ''};
         } else {
             data = {'islogin': false};

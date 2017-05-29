@@ -26,22 +26,22 @@ class Collection {
         });
     }
 
-    // getPaginationCollection (pgfrom, n, selected, user_id) {
-    //     return new Promise ( (resolve, reject) => {
-    //         elas.searchPagination ( "icolor", "collection", pgfrom, n, selected )
-    //         .then ( (data) => {
-    //             data.forEach((i) => {
-    //                 i.userlogin = user_id;
-    //             });
-    //             async.mapSeries (data, user.getAuthor, (err, result) => {
-    //                     async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
-    //                         //console.log(result);
-    //                         resolve (result);
-    //                     });
-    //             });
-    //         });
-    //     });
-    // }
+    getAllCollectionBylike (user_id, selected) {
+        return new Promise ( (resolve, reject) => {
+            elas.searchPagination ( "icolor", "collection", selected )
+            .then ( (data) => {
+                data.forEach((i) => {
+                    i.userlogin = user_id;
+                });
+                async.mapSeries (data, user.getAuthor, (err, result) => {
+                        async.mapSeries (data, likedislike.checkLikeDislike, (err, result) => {
+                            //console.log(result);
+                            resolve (result);
+                        });
+                });
+            });
+        });
+    }
 
     getIdNameCollection () {
         return new Promise ( (resolve, reject) => {

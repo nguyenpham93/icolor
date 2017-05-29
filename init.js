@@ -430,13 +430,13 @@ like1.forEach((i) => {
 
 // Search ALl for test
 function searchAll (){
-	elas.searchAll("icolor","collection")
+	elas.searchAll("icolor","like_dislike")
      .then (data => {
          console.log(data);
          console.log(data.length);
      });
 }
-//searchAll();
+searchAll();
 
 
 // elas.search("icolor","color_related", "#D95B43")

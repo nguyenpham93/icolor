@@ -8,7 +8,9 @@ const Promise = require("bluebird");
 const bcrypt = require('bcrypt-nodejs');
 const shortid = require("shortid");
 const async = require("async");
+const NodeCache = require("node-cache");
 
+const myCache = new NodeCache({stdTTL: 43200, checkperiod: 600});
 //Check hex code
 function isHexaColor(sNum) {
     return (typeof sNum === "string") && sNum.length === 6
@@ -115,6 +117,7 @@ module.exports = function (app, passport) {
             }];
             let islogin = req.session.login;
             let users = req.session.user.email || '';
+            myCache.del( "home");
             async.mapSeries (color, merge, (err, rs) => {
                 res.json({
                     errMsg: rs[0],
@@ -145,6 +148,7 @@ module.exports = function (app, passport) {
 
                     collection.searchPaginationCollectionByIdUser(user_id, pgfrom, n)
                         .then(data1 => {
+                            myCache.del( "home");
                             res.json({
                                     dt: data1,
                                     islogin: req.session.login,
