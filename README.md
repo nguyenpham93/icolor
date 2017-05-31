@@ -3,14 +3,169 @@ Color Collection using Express + Vuejs + ElasticSearch
 
 
 ## Chức năng
-1) Hiển thị tất cả Pallet, có phân trang, lọc
-2) Copy mã màu
-3) Người dùng đăng ký, đăng nhập, đăng nhập Facebook, google
-4) Hiển thị Pallet liên quan theo màu.
-5) Thêm Pallet
-6) Chọn màu từ ảnh
-7) Like, Dislike, share
-8) Clone pallet
+
+#### 1) Tìm kiếm theo tên, mã màu, ID pallet
+
+#### 2) Phân trang
+    
+    ```
+    let q = req.body['page'];
+    let n = 20;
+    let pgfrom = 0;
+    if (q != undefined && q > 0) {
+        pgfrom = (pgfrom + q - 1) * n;
+    } else {
+        q = 1;
+    }
+    ```
+- q: Trang hiện tại (Mặc định là 1)
+- n: Số lượng pallet trong 1 trang
+- pgfrom: Bắt đầu từ đâu trong mảng
+
+#### 3) Sắp xếp mới nhất, nhiều like nhất
+
+- Mới nhất
+
+    ```
+    return new Promise ( ( resolve, reject ) => {
+        this.elas.search ({
+            index : index,
+            type : type,
+            body : {
+                "from"  : 0,
+                "size"  : 5000,
+                "sort"  : {
+                     "date": {
+                         "order": "desc"
+                     }
+                },
+                "query" : {
+                    "match_all" : {}
+                }
+            }
+        } , ( err, resp, stt) => {
+            if (err) {
+                reject (err.message);
+            } else {
+                let products = [];
+                resp.hits.hits.forEach ( (product) => {
+                    products.push ( product['_source'] );
+                });
+                resolve ( products );
+            }
+        });
+    })
+    ```
+
+- Nhiều like nhất
+
+    ```
+    return new Promise ( ( resolve, reject ) => {
+        this.elas.search ({
+            index : index,
+            type : type,
+            body : {
+                "from"  : 0,
+                "size"  : 5000,
+                "sort"  : {
+                     "like": {
+                         "order": "desc"
+                     }
+                },
+                "query" : {
+                    "match_all" : {}
+                }
+            }
+        } , ( err, resp, stt) => {
+            if (err) {
+                reject (err.message);
+            } else {
+                let products = [];
+                resp.hits.hits.forEach ( (product) => {
+                    products.push ( product['_source'] );
+                });
+                resolve ( products );
+            }
+        });
+    })
+    ```
+
+#### 4) Đăng nhập
+
+#### 5) Đăng ký
+
+#### 6) Copy mã màu
+    
+    ```
+    function copyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+    
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+    
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+    
+        textArea.style.padding = 0;
+    
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+    
+        textArea.style.background = 'transparent';
+    
+        textArea.value = text;
+    
+        document.body.appendChild(textArea);
+    
+        textArea.select();
+    
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+    
+        document.body.removeChild(textArea);
+    }
+    ```
+    
+#### 7) Like / dislike
+
+    ```
+    likedislike(collection_id, action ){
+        $('.box-like-dislike-share > span').addClass('disabled');
+        axios.post('/likedislike', {
+            collection_id: collection_id,
+            action: action
+        })
+            .then (response => {
+                if(response.data.error) {
+                    alert(response.data.error)
+                }else{
+                    this.collection = response.data;
+                }
+                $('.box-like-dislike-share > span').removeClass('disabled');
+            })
+            .catch ( error => {
+                //this.dt = [];
+                $('.box-like-dislike-share > span').removeClass('disabled');
+            });
+    },
+    ```
+    
+#### 8) Hiển thị Pallet liên quan theo màu.
+
+#### 9) Thêm Pallet
+
+#### 10) Pick color
+
+#### 11) Chọn màu từ ảnh
+
+#### 12) Clone pallet
 
 ## Sử dụng
 1) Express
