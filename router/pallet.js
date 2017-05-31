@@ -8,9 +8,10 @@ const Promise = require("bluebird");
 const bcrypt = require('bcrypt-nodejs');
 const shortid = require("shortid");
 const async = require("async");
-const NodeCache = require("node-cache");
 
+const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 43200, checkperiod: 600});
+
 //Check hex code
 function isHexaColor(sNum) {
     return (typeof sNum === "string") && sNum.length === 6
@@ -30,9 +31,9 @@ function merge(item, cb){
 
 module.exports = function (app, passport) {
     app.get('/addnewpallet', (req, res) => {
-        let user_id = req.session.user.id;
+        let user_id = req.session.user.id || "null";
 
-        if (typeof user_id === 'undefined') {
+        if ( user_id === 'null') {
             res.redirect('/');
         } else {
             collection.getIdNameCollection ()
@@ -60,7 +61,8 @@ module.exports = function (app, passport) {
     });
 
     app.post('/addnewpallet', (req, res) => {
-        let user_id = req.session.user.id;
+
+        let user_id = req.session.user.id || 'null';
         let name = req.body['name'];
         let description = req.body['description'];
         let color1 = req.body['color1'];
@@ -117,7 +119,12 @@ module.exports = function (app, passport) {
             }];
             let islogin = req.session.login;
             let users = req.session.user.email || '';
-            myCache.del( "home");
+
+            myCache.del( "homenull");
+            myCache.del( "home" + user_id);
+            myCache.del( "dataSortByLikenull");
+            myCache.del( "dataSortByLike" + user_id);
+
             async.mapSeries (color, merge, (err, rs) => {
                 res.json({
                     errMsg: rs[0],
@@ -129,7 +136,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/delete-pallet', (req, res) => {
-        let user_id = req.session.user.id;
+        let user_id = req.session.user.id || 'null';
         let pallet_id = req.body['pallet_id'];
         let id_user = req.body['user_id'];
         if(user_id === id_user){
@@ -148,7 +155,12 @@ module.exports = function (app, passport) {
 
                     collection.searchPaginationCollectionByIdUser(user_id, pgfrom, n)
                         .then(data1 => {
-                            myCache.del( "home");
+                            
+                            myCache.del( "homenull");
+                            myCache.del( "home" + user_id);
+                            myCache.del( "dataSortByLikenull");
+                            myCache.del( "dataSortByLike" + user_id);
+
                             res.json({
                                     dt: data1,
                                     islogin: req.session.login,
@@ -169,7 +181,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/clonepallet', (req, res) => {
-        let user_id = req.session.user.id;
+        let user_id = req.session.user.id || 'null';
         let idPallet = req.body['idPallet'];
 
             collection.getCollection(idPallet, user_id)

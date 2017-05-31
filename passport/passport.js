@@ -12,7 +12,6 @@ module.exports = function (passport){
         elas.search ( 'icolor', 'users', id)
         .then ( user => {
             user = user[0];
-            myCache.del( "home");
             done (null, user);
         },
         error => {

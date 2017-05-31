@@ -18,32 +18,9 @@ module.exports = function (app, passport) {
 
     require('./pallet')(app, passport);
 
-    // TEST
-    app.get('/calculate', (req, res) => {
-        let hex2 = "#FFFFFF";
-        let arr = [];
-        console.time('testspeed');
-        collection.getAllColor()
-            .then(data => {
-                data.forEach((color2) => {
-                    let temp1 = {};
-                    let lab1 = convert.hex.lab(hex2);
-                    let lab2 = convert.hex.lab(color2['id']);
-                    let distance = core.DeltaECIE(lab1, lab2);
-
-                    // color related if score between two colors less than 50
-                    if (distance < 50) {
-                        color2.score = distance;
-                        arr.push(color2);
-                    }
-                });
-                console.log(arr);
-                console.timeEnd('testspeed');
-            });
-    });
-
     app.get('/', (req, res) => {
-        let user_id = req.session.user.id;
+
+        let user_id = req.session.user.id || 'null';
         let q = req.body['page'];
         let n = 20;
         let pgfrom = 0;
@@ -52,8 +29,8 @@ module.exports = function (app, passport) {
         } else {
             q = 1;
         }
-        //myCache.del( "home");
-        myCache.get("home", function (err, value) {
+
+        myCache.get("home" + user_id, function (err, value) {
             if (!err) {
                 if (value == undefined) {
                     collection.getAllCollection(user_id)
@@ -63,11 +40,12 @@ module.exports = function (app, passport) {
                             p = Math.ceil(countAll / n, 0);
                             let items = result.slice(pgfrom, pgfrom + n);
 
-                            myCache.set("home", result, function (err, success) {
+                            myCache.set("home" + user_id, result, function (err, success) {
                                 if (!err && success) {
                                     console.log(success);
                                 }
                             });
+
                             res.render('index', {
                                 data: {
                                     dt: items,
@@ -119,60 +97,114 @@ module.exports = function (app, passport) {
     });
 
     app.post('/search/:q/:term', (req, res) => {
+
         let q = req.params['q'];
         let term = req.params['term'];
-        let user_id = 0;
-        //console.log(req.body)
-
+        let user_id = req.session.user.id || 'null';
         let selected = req.body['selected'];
         let page = req.body['page'];
-
-        if (req.session.user.id) {
-            user_id = req.session.user.id;
-        }
 
         let n = 20;
         let pgfrom = (page - 1) * n;
 
         if (q === 'all') {
-            // let getAll = Promise.coroutine(function* () {
-            //     let resultA = yield collection.getPaginationCollection (pgfrom, n, selected, user_id);
-            //     let resultB = yield collection.getAllCollection (user_id);
-            //     return [resultA, resultB];
-            // });
-            // myCache.get("home", function (err, value) {
-            //     if (!err) {
-            //         if (value == undefined) {
-            //             // key not found
-            //         } else {
-            //             console.log(value)
-            //             let countAll = value.length;
-            //             p = Math.ceil(countAll / n, 0);
-            //             let items = value.slice(pgfrom, pgfrom + n);
-            //             res.json({
-            //                 dt: items,
-            //                 islogin: req.session.login,
-            //                 users: req.session.user.email || '',
-            //                 allpage: p,
-            //                 page: page,
-            //             });
-            //         }
-            //     }
-            // });
-            collection.getAllCollectionBylike(user_id, selected)
-                .then(data => {
-                    let countAll = data.length;
-                    p = Math.ceil(countAll / n, 0);
-                    let items = data.slice(pgfrom, pgfrom + n);
 
-                    res.json({
-                        dt: items,
-                        islogin: req.session.login,
-                        users: req.session.user.email || '',
-                        allpage: p,
-                        page: page,
-                    });
+            if ( selected == 'latest' ) {
+
+                myCache.get( "home" + user_id, function( err, value ){
+                    if( !err ){
+                        if(value == undefined){
+                            
+                            collection.getAllCollectionBylike (user_id, selected)
+                            .then ( data => {
+
+                                myCache.set ( "home" + user_id, data, function( err, success ){
+                                    if( !err && success ){
+                                        console.log( success );
+                                    }
+                                });
+
+                                let countAll = data.length;
+                                p = Math.ceil(countAll / n, 0);
+                                let items = data.slice(pgfrom, pgfrom + n);
+
+                                res.json({
+                                    dt: items,
+                                    islogin: req.session.login,
+                                    users: req.session.user.email || '',
+                                    allpage: p,
+                                    page: page,
+                                });
+
+                            });
+
+                        } else {
+                            
+                            let countAll = value.length;
+                            p = Math.ceil(countAll / n, 0);
+                            let items = value.slice(pgfrom, pgfrom + n);
+
+                            res.json({
+                                dt: items,
+                                islogin: req.session.login,
+                                users: req.session.user.email || '',
+                                allpage: p,
+                                page: page,
+                            });
+
+                        }
+                    }
                 });
+
+            } else {
+
+                myCache.get( "dataSortByLike" + user_id, function( err, value ){
+                    if( !err ){
+                        if (value == undefined){
+
+                            collection.getAllCollectionBylike (user_id, selected)
+                            .then ( data => {
+
+                                myCache.set ( "dataSortByLike" + user_id, data, function( err, success ){
+                                    if( !err && success ){
+                                        console.log( success );
+                                    }
+                                });
+
+                                let countAll = data.length;
+                                p = Math.ceil(countAll / n, 0);
+                                let items = data.slice(pgfrom, pgfrom + n);
+
+                                res.json({
+                                    dt: items,
+                                    islogin: req.session.login,
+                                    users: req.session.user.email || '',
+                                    allpage: p,
+                                    page: page,
+                                });
+
+                            });
+
+                        } else {
+                            
+                            let countAll = value.length;
+                            p = Math.ceil(countAll / n, 0);
+                            let items = value.slice(pgfrom, pgfrom + n);
+
+                            res.json({
+                                dt: items,
+                                islogin: req.session.login,
+                                users: req.session.user.email || '',
+                                allpage: p,
+                                page: page,
+                            });
+                            
+                        }
+                    }
+                });
+
+            }
+  
         } else {
             // Search by HEX
             if (q === 'hex') {
@@ -235,10 +267,8 @@ module.exports = function (app, passport) {
 
     app.get('/detail/:id', (req, res) => {
         let id = req.params.id;
-        let user_id = 0;
-        if (req.session.user.id) {
-            user_id = req.session.user.id;
-        }
+        let user_id = user_id = req.session.user.id || 'null';
+
         collection.getCollectionById(id, user_id)
             .then((data) => {
                 data[0].date = data[0].date.split(" ")[0];
@@ -261,13 +291,18 @@ module.exports = function (app, passport) {
     app.post('/likedislike', (req, res) => {
         if (req.session.user.id) {
             let status = req.body['action'];
-            let user_id = req.session.user.id;
+            let user_id = req.session.user.id || 'null';
             let collection_id = req.body['collection_id'];
             likedislike.clickLikeDislike(collection_id, user_id, status)
                 .then(data => {
                         collection.getCollection(data, user_id)
                             .then((data1) => {
-                                myCache.del( "home");
+
+                                myCache.del( "homenull");
+                                myCache.del( "home" + user_id);
+                                myCache.del( "dataSortByLikenull");
+                                myCache.del( "dataSortByLike" + user_id);
+
                                 res.json(data1[0])
                             });
                     },
@@ -281,9 +316,9 @@ module.exports = function (app, passport) {
     });
 
     app.post('/register', (req, res) => {
-        let email = req.body.email;
+        let email    = req.body.email;
         let password = req.body.password;
-        let status = {};
+        let status   = {};
         account.register(email, password)
             .then(succeed => {
                 if (succeed) {
@@ -297,19 +332,35 @@ module.exports = function (app, passport) {
 
 
     app.get('/logout', (req, res) => {
-        let session = req.session;
+        let session   = req.session;
+        let user_id = req.session.user.id || 'null';
+
+        myCache.del( "homenull");
+        myCache.del( "home" + user_id);
+        myCache.del( "dataSortByLikenull");
+        myCache.del( "dataSortByLike" + user_id);
+
         session.login = false;
-        session.user = {};
+        session.user  = {};
         session.destroy(function (err) {
             res.json({islogin: false, users: ''});
         });
     });
 
+
     app.get("/logined", (req, res) => {
         let data = {};
+        let user_id = req.session.user.id || 'null';
+
         if (req.session.login) {
-            myCache.del( "home");
+
+        myCache.del( "homenull");
+        myCache.del( "home" + user_id);
+        myCache.del( "dataSortByLikenull");
+        myCache.del( "dataSortByLike" + user_id);
+
             data = {'islogin': true, 'users': req.session.user.email || ''};
+
         } else {
             data = {'islogin': false};
         }
@@ -348,3 +399,5 @@ module.exports = function (app, passport) {
     })
 
 }
+
+
