@@ -17,6 +17,7 @@
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.min.js"></script>-->
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script src="/public/js/jscolor.min.js"></script>
         <script src="/public/js/custom.js"></script>
 
         <div id="fb-root"></div>

@@ -29,7 +29,7 @@ app.use(session({
 }))
 
 
-app.use ('/public', express.static ('../public'))
+app.use ('/public', express.static ('public'))
 
 app.engine ('vue', expressVue);
 

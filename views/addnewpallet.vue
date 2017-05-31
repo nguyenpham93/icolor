@@ -18,38 +18,28 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <span for="">Color #1</span>
-                                        <input type="text" class="form-control" name="color1" v-on:click.prevent="saveInput('color1')" v-model="pcolor1"
+                                        <input type="text" class="jscolor form-control" name="color1" v-on:click.prevent="saveInput('color1')"
                                                required>
-                                        <span class="preview-color" v-if="pcolor1.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor1}"></span>
                                     </div>
                                     <div class="col-md-2">
                                         <span for="">Color #2</span>
-                                        <input type="text" class="form-control" name="color2" v-on:click.prevent="saveInput('color2')" v-model="pcolor2"
+                                        <input type="text" class="jscolor form-control" name="color2" v-on:click.prevent="saveInput('color2')"
                                                required>
-                                        <span class="preview-color" v-if="pcolor2.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor2}"></span>
                                     </div>
                                     <div class="col-md-2">
                                         <span for="">Color #3</span>
-                                        <input type="text" class="form-control" name="color3" v-on:click.prevent="saveInput('color3')" v-model="pcolor3"
+                                        <input type="text" class="jscolor form-control" name="color3" v-on:click.prevent="saveInput('color3')"
                                                required>
-                                        <span class="preview-color" v-if="pcolor3.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor3}"></span>
                                     </div>
                                     <div class="col-md-2">
                                         <span for="">Color #4</span>
-                                        <input type="text" class="form-control" name="color4" v-on:click.prevent="saveInput('color4')" v-model="pcolor4"
+                                        <input type="text" class="jscolor form-control" name="color4" v-on:click.prevent="saveInput('color4')"
                                                required>
-                                        <span class="preview-color" v-if="pcolor4.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor4}"></span>
                                     </div>
                                     <div class="col-md-2">
                                         <span for="">Color #5</span>
-                                        <input type="text" class="form-control" name="color5" v-on:click.prevent="saveInput('color5')" v-model="pcolor5"
+                                        <input type="text" class="jscolor form-control" name="color5" v-on:click.prevent="saveInput('color5')"
                                                required>
-                                        <span class="preview-color" v-if="pcolor5.length === 6"
-                                              :style="{backgroundColor: '#' + pcolor5}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -118,11 +108,6 @@
                 users: {},
                 islogin: false,
                 errMsg: '',
-                pcolor1: '',
-                pcolor2: '',
-                pcolor3: '',
-                pcolor4: '',
-                pcolor5: '',
                 image: '',
                 inputActive: '',
                 uploadimage: 0,
@@ -234,8 +219,9 @@
 //                        console.log(colorCurrent);
 
                         $('.s' + colorCurrent).attr('style', 'opacity: 1; left: ' + (x-2) + 'px; top: ' + (y-2) + 'px;');
-
-                        that['p' + colorCurrent] = hexColor;
+                        $('input[name="' + colorCurrent + '"]').val(hexColor);
+                        $('input[name="' + colorCurrent + '"]').attr('style', 'background:#' + hexColor);
+                        //that['p' + colorCurrent] = hexColor;
                         // add background in body
                         //document.body.style.background = rgbToHex(p[0], p[1], p[2]);
                     });
@@ -336,11 +322,24 @@
                             $('.msgClone').slideDown('fast');
 
                             if(res.data.pallet[0].color1) {
-                                this.pcolor1 = res.data.pallet[0].color1.replace('#', '');
-                                this.pcolor2 = res.data.pallet[0].color2.replace('#', '');
-                                this.pcolor3 = res.data.pallet[0].color3.replace('#', '');
-                                this.pcolor4 = res.data.pallet[0].color4.replace('#', '');
-                                this.pcolor5 = res.data.pallet[0].color5.replace('#', '');
+
+                                let pcolor1 = res.data.pallet[0].color1.replace('#', '');
+                                let pcolor2 = res.data.pallet[0].color2.replace('#', '');
+                                let pcolor3 = res.data.pallet[0].color3.replace('#', '');
+                                let pcolor4 = res.data.pallet[0].color4.replace('#', '');
+                                let pcolor5 = res.data.pallet[0].color5.replace('#', '');
+
+                                $('input[name="color1"]').val(pcolor1);
+                                $('input[name="color2"]').val(pcolor2);
+                                $('input[name="color3"]').val(pcolor3);
+                                $('input[name="color4"]').val(pcolor4);
+                                $('input[name="color5"]').val(pcolor5);
+
+                                $('input[name="color1"]').attr('style', 'background:#' + pcolor1);
+                                $('input[name="color2"]').attr('style', 'background:#' + pcolor2);
+                                $('input[name="color3"]').attr('style', 'background:#' + pcolor3);
+                                $('input[name="color4"]').attr('style', 'background:#' + pcolor4);
+                                $('input[name="color5"]').attr('style', 'background:#' + pcolor5);
                             }
 
                             $('.scolor').removeAttr('style');
