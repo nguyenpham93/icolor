@@ -267,7 +267,7 @@ module.exports = function (app, passport) {
 
     app.get('/detail/:id', (req, res) => {
         let id = req.params.id;
-        let user_id = user_id = req.session.user.id || 'null';
+        let user_id = req.session.user.id || 'null';
 
         collection.getCollectionById(id, user_id)
             .then((data) => {
