@@ -8,16 +8,16 @@ Color Collection using Express + Vuejs + ElasticSearch
 
 #### 2) Phân trang
     
-    ```
+    
     let q = req.body['page'];
     let n = 20;
     let pgfrom = 0;
     if (q != undefined && q > 0) {
-        pgfrom = (pgfrom + q - 1) * n;
+        pgfrom = (q - 1) * n;
     } else {
         q = 1;
     }
-    ```
+    
 - q: Trang hiện tại (Mặc định là 1)
 - n: Số lượng pallet trong 1 trang
 - pgfrom: Bắt đầu từ đâu trong mảng
@@ -26,7 +26,7 @@ Color Collection using Express + Vuejs + ElasticSearch
 
 - Mới nhất
 
-    ```
+    
     return new Promise ( ( resolve, reject ) => {
         this.elas.search ({
             index : index,
@@ -55,11 +55,11 @@ Color Collection using Express + Vuejs + ElasticSearch
             }
         });
     })
-    ```
+    
 
 - Nhiều like nhất
 
-    ```
+    
     return new Promise ( ( resolve, reject ) => {
         this.elas.search ({
             index : index,
@@ -88,7 +88,7 @@ Color Collection using Express + Vuejs + ElasticSearch
             }
         });
     })
-    ```
+    
 
 #### 4) Đăng nhập
 
@@ -96,25 +96,10 @@ Color Collection using Express + Vuejs + ElasticSearch
 
 #### 6) Copy mã màu
     
-    ```
+    
     function copyTextToClipboard(text) {
         var textArea = document.createElement("textarea");
-    
-        textArea.style.position = 'fixed';
-        textArea.style.top = 0;
-        textArea.style.left = 0;
-    
-        textArea.style.width = '2em';
-        textArea.style.height = '2em';
-    
-        textArea.style.padding = 0;
-    
-        textArea.style.border = 'none';
-        textArea.style.outline = 'none';
-        textArea.style.boxShadow = 'none';
-    
-        textArea.style.background = 'transparent';
-    
+        
         textArea.value = text;
     
         document.body.appendChild(textArea);
@@ -131,10 +116,12 @@ Color Collection using Express + Vuejs + ElasticSearch
     
         document.body.removeChild(textArea);
     }
-    ```
+    
     
 #### 7) Like / dislike
 
+- Bước 1: Client gửi ID pallet, action (like hoặc dislike) lên Server
+    
     ```
     likedislike(collection_id, action ){
         $('.box-like-dislike-share > span').addClass('disabled');
@@ -154,7 +141,36 @@ Color Collection using Express + Vuejs + ElasticSearch
                 //this.dt = [];
                 $('.box-like-dislike-share > span').removeClass('disabled');
             });
-    },
+    }
+    ```
+    
+- Bước 2: Kiểm tra
+
+    + Nếu đã like mà click vào "like" nữa thì giảm 1 like
+    + Nếu đã dislike mà click vào "dislike" nữa thì giảm 1 dislike
+    + Nếu đã like mà click vào "dislike" nữa thì giảm 1 like, tăng dislike thêm 1
+    + Nếu đã dislike mà click vào "like" nữa thì giảm 1 dislike, tăng like thêm 1
+    
+    + Nếu chưa like/dislike thì tăng like/dislike thêm 1
+
+    ```
+    likedislike.clickLikeDislike(collection_id, user_id, status){...}
+    ```
+- Bước 3: Cập nhật, xóa trong elasticsearch
+    
+    + Thêm 1 like/dislike
+    ```
+    elas.insertDocument('icolor', 'like_dislike', data){...}
+    ```
+    
+    + Cập nhật 1 like/dislike
+    ```
+    elas.updateDocument('icolor', 'like_dislike', data){...}
+    ```
+    
+    + Xóa 1 like/dislike
+    ```
+    elas.deleteDocument('icolor', 'like_dislike', data){...}
     ```
     
 #### 8) Hiển thị Pallet liên quan theo màu.
