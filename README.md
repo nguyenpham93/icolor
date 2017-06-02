@@ -222,7 +222,7 @@ Color Collection using Express + Vuejs + ElasticSearch
     }
     ```
     
-- Bước 2: 
+- Bước 2 Hiển thị image
 
     ```
     createImage(file) {
@@ -243,7 +243,7 @@ Color Collection using Express + Vuejs + ElasticSearch
     }
     ```
 
--Bước 3: Lấy màu và gán vào thẻ input
+-Bước 3: Tạo image bằng canvas, Lấy màu và gán vào thẻ input
 
     ```
     pickColor() {
