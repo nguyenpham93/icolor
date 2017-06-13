@@ -476,13 +476,5 @@ node index.js
 - Trang chi tiết
 ![Trang chi tiet](public/img/detail.png)
 
-- Pic 
-![Trang chi tiet](arrowapplication2.png)
-
-- Pic 3000
-![Trang chi tiet](arrowapp3000.png)
-
-- Pic 1000
-![Trang chi tiet](arrowapp1000.png)
 
 
