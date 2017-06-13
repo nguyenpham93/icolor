@@ -483,6 +483,6 @@ node index.js
 ![Trang chi tiet](arrowapp3000.png)
 
 - Pic 1000
-![Trang chi tiet](arrowapp.png)
+![Trang chi tiet](arrowapp1000.png)
 
 
