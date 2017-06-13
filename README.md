@@ -476,6 +476,6 @@ node index.js
 - Trang chi tiết
 ![Trang chi tiet](public/img/detail.png)
 
-![Trang chi tiet](arrowapplication.png)
+![Trang chi tiet](arrowapplication2.png)
 
 
